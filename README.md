@@ -3,7 +3,7 @@
 ![NET](https://img.shields.io/badge/NET-10-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![VS2026](https://img.shields.io/badge/Visual%20Studio-2026-white.svg)
-![Version](https://img.shields.io/badge/Version-1.0.2026.7-yellow.svg)
+![Version](https://img.shields.io/badge/Version-1.0.2026.8-yellow.svg)
 
 Dieses Projekt ist ein einfaches WPF-Projekt Template für .NET 10, das die grundlegenden Komponenten und Funktionen für die schnelle Erstellung einer WPF-Anwendung enthält. Es ist ideal für Entwickler, die schnell mit der Entwicklung von WPF-Anwendungen beginnen möchten.\
 <img src="MainWindow.png" style="width:650px;"/>
@@ -24,6 +24,8 @@ Hauptaufgabe des Templates ist es, eine solide Basis für die Entwicklung von WP
 1. [Singleton Pattern](#singleton-pattern)
 1. [Factory Pattern](#factory-pattern)
 1. [MessageBox Erweiterung](#messagebox-erweiterung)
+1. [Dialog Service](#dialog-service)
+1. [Event Aggregator](#event-aggregator)
 1. [StatusbarMain](#statusbarmain)
 
 # Installation
@@ -328,6 +330,11 @@ public static MessageBoxResult AppExitMessage(this IMessageBase self, string arg
 }
 ```
 
+## Dialog Service
+
+## Event Aggregator
+
+
 ## StatusbarMain
 
 Die statische Klasse StatusbarMain bietet eine zentrale Anlaufstelle für die Verwaltung der Statusleiste in der WPF-Anwendung. Sie enthält eine statische Instanz der Statusbar, die von verschiedenen Teilen der Anwendung verwendet werden kann, um Informationen anzuzeigen oder zu aktualisieren.
@@ -361,6 +368,12 @@ StatusbarMain.Statusbar.DatabaseInfo = "Keine";
 StatusbarMain.Statusbar.DatabaseInfoTooltip = "Keine Datenbank verbunden";
 StatusbarMain.Statusbar.Notification = "Bereit";
 ```
+![Version](https://img.shields.io/badge/Version-1.0.2026.8-yellow.svg)
+- Weitere Basis Klassen für das Template
+- Layout MainWindow Dialog aktualisiert
+- NEU: Dialog Servive
+- NEU: Event Aggregator
+
 # Versionshistorie
 ![Version](https://img.shields.io/badge/Version-1.0.2026.7-yellow.svg)
 - Weitere Basis Klassen für das Template
