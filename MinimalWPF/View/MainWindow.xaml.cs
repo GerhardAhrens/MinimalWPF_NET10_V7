@@ -6,7 +6,7 @@
 //
 // <author>Gerhard Ahrens - Lifeprojects.de</author>
 // <email>developer@lifeprojects.de</email>
-// <date>05.03.2026 18:21:36</date>
+// <date>04.06.2026</date>
 //
 // <summary>
 // WPF Template mit Minimalfunktionen
@@ -28,7 +28,6 @@ namespace MinimalWPF
             this.InitializeComponent();
             WeakEventManager<WindowBase, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
             WeakEventManager<WindowBase, CancelEventArgs>.AddHandler(this, "Closing", this.OnWindowClosing);
-
             this.SetVectorIcon("IconApplicationLogo", 64);
 
             this.QuitCommand = new CommandBase(() => this.OnQuit("Argument"));
@@ -39,12 +38,10 @@ namespace MinimalWPF
 
             this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
 
-            this.ApplikationVersion = base.ApplicationVersion.ToString();
-            this.LaufzeitVersion = base.RuntimeVersion;
-            this.WinVersion = base.WindowsVersion;
             this.DataContext = this;
         }
 
+        #region Properties
         public CommandBase QuitCommand { get; private set; }
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
@@ -57,25 +54,8 @@ namespace MinimalWPF
             set => base.SetValue(value);
         }
 
-        public string ApplikationVersion
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string LaufzeitVersion
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string WinVersion
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
         private MessageBase Message { get; } = new MessageBase();
+        #endregion Properties
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -89,9 +69,39 @@ namespace MinimalWPF
             this.Close();
         }
 
+        private void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = false;
+
+            if (App.Settings.FrageExit == false)
+            {
+                App.ApplicationExit();
+                return;
+            }
+
+            MessageBoxResult msgYN;
+            if (this.Tag != null)
+            {
+                msgYN = this.Message.AppExitMessage(this.Tag.ToString());
+            }
+            else
+            {
+                msgYN = this.Message.AppExitMessage();
+            }
+
+            if (msgYN == MessageBoxResult.Yes)
+            {
+                App.ApplicationExit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        #region Command Handler
         private void OnQuit(string param)
         {
-            /* this.QuitParamCommand.TryExecute(); */
             this.Tag = param;
             this.Close();
         }
@@ -115,37 +125,6 @@ namespace MinimalWPF
         {
             this.SettingsPopup.SetValue(MaskLayerBehavior.IsOpenProperty, false);
         }
-
-        private void OnWindowClosing(object sender, CancelEventArgs e)
-        {
-            e.Cancel = false;
-
-            /*
-            if (App.Settings.FrageExit == false)
-            {
-                App.ApplicationExit();
-                return;
-            }
-            */
-
-            MessageBoxResult msgYN;
-            if (this.Tag != null)
-            {
-                msgYN = this.Message.AppExitMessage(this.Tag.ToString());
-            }
-            else
-            {
-                msgYN = this.Message.AppExitMessage();
-            }
-
-            if (msgYN == MessageBoxResult.Yes)
-            {
-                App.ApplicationExit();
-            }
-            else
-            {
-                e.Cancel = true;
-            }
-        }
+        #endregion
     }
 }
