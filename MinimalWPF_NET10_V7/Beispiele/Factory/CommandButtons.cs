@@ -14,5 +14,9 @@
         Help = 3,
         [Description("Zurück zur vorherigen Seite")]
         GoBack = 4,
+        [Description("Informationen")]
+        InformationPopup = 20,
+        [Description("Einstellungen")]
+        SettingsPopup = 21,
     }
 }

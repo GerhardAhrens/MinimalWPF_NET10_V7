@@ -19,7 +19,7 @@
         x:Name="gridMain"
         Background="WhiteSmoke"
         ColumnDefinitions="*"
-        RowDefinitions="45,*">
+        RowDefinitions="Auto,*">
         <!--#region Popup im MainWindow Dialog-->
         <base:DialogPopup
             x:Name="InformationPopup"
@@ -47,6 +47,7 @@
                     VerticalAlignment="Top"
                     Background="Transparent"
                     Command="{Binding Path=CloseInformationPopupCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.InformationPopup}"
                     MouseOverBackground="Transparent"
                     NormalPathColor="White"
                     PathData="{StaticResource ResourceKey=IconClose}"
@@ -79,6 +80,7 @@
                     VerticalAlignment="Top"
                     Background="Transparent"
                     Command="{Binding Path=CloseSettingsPopupCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.SettingsPopup}"
                     MouseOverBackground="Transparent"
                     NormalPathColor="White"
                     PathData="{StaticResource ResourceKey=IconClose}"
@@ -106,6 +108,45 @@
                     </Border>
                 </ControlTemplate>
             </GroupBox.Template>
+            <DockPanel Grid.Row="0" Grid.Column="0">
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=QuitCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.AppQuit}"
+                    ToolTip="Demo beenden">
+                    <Image Source="{StaticResource ResourceKey=IconApplicationEnd}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Right"
+                    Background="Transparent"
+                    Command="{Binding Path=InformationCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.InformationPopup}"
+                    DockPanel.Dock="Right"
+                    ToolTip="Info anzeigen">
+                    <Image Source="{StaticResource ResourceKey=IconApplicationInformation}" Stretch="None" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Right"
+                    Background="Transparent"
+                    Command="{Binding Path=SettingsCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.SettingsPopup}"
+                    DockPanel.Dock="Right"
+                    ToolTip="Einstellungen bearbeiten">
+                    <Image Source="{StaticResource ResourceKey=ApplicationSettingsIcon}" Stretch="Fill" />
+                </Button>
+            </DockPanel>
         </GroupBox>
         <!--#endregion Hauptmenübar-->
 

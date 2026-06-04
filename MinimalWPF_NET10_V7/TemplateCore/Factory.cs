@@ -17,6 +17,11 @@
         // Singleton Cache
         private static readonly ConcurrentDictionary<(Type EnumType, object Key), Lazy<object>> _singletons = new();
 
+        public static int Count { get { return _registrations.Count; } }
+
+        public static string[] Names { get { return _registrations.Keys.Select(k => k.Key.ToString()).ToArray(); } }
+
+
         // Registrierungseintrag
         private sealed class Registration
         {

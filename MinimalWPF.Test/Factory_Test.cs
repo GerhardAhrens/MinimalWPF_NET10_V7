@@ -21,7 +21,7 @@
         public void FactoryMeta_Test()
         {
             DataService service = new();
-            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, () => new DashboardControl(service));
+            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, (param) => new DashboardControl(service));
             Factory.RegisterSingleton<WindowId>(WindowId.Login, () => new LoginWindow());
             Factory.RegisterSingleton<NormalClassId>(NormalClassId.SingletonClass, () => new SingletonClass());
 
@@ -34,7 +34,7 @@
         public void FactoryRegister_Test()
         {
             DataService service = new();
-            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, () => new DashboardControl(service));
+            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, (param) => new DashboardControl(service));
             Factory.RegisterSingleton<WindowId>(WindowId.Login, () => new LoginWindow());
             Factory.RegisterSingleton<NormalClassId>(NormalClassId.SingletonClass, () => new SingletonClass());
 
@@ -50,7 +50,7 @@
         public void FactoryGet_Test()
         {
             DataService service = new();
-            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, () => new DashboardControl(service));
+            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, (param) => new DashboardControl(service));
             Factory.RegisterSingleton<WindowId>(WindowId.Login, () => new LoginWindow());
             Factory.RegisterSingleton<NormalClassId>(NormalClassId.SingletonClass, () => new SingletonClass());
 

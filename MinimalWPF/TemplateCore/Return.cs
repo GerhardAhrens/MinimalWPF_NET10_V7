@@ -5,13 +5,13 @@
         public bool IsSuccess { get; private set; }
         public bool IsFail { get; private set; }
 
-        public TResult? Value { get; private set; }
+        public TResult Value { get; private set; }
 
         public string FailMessage { get; private set; } 
 
         public string SuccessMessage { get; private set; }
 
-        public Exception? Exception { get; private set; } 
+        public Exception Exception { get; private set; } 
 
         public static Return<TResult> Success(TResult result, string successMessage)
         {
