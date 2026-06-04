@@ -6,12 +6,19 @@
     {
         public static Result<long> ParseLong(string value)
         {
-            if (long.TryParse(value, out var n))
+            try
             {
-                return Result<long>.Success(n);
-            }
+                if (long.TryParse(value, out var n))
+                {
+                    return Result<long>.Success(n);
+                }
 
-            return Result<long>.Fail($"Ungültige Eingabe: {value}");
+                return Result<long>.Fail($"Ungültige Eingabe: {value}");
+            }
+            catch (Exception ex)
+            {
+                return Result<long>.Fail($"Fehler beim Parsen: {ex.Message}");  
+            }
         }
 
     }
