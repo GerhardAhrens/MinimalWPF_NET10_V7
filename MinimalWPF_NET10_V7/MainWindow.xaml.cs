@@ -189,6 +189,11 @@ namespace MinimalWPF
                         this.WorkContent = null;
                         this.WorkContent = (System.Windows.Controls.UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
                     }
+                    else if (button == CommandButtons.ShowResult)
+                    {
+                        this.WorkContent = null;
+                        this.WorkContent = (System.Windows.Controls.UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
+                    }
                 }
 
                 this.Dispatcher.Invoke(() => Mouse.OverrideCursor = null);
@@ -204,6 +209,7 @@ namespace MinimalWPF
         private void RegisterFactory()
         {
             Factory.RegisterSingleton<CommandButtons>(CommandButtons.Home, () => new HelloUC());
+            Factory.RegisterSingleton<CommandButtons>(CommandButtons.ShowResult, () => new ResultUC());
         }
     }
 }

@@ -16,6 +16,7 @@
             this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
 
             this.QuitCommand = new CommandBase(commandParam => this.OnQuit(commandParam), () => true);
+            this.ShowResultCommand = new CommandBase(commandParam => this.OnShowResult(commandParam), () => true);
 
             this.InformationCommand = new CommandBase(commandParam =>  this.OnPopup(commandParam));
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
@@ -28,6 +29,7 @@
         #region Properties
         public CommandBase QuitCommand { get; private set; }
         public CommandBase HelpCommand { get; private set; }
+        public CommandBase ShowResultCommand { get; private set; }
 
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
@@ -106,6 +108,24 @@
                 }
             }
         }
+
+        private async void OnShowResult(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ShowResult)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.MenuButton = button;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
+
         #endregion Command Events
     }
 }

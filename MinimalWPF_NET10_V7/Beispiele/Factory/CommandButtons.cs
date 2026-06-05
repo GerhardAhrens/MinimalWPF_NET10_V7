@@ -14,6 +14,8 @@
         Help = 3,
         [Description("Zurück zur vorherigen Seite")]
         GoBack = 4,
+        [Description("Demo zur Result<T> Klasse")]
+        ShowResult = 5,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

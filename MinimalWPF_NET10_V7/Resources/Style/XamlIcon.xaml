@@ -11,6 +11,34 @@
     <!--#endregion XAML Icon Quelle-->
 
     <!--#region Farbige Icon Symbole auf Basis von DrawingImage-->
+    <DrawingImage x:Key="IconExecute">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0L0,24 24,24 24,0 0,0z">
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF008000">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="M7,4.27C6.27,3.82,5.33,4.35,5.33,5.21L5.33,18.79C5.33,19.65,6.27,20.18,7,19.73L18.66,12.94C19.36,12.53,19.36,11.47,18.66,11.06z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
+    <DrawingImage x:Key="IconGoBack">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Transform>
+                    <ScaleTransform ScaleX="0.25" ScaleY="0.25" />
+                </DrawingGroup.Transform>
+
+                <GeometryDrawing Brush="#FF986532" Geometry="F1M81.366,0L81.366,45.586 103.523,45.586 103.523,22.159 206.533,22.159 206.533,189.646 103.523,189.646 103.523,166.248 81.366,166.248 81.366,211.805 228.691,211.805 228.691,0 81.366,0z" />
+                <GeometryDrawing Brush="#FF3EA8F4" Geometry="F1M85.829,160.762L0,105.9 85.829,51.043 85.829,82.924 151.456,82.924 151.456,129.645 85.829,129.645 85.829,160.762z" />
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <DrawingImage x:Key="IconApplicationLogo">
         <DrawingImage.Drawing>
             <DrawingGroup>
