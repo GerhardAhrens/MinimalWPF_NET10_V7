@@ -3,8 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="clr-namespace:System.Windows"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:beispiel="clr-namespace:MinimalWPF.Beispiele"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MinimalWPF.Beispiele"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
@@ -43,7 +43,7 @@
                     Background="Transparent"
                     Command="{Binding Path=GoBackCommand}"
                     CommandParameter="{x:Static beispiel:CommandButtons.GoBack}"
-                    ToolTip="Demo beenden">
+                    ToolTip="Zurück">
                     <Image Source="{StaticResource ResourceKey=IconGoBack}" Stretch="Uniform" />
                 </Button>
 

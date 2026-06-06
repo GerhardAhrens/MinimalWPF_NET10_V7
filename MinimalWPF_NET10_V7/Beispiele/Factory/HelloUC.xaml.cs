@@ -52,12 +52,6 @@
             {
                 await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
             }
-
-            if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
-            {
-                await App.EventAgg.PublishAsync(new WindowsTitelEvent(CommandButtons.Home.ToDescription()));
-            }
-
         }
         #endregion Windows Events
 

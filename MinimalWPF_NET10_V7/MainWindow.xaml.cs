@@ -187,6 +187,12 @@ namespace MinimalWPF
                     }
                     else if (button.In(CommandButtons.Home, CommandButtons.GoBack, CommandButtons.ShowResult))
                     {
+
+                        if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
+                        {
+                            await App.EventAgg.PublishAsync(new WindowsTitelEvent(button.ToDescription()));
+                        }
+
                         this.WorkContent = null;
                         this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
                     }

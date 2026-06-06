@@ -45,7 +45,6 @@ namespace MinimalWPF.Beispiele
 
         #endregion Properties
 
-
         #region Windows Events
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -54,12 +53,6 @@ namespace MinimalWPF.Beispiele
             {
                 await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
             }
-
-            if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
-            {
-                await App.EventAgg.PublishAsync(new WindowsTitelEvent(CommandButtons.ShowResult.ToDescription()));
-            }
-
         }
         #endregion Windows Events
 

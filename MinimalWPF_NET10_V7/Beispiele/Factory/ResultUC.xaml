@@ -43,7 +43,7 @@
                     Background="Transparent"
                     Command="{Binding Path=GoBackCommand}"
                     CommandParameter="{x:Static beispiel:CommandButtons.GoBack}"
-                    ToolTip="Demo beenden">
+                    ToolTip="Zurück">
                     <Image Source="{StaticResource ResourceKey=IconGoBack}" Stretch="Uniform" />
                 </Button>
             </DockPanel>
@@ -98,6 +98,32 @@
                 </StackPanel>
             </GroupBox.Header>
             <!--  Inhalt der GroupBox  -->
+            <StackPanel
+                Height="30"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="Eingabe" />
+
+                <TextBox
+                    Width="200"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Top"
+                    Text="{Binding Path=InputValue, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Button
+                    Width="30"
+                    Height="30"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=CheckInputCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.CheckInput}"
+                    ToolTip="Eingabe prüfen">
+                    <Image Source="{StaticResource ResourceKey=IconSoftware_Ok2}" Stretch="Uniform" />
+                </Button>
+
+            </StackPanel>
         </GroupBox>
 
     </Grid>
