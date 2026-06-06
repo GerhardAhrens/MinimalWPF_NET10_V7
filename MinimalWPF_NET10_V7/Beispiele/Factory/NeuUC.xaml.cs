@@ -1,14 +1,31 @@
-﻿namespace MinimalWPF.Beispiele
+﻿//-----------------------------------------------------------------------
+// <copyright file="NeuUC.cs" company="Lifeprojects.de">
+//     Class: NeuUC
+//     Copyright © Lifeprojects.de 2026
+// </copyright>
+//
+// <author>2026 - Lifeprojects.de</author>
+// <email>developer@lifeprojects.de</email>
+// <date>06.06.2026</date>
+//
+// <summary>
+// Template für eine neue UserControl, die über die Factory erstellt wird. Sie enthält einen GoBackCommand,
+// der es ermöglicht, zur vorherigen Ansicht zurückzukehren. Beim Laden der UserControl werden
+// Status- und WindowsTitel-Events veröffentlicht, um den aktuellen Status und Titel der Anwendung zu aktualisieren.
+// </summary>
+//-----------------------------------------------------------------------
+
+namespace MinimalWPF.Beispiele
 {
     using System.Windows;
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaktionslogik für ResultUC.xaml
+    /// Interaktionslogik für NeuUC.xaml
     /// </summary>
-    public partial class ResultUC : UserControlBase
+    public partial class NeuUC : UserControlBase
     {
-        public ResultUC(ChangeViewEventArgs args) : base(typeof(ResultUC))
+        public NeuUC(ChangeViewEventArgs args) : base(typeof(NeuUC))
 
         {
             this.InitializeComponent();

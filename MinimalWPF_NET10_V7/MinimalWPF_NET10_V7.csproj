@@ -39,4 +39,10 @@
     <Folder Include="TemplateCore\Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Beispiele\Factory\NeuUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

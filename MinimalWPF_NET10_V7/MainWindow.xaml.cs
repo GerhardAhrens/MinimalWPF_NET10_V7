@@ -17,6 +17,7 @@ namespace MinimalWPF
 {
     using System.ComponentModel;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Input;
 
     using MinimalWPF.Beispiele;
@@ -184,15 +185,10 @@ namespace MinimalWPF
                     {
                         this.OnQuit();
                     }
-                    else if (button == CommandButtons.Home)
+                    else if (button.In(CommandButtons.Home, CommandButtons.GoBack, CommandButtons.ShowResult))
                     {
                         this.WorkContent = null;
-                        this.WorkContent = (System.Windows.Controls.UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
-                    }
-                    else if (button == CommandButtons.ShowResult)
-                    {
-                        this.WorkContent = null;
-                        this.WorkContent = (System.Windows.Controls.UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
+                        this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
                     }
                 }
 
@@ -209,7 +205,7 @@ namespace MinimalWPF
         private void RegisterFactory()
         {
             Factory.RegisterSingleton<CommandButtons>(CommandButtons.Home, () => new HelloUC());
-            Factory.RegisterSingleton<CommandButtons>(CommandButtons.ShowResult, () => new ResultUC());
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowResult, (param) => new ResultUC((ChangeViewEventArgs)param!));
         }
     }
 }
