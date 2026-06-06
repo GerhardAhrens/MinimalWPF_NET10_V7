@@ -16,6 +16,10 @@
         GoBack = 4,
         [Description("Demo zur Result<T> Klasse")]
         ShowResult = 5,
+        [Description("Demo zur Message Klasse und Message Extensions")]
+        ShowMessage = 6,
+        [Description("Demo zur DialogService Klasse")]
+        ShowDialogService = 7,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

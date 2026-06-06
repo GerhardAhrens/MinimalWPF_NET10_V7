@@ -17,6 +17,8 @@
 
             this.QuitCommand = new CommandBase(commandParam => this.OnQuit(commandParam), () => true);
             this.ShowResultCommand = new CommandBase(commandParam => this.OnShowResult(commandParam), () => true);
+            this.ShowMessageCommand = new CommandBase(commandParam => this.OnShowMessage(commandParam), () => true);
+            this.ShowDialogServiceCommand = new CommandBase(commandParam => this.OnShowDialogService(commandParam), () => true);
 
             this.InformationCommand = new CommandBase(commandParam =>  this.OnPopup(commandParam));
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
@@ -30,7 +32,8 @@
         public CommandBase QuitCommand { get; private set; }
         public CommandBase HelpCommand { get; private set; }
         public CommandBase ShowResultCommand { get; private set; }
-
+        public CommandBase ShowMessageCommand { get; private set; }
+        public CommandBase ShowDialogServiceCommand { get; private set; }
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
         public CommandBase CloseInformationPopupCommand { get; private set; }
@@ -119,6 +122,14 @@
                     }
                 }
             }
+        }
+
+        private void OnShowMessage(object commandParam)
+        {
+        }
+
+        private void OnShowDialogService(object commandParam)
+        {
         }
 
         #endregion Command Events

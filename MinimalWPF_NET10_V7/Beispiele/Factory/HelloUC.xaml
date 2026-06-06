@@ -136,6 +136,30 @@
                 <Button
                     Width="50"
                     Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=ShowMessageCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowMessage}"
+                    ToolTip="Beispiel zur Message Klasse und Message Extensions">
+                    <Image Source="{StaticResource ResourceKey=IconSoftware_Message}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=ShowDialogServiceCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowDialogService}"
+                    ToolTip="Beispiel zur DialogService Klasse">
+                    <Image Source="{StaticResource ResourceKey=IconSoftware_Application}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
                     Margin="0,0,5,0"
                     HorizontalAlignment="Right"
                     Background="Transparent"

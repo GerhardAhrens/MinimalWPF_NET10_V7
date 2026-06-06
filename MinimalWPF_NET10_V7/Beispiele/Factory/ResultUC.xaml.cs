@@ -2,6 +2,7 @@
 {
     using System.Windows;
     using System.Windows.Controls;
+    using System.Linq;
 
     /// <summary>
     /// Interaktionslogik für ResultUC.xaml
@@ -79,7 +80,6 @@
             {
                 this.Message.Hinweis("Fehler",$"Fehler beim Parsen: {numberMixLong.FailMessage}");
             }
-
         }
 
         #endregion Command Events
