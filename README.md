@@ -368,7 +368,23 @@ public class DialogResponse<TWindow> where TWindow : Window
 Bei Bedarf können Sie die `DialogResponse<TWindow>` Klasse erweitern, um zusätzliche Informationen zurückzugeben, wie z.B. Benutzereingaben oder andere relevante Daten.
 
 ## Event Aggregator
+Die Klasse **EventAggregator** soll das Zusammenwirken der Kommunikation zwischen Klassen und UserControl in einer WPF Anwendung zeigen.
 
+### Features
+Der **EventAggregator** ist zum einen generisch, was bedeutet, dass er mit verschiedenen Nachrichtentypen arbeiten kann, und zum anderen asynchron, was bedeutet, dass die Nachrichtenverarbeitung nicht blockierend ist. Das ermöglicht eine flexible und effiziente Kommunikation zwischen den Komponenten der Anwendung. Die Klassen können Nachrichten senden, ohne sich um die Details der Empfänger kümmern zu müssen, und die Empfänger können Nachrichten empfangen, ohne sich um die Details der Sender kümmern zu müssen. Das fördert eine lose Kopplung und erleichtert die Wartbarkeit und Erweiterbarkeit der Anwendung.
+Damit ist diese variante des **EventAggregator** besonders in einem MVVM Umfeld geeignet.
+
+````csharp
+App.EventAgg.Subscribe<StatusEvent>(async (evt, ct) => this.OnUpdateStatusBar(evt));
+````
+
+Um eine Nachricht zu senden, wird die `Publish`-Methode des **EventAggregator** verwendet. In diesem Beispiel wird eine Nachricht vom Typ "StatusEvent" gesendet, wenn z.B.ein Button oder eine Methode ausgelöst wird.
+````csharp
+if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+{
+    await App.EventAgg.PublishAsync(new StatusEvent(Guid.NewGuid(), this.StatusMessage));
+}
+````
 
 ## StatusbarMain
 
