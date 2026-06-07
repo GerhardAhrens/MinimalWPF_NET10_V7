@@ -23,7 +23,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Source\NeuUC.xaml.cs.source" />
+    <None Remove="Resources\Source\NeuUC.xaml.source" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\Picture\ApplicationIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Source\NeuUC.xaml.cs.source" />
+    <Resource Include="Resources\Source\NeuUC.xaml.source" />
   </ItemGroup>
 
   <ItemGroup>
