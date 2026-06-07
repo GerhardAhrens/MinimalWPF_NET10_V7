@@ -406,7 +406,7 @@ StatusbarMain.Statusbar.Notification = "Bereit";
 ![Version](https://img.shields.io/badge/Version-1.0.2026.8-yellow.svg)
 - Weitere Basis Klassen für das Template
 - Layout MainWindow Dialog aktualisiert
-- NEU: Dialog Servive
+- NEU: Dialog Servive mit Fluent API
 - NEU: Event Aggregator
 
 # Versionshistorie
@@ -417,7 +417,7 @@ StatusbarMain.Statusbar.Notification = "Bereit";
   * IconButton
   * Singleton Pattern
   * Factory Pattern
-  * MessageBox Erweiterung mit Fluent API
+  * MessageBox Erweiterung
 
 ![Version](https://img.shields.io/badge/Version-1.0.2026.6-yellow.svg)
 - Weitere Basis Klassen für das Template
