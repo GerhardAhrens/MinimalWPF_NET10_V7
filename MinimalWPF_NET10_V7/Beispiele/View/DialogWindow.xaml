@@ -7,13 +7,20 @@
     xmlns:local="clr-namespace:MinimalWPF.Beispiele"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="{Binding Path=WindowTitel, FallbackValue=~WindowTitel}"
-    WindowStartupLocation="CenterOwner"
     Width="800"
     Height="450"
     ResizeMode="CanMinimize"
     ShowInTaskbar="False"
+    WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Grid>
         <!--  Inhalte zum Window  -->
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="14"
+            FontWeight="Medium"
+            Text="{Binding Path=DemoText, FallbackValue=~Dialog Fenster}"
+            TextWrapping="WrapWithOverflow" />
     </Grid>
 </base:WindowBase>

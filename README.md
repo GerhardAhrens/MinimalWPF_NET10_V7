@@ -336,6 +336,37 @@ public static MessageBoxResult AppExitMessage(this IMessageBase self, string arg
 
 ## Dialog Service
 
+Die Klasse `DialogService` soll eine einfache Möglichkeit bieten, Dialoge in der WPF-Anwendung auf eine einfache Art und Weise anzuzeigen. Die Funktionalität wird über die Klasse `DialogService` und `DialogResponse` abgebildet, die ein Ergebnis vom Dialog zurückgeben kann.
+
+### Features
+- Einfache API zum Anzeigen von Dialogen mit .Show() und .ShowDialg().
+- Übergabe von Parametern, die an den Konstruktor des Dialog weitergegeben werden.
+- Einheitliche Rückgabe des DialogResults, um die Benutzeraktion zu erfassen.
+- Fluent-API für eine intuitive und lesbare Syntax.
+
+In der `DialogResponse<TWindow>` Klasse werden die Informationen über den Dialog zurückgegeben, einschließlich des Dialogergebnisses und der Instanz des Dialogs.
+````csharp
+public class DialogResponse<TWindow> where TWindow : Window
+{
+    public TWindow Window { get; }
+
+    public bool? DialogResult { get; }
+        
+    public bool IsModal { get; }
+
+    public object ResponseObject { get; }
+
+    public DialogResponse(TWindow window, bool? dialogResult, bool isModal, object responseObject)
+    {
+        this.Window = window;
+        this.DialogResult = dialogResult;
+        this.IsModal = isModal;
+        this.ResponseObject = responseObject;
+    }
+}
+````
+Bei Bedarf können Sie die `DialogResponse<TWindow>` Klasse erweitern, um zusätzliche Informationen zurückzugeben, wie z.B. Benutzereingaben oder andere relevante Daten.
+
 ## Event Aggregator
 
 

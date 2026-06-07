@@ -10,13 +10,14 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
     <Grid
         x:Name="gridMain"
         Background="WhiteSmoke"
         ColumnDefinitions="*"
-        RowDefinitions="Auto,*">
+        RowDefinitions="Auto,Auto,*">
 
-        <!--#region Hauptmenübar-->
+        <!--#region Dialog Menütoolbar-->
         <GroupBox
             x:Name="MainMenubar"
             Grid.Row="0"
@@ -50,6 +51,97 @@
             </DockPanel>
         </GroupBox>
 
-        <!--#endregion Hauptmenübar-->
+        <!--#endregion Dialog Menütoolbar-->
+
+        <GroupBox
+            Grid.Row="1"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Erklärung" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <TextBlock FontSize="13" TextWrapping="Wrap">
+                <Run Text="Bei der Klasse " />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="DialogService" />
+                <Run Text="handelt es sich um eine Klasse, die den Aufruf von Dialogen in einer WPF-Anwendung vereinfacht." />
+                <Run Text="Das Beispiel zeigt die Verwendung der Klasse in einem WPF Projekt. Es ist eine einfache Anwendung, die die Funktionalität des DialogService und der Klasse DialogResponse demonstriert." />
+                <LineBreak />
+                <Run Text="In der" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="DialogResponse&lt;TWindow&gt;" />
+                <Run Text="Klasse werden die Informationen über den Dialog zurückgegeben, einschließlich des Dialogergebnisses und der Instanz des Dialogs." />
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="2"
+            Margin="0,10,0,0"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Beispiel" />
+                </StackPanel>
+            </GroupBox.Header>
+            <!--  Inhalt der GroupBox  -->
+            <StackPanel VerticalAlignment="Top" Orientation="Vertical">
+                <Button
+                    Height="30"
+                    Command="{Binding Path=DialogServiceCommand}"
+                    CommandParameter="1"
+                    Content="Variante 1; Einfacher Aufruf eines Dialogs" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=DialogServiceCommand}"
+                    CommandParameter="2"
+                    Content="Variante 2; Aufruf mit Fluent-API" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=DialogServiceCommand}"
+                    CommandParameter="3"
+                    Content="Variante 3; Aufruf mit Konstruktor Parameter" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=DialogServiceCommand}"
+                    CommandParameter="3"
+                    Content="Variante 4; Aufruf mit Animation" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=DialogServiceCommand}"
+                    CommandParameter="5"
+                    Content="Variante 5; Aufruf mit Show() (nicht Modal)" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=DialogServiceCommand}"
+                    CommandParameter="6"
+                    Content="Variante 6; Aufruf mit Konfiguration (.Show()/.ShowDialog())" />
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </base:UserControlBase>

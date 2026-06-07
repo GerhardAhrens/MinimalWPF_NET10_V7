@@ -40,11 +40,48 @@ namespace MinimalWPF.Beispiele
             this.DataContext = this;
         }
 
+        #region Properties
+        public CommandBase GoBackCommand { get; private set; }
+        public CommandBase MessageBoxOKCommand { get; private set; }
+        private ChangeViewEventArgs CurrentCtorArgs { get; set; }
+        private MessageBase Message { get; } = new MessageBase();
+
+        #endregion Properties
+
+        #region Windows Events
+
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+            {
+                await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
+            }
+        }
+        #endregion Windows Events
+
+        #region Command Events
+        private async void OnGoBack(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.GoBack)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.MenuButton = this.CurrentCtorArgs.FromPage;
+                    args.FromPage = this.CurrentCtorArgs.MenuButton;
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
+
         private void OnMessageBox(object commandParam)
         {
             if (commandParam != null && commandParam.Equals("OK") == true)
             {
-                MessageBoxResult result = this.Message.ShowMessage("Information","OK Button wurde geklickt!");
+                MessageBoxResult result = this.Message.ShowMessage("Information", "OK Button wurde geklickt!");
             }
             else if (commandParam != null && commandParam.Equals("YES_NO") == true)
             {
@@ -104,44 +141,6 @@ namespace MinimalWPF.Beispiele
                 else if (result == MessageBoxResult.Ignore)
                 {
                     this.Message.Warning("Antwort", "Sie haben 'Ignore' gewählt.");
-                }
-            }
-        }
-
-
-        #region Properties
-        public CommandBase GoBackCommand { get; private set; }
-        public CommandBase MessageBoxOKCommand { get; private set; }
-        private ChangeViewEventArgs CurrentCtorArgs { get; set; }
-        private MessageBase Message { get; } = new MessageBase();
-
-        #endregion Properties
-
-        #region Windows Events
-
-        private async void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            if (App.EventAgg.IsSubscription<StatusEvent>() == true)
-            {
-                await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
-            }
-        }
-        #endregion Windows Events
-
-        #region Command Events
-        private async void OnGoBack(object commandParam)
-        {
-            if (commandParam != null && commandParam is CommandButtons button)
-            {
-                if (button == CommandButtons.GoBack)
-                {
-                    ChangeViewEventArgs args = new();
-                    args.MenuButton = this.CurrentCtorArgs.FromPage;
-                    args.FromPage = this.CurrentCtorArgs.MenuButton;
-                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
-                    {
-                        await App.EventAgg.PublishAsync(args);
-                    }
                 }
             }
         }

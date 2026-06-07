@@ -23,6 +23,7 @@ namespace MinimalWPF.Beispiele
     /// <summary>
     /// Interaktionslogik für DialogServiceUC.xaml
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>")]
     public partial class DialogServiceUC : UserControlBase
     {
         public DialogServiceUC(ChangeViewEventArgs args) : base(typeof(DialogServiceUC))
@@ -34,13 +35,14 @@ namespace MinimalWPF.Beispiele
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
-
+            this.DialogServiceCommand = new CommandBase(commandParam => this.OnDialogService(commandParam), () => true);
             this.DataContext = this;
         }
 
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase DialogServiceCommand { get; private set; }
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
 
         #endregion Properties
@@ -73,6 +75,105 @@ namespace MinimalWPF.Beispiele
                 }
             }
         }
+
+        private void OnDialogService(object commandParam)
+        {
+            if (commandParam != null && commandParam.Equals("1") == true)
+            {
+                object parm = $"Einfacher Aufruf: \n var response = new DialogService<DialogWindow>().ShowDialog();";
+                DialogResponse<DialogWindow> response = new DialogService<DialogWindow>(parm).WithOwner(Application.Current.MainWindow).ShowDialog();
+                if (response.DialogResult == true)
+                {
+                    // OK
+                }
+                else
+                {
+                    // Abbrechen
+                }
+            }
+            else if (commandParam != null && commandParam.Equals("2") == true)
+            {
+                object parm = $"Aufruf mit Fluent-API: \n var response = new DialogService<DialogWindow>()\n.WithTitle(\"Dialog Window\")\n.WithSize(700, 450)\n.CenterToScreen()\n.WithFont(\"Segoe UI\")\n.TopMost()\n.ShowDialog();";
+                var response = new DialogService<DialogWindow>(parm)
+                    .WithTitle("Dialog Window")
+                    .WithSize(700, 450)
+                    .CenterToScreen()
+                    .WithFont("Segoe UI")
+                    .TopMost()
+                    .ShowDialog();
+                if (response.DialogResult == true)
+                {
+                    // OK
+                }
+                else
+                {
+                    // Abbrechen
+                }
+            }
+            else if (commandParam != null && commandParam.Equals("3") == true)
+            {
+                object parm = $"Aufruf mit Konstruktor Parameter: \n var response = new DialogService<DialogWindow>(parm, \"Max Mustermann\", 42)\n.WithTitle(\"Benutzer\")\n.ShowDialog();";
+                var response = new DialogService<DialogWindow>(parm, "Max Mustermann", 42)
+                    .WithTitle("Benutzer")
+                    .ShowDialog();
+                if (response.DialogResult == true)
+                {
+                    // OK
+                }
+                else
+                {
+                    // Abbrechen
+                }
+            }
+            else if (commandParam != null && commandParam.Equals("4") == true)
+            {
+                object parm = $"Aufruf mit; Animation: \n var response = new DialogService<DialogWindow>()\n.WithFadeAnimation()\n.ShowDialog();";
+                var response = new DialogService<DialogWindow>(parm).WithOwner(Application.Current.MainWindow).WithFadeAnimation().ShowDialog();
+
+                if (response.DialogResult == true)
+                {
+                    // OK
+                }
+                else
+                {
+                    // Abbrechen
+                }
+            }
+            else if (commandParam != null && commandParam.Equals("5") == true)
+            {
+                object parm = $"Einfacher Aufruf: \n var response = new DialogService<DialogWindow>()\n.Show();";
+                var response = new DialogService<DialogWindow>(parm).WithFadeAnimation().Show();
+
+                if (response.DialogResult == true)
+                {
+                    // OK
+                }
+                else
+                {
+                    // Abbrechen
+                }
+            }
+            else if (commandParam != null && commandParam.Equals("6") == true)
+            {
+                object parm = $"Aufruf mit Konfiguration (.Show()/.ShowDialog()): \n var response = new DialogService<DialogWindow>()\nConfigure(w => \n{{ w.Width = 400;\nw.Height = 200;\nw.Background = System.Windows.Media.Brushes.AliceBlue;}})\n.Show();";
+                var response = new DialogService<DialogWindow>(parm).Configure(w =>
+                {
+                    w.Width = 450;
+                    w.Height = 250;
+                    w.Background = System.Windows.Media.Brushes.AliceBlue;
+                }).ShowDialog();
+
+                if (response.DialogResult == true)
+                {
+                    // OK
+                }
+                else
+                {
+                    // Abbrechen
+                }
+            }
+        }
+
         #endregion Command Events
 
     }
