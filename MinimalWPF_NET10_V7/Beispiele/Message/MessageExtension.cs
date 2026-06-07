@@ -20,7 +20,31 @@ namespace System.Windows
     {
         public static MessageBoxResult Hinweis(this IMessageBase self, string titel, string message, bool withSound = false)
         {
-            MessageBoxResult result = self.ShowMessage(titel, message, withSound);
+            MessageBoxResult result = self.ShowMessage(titel, message, MessageBoxButton.OK, MessageBoxImage.Asterisk, MessageBoxResult.OK);
+            return result;
+        }
+
+        public static MessageBoxResult StopMessage(this IMessageBase self, string titel, string message, bool withSound = false)
+        {
+            MessageBoxResult result = self.ShowMessage(titel, message, MessageBoxButton.OK, MessageBoxImage.Hand, MessageBoxResult.OK);
+            return result;
+        }
+
+        public static MessageBoxResult Information(this IMessageBase self, string titel, string message, bool withSound = false)
+        {
+            MessageBoxResult result = self.ShowMessage(titel, message, MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+            return result;
+        }
+
+        public static MessageBoxResult QuestionCancel(this IMessageBase self, string titel, string message, bool withSound = false)
+        {
+            MessageBoxResult result = self.ShowMessage(titel, message, MessageBoxButton.YesNoCancel, MessageBoxImage.Hand, MessageBoxResult.None);
+            return result;
+        }
+
+        public static MessageBoxResult QuestionAbortRetryIgnore(this IMessageBase self, string titel, string message, bool withSound = false)
+        {
+            MessageBoxResult result = self.ShowMessage(titel, message, MessageBoxButton.AbortRetryIgnore, MessageBoxImage.Hand, MessageBoxResult.None);
             return result;
         }
 

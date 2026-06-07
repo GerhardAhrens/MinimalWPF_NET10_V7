@@ -39,6 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Beispiele\Factory\MessageUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Beispiele\Factory\DialogServiceUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Beispiele\Factory\NeuUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

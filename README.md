@@ -295,11 +295,15 @@ LoginWindow logWindow = Factory.Get<LoginWindow, WindowId>(WindowId.Login);
 SingletonClass normalClass = Factory.Get<SingletonClass, NormalClassId>(NormalClassId.SingletonClass);
 ```
 ## MessageBox Erweiterung
-Die MessageBox-Erweiterung bietet eine Fluent API zur Anzeige von MessageBoxen in der WPF-Anwendung. Sie ermöglicht es, verschiedene Optionen wie Titel, Text, Schaltflächen und Symbole auf einfache und lesbare Weise zu konfigurieren.
+Die MessageBox wurde um einen Basisklasse `MessageBase` als Wrapper erweitert. So ist es nun möglich die MasseBox über Extension-Methoden anzusprechen. Auf diese Weise, können alle Meldungen in einer zentralen Klasse verwaltet werden.
 
-Erstellen einer Instanz der MessageBox-Erweiterung. Diese Instanz muß immer in einem UserControl oder Window erstellt werden, da die Erweiterungsmethoden auf dem `IMessageBase`-Interface definiert sind, das von der `MessageBase`-Klasse implementiert wird.
+Erstellen einer Instanz für die MessageBox-Erweiterung. Diese Instanz muß immer in einem UserControl oder Window erstellt werden, da die Erweiterungsmethoden auf dem `IMessageBase`-Interface definiert sind, das von der `MessageBase`-Klasse implementiert wird.\
+Die `MessageBase`-Klasse kann aber auch einmal in der App.cs definiert werden. So steht die Instant in der gesamten Anwendung zur Verfügung.
 ```csharp
+/* im jeweiligen Window oder UserControl */
 private MessageBase Message { get; } = new MessageBase();
+/* global in der App.cs für die gesamte Anwendung */
+public MessageBase Message { get; } = new MessageBase();
 ```
 
 ```csharp

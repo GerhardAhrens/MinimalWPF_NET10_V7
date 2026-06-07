@@ -124,12 +124,40 @@
             }
         }
 
-        private void OnShowMessage(object commandParam)
+        private async void OnShowMessage(object commandParam)
         {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ShowMessage)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.MenuButton = button;
+                    args.FromPage = CommandButtons.Home;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
         }
 
-        private void OnShowDialogService(object commandParam)
+        private async void OnShowDialogService(object commandParam)
         {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ShowDialogService)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.MenuButton = button;
+                    args.FromPage = CommandButtons.Home;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
         }
 
         #endregion Command Events
