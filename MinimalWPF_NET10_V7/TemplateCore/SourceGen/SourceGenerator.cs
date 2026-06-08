@@ -5,6 +5,7 @@
     using System.Windows.Resources;
     using System.Collections.Specialized;
     using System.Globalization;
+    using System.ComponentModel;
 
     internal static class SourceGenerator
     {
@@ -162,5 +163,25 @@
             public string Placeholder { get; set; }
             public string Value { get; set; }
         }
+    }
+
+    public enum ClassTypes
+    {
+        [Description("Keine Auswahl")]
+        None = 0,
+        [Description("Erstelle UserControl Class mit .xaml und .xaml.cs Datei")]
+        UserControlClass = 1,
+        [Description("Erstellet eine Window Class mit .xaml und .xaml.cs Datei")]
+        WindowClass = 2,
+        [Description("Erstellen einer 'enum class'")]
+        EnumClass = 3,
+        [Description("Erstellen einer 'public class'")]
+        PublicClass = 4,
+        [Description("Erstellen einer 'public static class'")]
+        StaticPublicClass = 5,
+        [Description("Erstellen einer 'public static class' die für Extenstion verwendet wird")]
+        PublicExtensionClass = 6,
+        [Description("Erstellen einer 'public disposable class'")]
+        PublicDisposableClass = 7,
     }
 }
