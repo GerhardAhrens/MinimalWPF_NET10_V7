@@ -88,11 +88,15 @@
             </GroupBox.Header>
             <!--  Inhalt der GroupBox  -->
             <StackPanel VerticalAlignment="Top" Orientation="Vertical">
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <TextBlock FontSize="13" VerticalAlignment="Center" Text="Name der Klasse:" />
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        Text="Name der Klasse:" />
                     <TextBox
-                        x:Name="txtClassName" Height="20"
+                        x:Name="txtClassName"
                         Width="200"
+                        Height="20"
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Text="{Binding Path=ClassName, UpdateSourceTrigger=PropertyChanged}" />
@@ -102,13 +106,28 @@
                     Height="30"
                     Command="{Binding Path=ShowSourceGenCommand}"
                     CommandParameter="Gen_1"
-                    Content="Erstelle UserControl aus Resource => Name: NewUserControl" />
+                    Content="Erstelle UserControl Klasse mit .xaml und .xaml.cs Datei aus Resource" />
 
                 <Button
-                    Height="30" Margin="0,5,0,0"
+                    Height="30"
+                    Margin="0,5,0,0"
                     Command="{Binding Path=ShowSourceGenCommand}"
                     CommandParameter="Gen_2"
-                    Content="Erstelle Window aus Resource => Name: NewWindow" />
+                    Content="Erstellet eine Window Klasse mit .xaml und .xaml.cs Datei aus Resource" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=ShowSourceGenCommand}"
+                    CommandParameter="Gen_3"
+                    Content="Erstellen einer Enum-Klasse aus Resource" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=ShowSourceGenCommand}"
+                    CommandParameter="Gen_4"
+                    Content="Erstellen einer Public Klasse aus Resource" />
             </StackPanel>
         </GroupBox>
     </Grid>

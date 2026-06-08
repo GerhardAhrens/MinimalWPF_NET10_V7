@@ -23,6 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Source\NeuEnum.cs.source" />
+    <None Remove="Resources\Source\NeuPublicClass.cs.source" />
     <None Remove="Resources\Source\NeuUC.xaml.cs.source" />
     <None Remove="Resources\Source\NeuUC.xaml.source" />
     <None Remove="Resources\Source\NeuWindow.xaml.cs.source" />
@@ -34,6 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Source\NeuEnum.cs.source" />
+    <Resource Include="Resources\Source\NeuPublicClass.cs.source" />
     <Resource Include="Resources\Source\NeuUC.xaml.cs.source" />
     <Resource Include="Resources\Source\NeuUC.xaml.source" />
   </ItemGroup>
