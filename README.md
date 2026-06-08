@@ -14,6 +14,7 @@ Hauptaufgabe des Templates ist es, eine solide Basis für die Entwicklung von WP
 
 # Inhaltsverzeichnis
 1. [Installation](#installation)
+1. [Verwendung](#verwendung)
 1. [Features des Template](#features-des-template)
 1. [WindowBase](#windowbase)
 1. [Windows Titel Icon](#windows-titel-icon)
@@ -32,6 +33,13 @@ Hauptaufgabe des Templates ist es, eine solide Basis für die Entwicklung von WP
 Die Verwendung des Template ist recht einfach, da dieses nur in ein Verzeichnis kopiert werden muss, damit es in Visual Studio als Vorlage zur Verfügung steht. 
 
 `c:\_Documents\Visual Studio 18\Templates\ProjectTemplates\Visual C#\`
+
+# Verwendung
+nach der Installation stehen zwei Template Varianten zur Verfügung.
+- MinimalWPF: Ein einfaches WPF Projekt Template mit den grundlegenden Funktionen.
+- MinimalWPF SPA: Ein WPF Projekt Template mit Single Page Application Struktur.
+
+Grundsätztlich sind in beiden Template die gleichen Klassen und Funktionen enthalten, jedoch ist die SPA Variante bereits mit einer Navigation und einer Seitenstruktur ausgestattet, die es ermöglicht, mehrere Seiten innerhalb der Anwendung zu erstellen und zu navigieren. Dazu kommt die [Factory Pattern](#factory-pattern) und der [Event Aggregator](#event-aggregator) zum Einsatz.
 
 # Features des Template
 - Inside MVVM (durch WindowsBase Klasse)
