@@ -1,21 +1,19 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="[[ClassName]].cs" company="Lifeprojects.de">
+// <copyright file="[[ClassName]].cs" company="$Firma$">
 //     Class: [[ClassName]]
-//     Copyright © Lifeprojects.de 2026
+//     Copyright © $Firma$ $year$
 // </copyright>
 //
-// <author>2026 - Lifeprojects.de</author>
-// <email>developer@lifeprojects.de</email>
-// <date>06.06.2026</date>
+// <author>$Name$ - $Firma$</author>
+// <email>$email$</email>
+// <date>$date$</date>
 //
 // <summary>
-// Template für eine neue UserControl, die über die Factory erstellt wird. Sie enthält einen GoBackCommand,
-// der es ermöglicht, zur vorherigen Ansicht zurückzukehren. Beim Laden der UserControl werden
-// Status- und WindowsTitel-Events veröffentlicht, um den aktuellen Status und Titel der Anwendung zu aktualisieren.
+// Template für eine neues UserControl
 // </summary>
 //-----------------------------------------------------------------------
 
-namespace [[NamenspaceName]]
+namespace [[RootNamespace]]
 {
     using System.Windows;
     using System.Windows.Controls;
@@ -37,7 +35,6 @@ namespace [[NamenspaceName]]
 
             this.DataContext = this;
         }
-
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }

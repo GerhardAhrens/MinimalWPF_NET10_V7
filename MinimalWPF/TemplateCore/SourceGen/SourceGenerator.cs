@@ -4,7 +4,6 @@
     using System.IO;
     using System.Windows.Resources;
     using System.Collections.Specialized;
-    using System.Globalization;
 
     internal static class SourceGenerator
     {
@@ -68,16 +67,6 @@
                 StreamResourceInfo sri = Application.GetResourceStream(uriCS);
                 using StreamReader reader = new StreamReader(sri.Stream);
                 outCodeCS = reader.ReadToEnd();
-
-                if (outCodeCS.Contains("$year$", StringComparison.OrdinalIgnoreCase) == true)
-                {
-                    outCodeCS = outCodeCS.Replace("$year$", DateTime.Now.Year.ToString(CultureInfo.CurrentCulture), StringComparison.OrdinalIgnoreCase);
-                }
-
-                if (outCodeCS.Contains("$date$", StringComparison.OrdinalIgnoreCase) == true)
-                {
-                    outCodeCS = outCodeCS.Replace("$date$", DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.CurrentCulture), StringComparison.OrdinalIgnoreCase);
-                }
             }
 
             uriXAML = new Uri($"pack://application:,,,/Resources/Source/{className}.xaml.source", UriKind.Absolute);

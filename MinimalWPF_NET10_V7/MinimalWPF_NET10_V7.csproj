@@ -25,6 +25,8 @@
   <ItemGroup>
     <None Remove="Resources\Source\NeuUC.xaml.cs.source" />
     <None Remove="Resources\Source\NeuUC.xaml.source" />
+    <None Remove="Resources\Source\NeuWindow.xaml.cs.source" />
+    <None Remove="Resources\Source\NeuWindow.xaml.source" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +41,8 @@
   <ItemGroup>
     <Resource Include="Resources\Picture\ApplicationIcon.ico" />
     <Resource Include="Resources\Picture\ApplicationIcon.png" />
+    <Resource Include="Resources\Source\NeuWindow.xaml.cs.source" />
+    <Resource Include="Resources\Source\NeuWindow.xaml.source" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,7 +59,13 @@
     <Compile Update="Beispiele\Factory\DialogServiceUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Beispiele\Factory\SourceGenUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Beispiele\Factory\NeuUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Resources\Source\DialogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

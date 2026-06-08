@@ -19,6 +19,7 @@
             this.ShowResultCommand = new CommandBase(commandParam => this.OnShowResult(commandParam), () => true);
             this.ShowMessageCommand = new CommandBase(commandParam => this.OnShowMessage(commandParam), () => true);
             this.ShowDialogServiceCommand = new CommandBase(commandParam => this.OnShowDialogService(commandParam), () => true);
+            this.ShowSourceGenCommand = new CommandBase(commandParam => this.OnShowSourceGen(commandParam), () => true);
 
             this.InformationCommand = new CommandBase(commandParam =>  this.OnPopup(commandParam));
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
@@ -34,6 +35,8 @@
         public CommandBase ShowResultCommand { get; private set; }
         public CommandBase ShowMessageCommand { get; private set; }
         public CommandBase ShowDialogServiceCommand { get; private set; }
+        public CommandBase ShowSourceGenCommand { get; private set; }
+
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
         public CommandBase CloseInformationPopupCommand { get; private set; }
@@ -147,6 +150,24 @@
             if (commandParam != null && commandParam is CommandButtons button)
             {
                 if (button == CommandButtons.ShowDialogService)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.MenuButton = button;
+                    args.FromPage = CommandButtons.Home;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
+
+        private async void OnShowSourceGen(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ShowSourceGen)
                 {
                     ChangeViewEventArgs args = new();
                     args.MenuButton = button;

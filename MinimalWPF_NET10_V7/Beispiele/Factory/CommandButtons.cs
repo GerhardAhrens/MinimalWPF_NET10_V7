@@ -20,6 +20,8 @@
         ShowMessage = 6,
         [Description("Demo zur DialogService Klasse")]
         ShowDialogService = 7,
+        [Description("Demo zur SourceGen Klasse")]
+        ShowSourceGen = 8,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

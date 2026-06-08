@@ -1,16 +1,30 @@
-﻿namespace MinimalWPF.Beispiele
+﻿//-----------------------------------------------------------------------
+// <copyright file="SourceGenUC.cs" company="Lifeprojects.de">
+//     Class: SourceGenUC
+//     Copyright © Lifeprojects.de 2026
+// </copyright>
+//
+// <author>2026 - Lifeprojects.de</author>
+// <email>developer@lifeprojects.de</email>
+// <date>08.06.2026</date>
+//
+// <summary>
+// Source Generator für eine neue UserControl, Window oder Klassen die in den resource abgelegt sind.
+// </summary>
+//-----------------------------------------------------------------------
+
+namespace MinimalWPF.Beispiele
 {
     using System.Windows;
     using System.Windows.Controls;
-    using System.Linq;
 
     /// <summary>
-    /// Interaktionslogik für ResultUC.xaml
+    /// Interaktionslogik für SourceGenUC.xaml
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>")]
-    public partial class ResultUC : UserControlBase
+    public partial class SourceGenUC : UserControlBase
     {
-        public ResultUC(ChangeViewEventArgs args) : base(typeof(ResultUC))
+        public SourceGenUC(ChangeViewEventArgs args) : base(typeof(SourceGenUC))
 
         {
             this.InitializeComponent();
@@ -19,23 +33,23 @@
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
-            this.CheckInputCommand = new CommandBase(commandParam => this.OnCheckInput(commandParam), () => true);
+            this.ShowSourceGenCommand = new CommandBase(commandParam => this.OnShowSourceGen(commandParam), () => true);
 
             this.DataContext = this;
         }
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
-        public CommandBase CheckInputCommand { get; private set; }
+        public CommandBase ShowSourceGenCommand { get; private set; }
 
-        public string InputValue
+        public string ClassName
         {
             get => base.GetValue<string>();
             set => base.SetValue(value);
         }
 
-        private MessageBase Message { get; } = new MessageBase();
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
+        private MessageBase Message { get; } = new MessageBase();
 
         #endregion Properties
 
@@ -68,16 +82,25 @@
             }
         }
 
-        private void OnCheckInput(object commandParam)
+        private void OnShowSourceGen(object commandParam)
         {
-            Result<long> numberMixLong = Parsing.ParseLong(this.InputValue);
-            if (numberMixLong.IsSuccess == true)
+            // Handle the ShowSourceGen command
+
+            if (string.IsNullOrEmpty(this.ClassName) == true)
             {
-                this.Message.Hinweis("Erfolgreich",$"Erfolgreich geparst: {numberMixLong.Value}");
+                this.Message.Hinweis("Fehler", "Bitte geben Sie einen Klassennamen ein.");
+                return;
             }
-            else
+
+            if (commandParam != null && commandParam.Equals("Gen_1") == true)
             {
-                this.Message.Hinweis("Fehler",$"Fehler beim Parsen: {numberMixLong.FailMessage}");
+                SourceGenerator.CreateSourceFile("NeuUC", ClassName);
+                this.Message.Hinweis("SourceGen","Source Generator wurde ausgeführt. Die erstellte Dateien können über die Zwischenablage eingefügt werden.");
+            }
+            else if (commandParam != null && commandParam.Equals("Gen_2") == true)
+            {
+                SourceGenerator.CreateSourceFile("NeuWindow", ClassName);
+                this.Message.Hinweis("SourceGen", "Source Generator wurde ausgeführt. Die erstellte Dateien können über die Zwischenablage eingefügt werden.");
             }
         }
 
