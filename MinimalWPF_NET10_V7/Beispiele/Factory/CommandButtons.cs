@@ -22,6 +22,8 @@
         ShowDialogService = 7,
         [Description("Demo zur SourceGen Klasse")]
         ShowSourceGen = 8,
+        [Description("Demo zu Localization von Texten")]
+        Localization = 9,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]
