@@ -24,6 +24,8 @@
         ShowSourceGen = 8,
         [Description("Demo zu Localization von Texten")]
         Localization = 9,
+        [Description("Demo zum Event Aggregator")]
+        ShowEventAggregator = 10,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

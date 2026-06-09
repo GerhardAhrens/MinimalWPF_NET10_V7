@@ -175,6 +175,18 @@
                     Margin="5,0,0,0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
+                    Command="{Binding Path=ShowEventAggregatorCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowEventAggregator}"
+                    ToolTip="Beispiel Event Aggregator">
+                    <Image Source="{StaticResource ResourceKey=IconEventAggregator}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
                     Command="{Binding Path=ShowSourceGenCommand}"
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowSourceGen}"
                     ToolTip="Source Code Generator">

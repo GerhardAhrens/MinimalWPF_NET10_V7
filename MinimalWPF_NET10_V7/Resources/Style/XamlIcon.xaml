@@ -11,6 +11,48 @@
     <!--#endregion XAML Icon Quelle-->
 
     <!--#region Farbige Icon Symbole auf Basis von DrawingImage-->
+    <DrawingImage x:Key="IconEventAggregator">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF2196F3">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="12" RadiusY="12" Center="32,32" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#00FFFFFF">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF90CAF9" Thickness="2" />
+                        </GeometryDrawing.Pen>
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="20" RadiusY="20" Center="32,32" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FF4CAF50">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <GeometryGroup.Children>
+                                    <PathGeometry Figures="M12,12L24,24 18,24 18,28 8,18z" />
+                                    <PathGeometry Figures="M12,52L24,40 18,40 18,36 8,46z" />
+                                </GeometryGroup.Children>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFF44336">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <GeometryGroup.Children>
+                                    <PathGeometry Figures="M52,12L40,24 46,24 46,28 56,18z" />
+                                    <PathGeometry Figures="M52,52L40,40 46,40 46,36 56,46z" />
+                                </GeometryGroup.Children>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
     <DrawingImage x:Key="IconWorld">
         <DrawingImage.Drawing>
             <DrawingGroup>

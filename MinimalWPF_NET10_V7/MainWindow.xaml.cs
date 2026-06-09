@@ -187,7 +187,7 @@ namespace MinimalWPF
                         this.OnQuit();
                     }
                     else if (button.In(CommandButtons.Home, CommandButtons.GoBack, CommandButtons.ShowResult, CommandButtons.ShowMessage, 
-                        CommandButtons.ShowDialogService, CommandButtons.ShowSourceGen, CommandButtons.Localization))
+                        CommandButtons.ShowDialogService, CommandButtons.ShowSourceGen, CommandButtons.Localization, CommandButtons.ShowEventAggregator))
                     {
 
                         if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
@@ -218,6 +218,7 @@ namespace MinimalWPF
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowDialogService, (param) => new DialogServiceUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowSourceGen, (param) => new SourceGenUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Localization, (param) => new LocalizationUC((ChangeViewEventArgs)param!));
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowEventAggregator, (param) => new EventAggregatorUC((ChangeViewEventArgs)param!));
         }
     }
 }

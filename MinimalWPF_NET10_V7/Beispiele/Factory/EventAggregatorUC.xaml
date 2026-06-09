@@ -1,0 +1,112 @@
+<base:UserControlBase
+    x:Class="MinimalWPF.Beispiel.EventAggregatorUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:System.Windows"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MinimalWPF.Beispiel"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid
+        x:Name="gridMain"
+        Background="WhiteSmoke"
+        ColumnDefinitions="*"
+        RowDefinitions="Auto,Auto,*">
+
+        <!--#region Hauptmenübar-->
+        <GroupBox
+            x:Name="MainMenubar"
+            Grid.Row="0"
+            Margin="5"
+            Padding="5">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <Border
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <DockPanel Grid.Row="0" Grid.Column="0">
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=GoBackCommand}"
+                    ToolTip="Zurück">
+                    <Image Source="{StaticResource ResourceKey=IconGoBack}" Stretch="Uniform" />
+                </Button>
+
+            </DockPanel>
+        </GroupBox>
+        <!--#endregion Hauptmenübar-->
+
+        <GroupBox
+            Grid.Row="1"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Erklärung" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <TextBlock FontSize="13" TextWrapping="Wrap">
+                <Run Text="Der Event Aggregator ist für das Zusammenwirken der Kommunikation zwischen Klassen (auch UserControl, Window) in einer WPF Anwendung mit einer losen Koppelung zuständig." />
+                <LineBreak />
+                <Run Text="Im Grunde besteht der Event Aggregator aus zwei Teilen. Einen Subscriber (Empfänger einer Nachricht) und einen Publisher (Sender einer Nachricht). Wobei einen Nachricht ein beliebiges Objekt sein kann." />
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="2"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Beispiel" />
+                </StackPanel>
+            </GroupBox.Header>
+            <UniformGrid
+                VerticalAlignment="Top"
+                Columns="3"
+                Rows="2">
+                <TextBlock Height="20" Text="Eingabe für Windowstitel" />
+                <TextBox Height="20" Text="{Binding Path=InputTitel}" />
+                <Button
+                    x:Name="SendWT"
+                    Width="150"
+                    Height="30"
+                    Command="{Binding Path=SendWTCommand}"
+                    Content="Send an Windows Titel" />
+
+                <TextBlock Height="20" Text="Eingabe für Statusbar Zeile" />
+                <TextBox Height="20" Text="{Binding Path=InputStatusBar}" />
+                <Button
+                    x:Name="SendSB"
+                    Width="150"
+                    Height="30"
+                    Margin="0,0,0,10"
+                    Command="{Binding Path=SendSBCommand}"
+                    Content="Send an Statusbar Zeile" />
+            </UniformGrid>
+        </GroupBox>
+
+    </Grid>
+</base:UserControlBase>
