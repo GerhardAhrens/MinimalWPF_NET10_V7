@@ -79,5 +79,44 @@
             </TextBlock>
         </GroupBox>
 
+        <GroupBox
+            Grid.Row="2"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Beispiel" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="Keys:" />
+
+                    <ComboBox
+                        x:Name="cbKeys"
+                        Width="200"
+                        Margin="10,0,0,0"
+                        ItemsSource="{Binding Path=LocalizationKeys}"
+                        SelectionChanged="cbKeys_SelectionChanged" />
+
+                    <TextBlock
+                        x:Name="TxtSelectedLocalizationValue"
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding Path=SelectedLocalizationValue, FallbackValue=~SelectedLocalizationValue}" />
+                </StackPanel>
+
+            </StackPanel>
+
+        </GroupBox>
+
     </Grid>
 </base:UserControlBase>

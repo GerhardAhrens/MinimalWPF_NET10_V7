@@ -6,8 +6,11 @@
     <system:String x:Key="WindowsTitelZeile">Minimal WPF Template NET 10; V7</system:String>
     <system:String x:Key="DialogWindowsTitelZeile">Beispiel Dialog Window</system:String>
 
+    <system:String x:Key="TextMit1Parameter">Beispiel Dialog Window ({0})</system:String>
+    <system:String x:Key="TextMit2Parameter">Beispiel Dialog Window ({0}; {1})</system:String>
+
     <system:String x:Key="MessageExit_Titel_DE">Beenden</system:String>
-    <system:String x:Key="MessageExit_Text_DE">Wollen Sie die Anwendung beenden? ({0})</system:String>
+    <system:String x:Key="MessageExit_Text_DE">Wollen Sie die Anwendung beenden?</system:String>
 
     <system:Int32 x:Key="EineZahl">42</system:Int32>
     <system:DateTime x:Key="EinDatum">2026-05-04</system:DateTime>

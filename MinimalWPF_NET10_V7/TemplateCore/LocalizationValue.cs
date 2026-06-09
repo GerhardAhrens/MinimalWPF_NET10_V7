@@ -63,7 +63,7 @@ namespace System.Windows
 
         public static int Count { get { return resourceDict.Count; } }
 
-        public static IEnumerable<string> Keys { get { return resourceDict.Keys.Cast<string>().Select(s => s); } }
+        public static IEnumerable<string> Keys { get { return resourceDict.Keys.Cast<string>().Select(s => s).OrderBy(o => o); } }
 
         public static Dictionary<string, string> KeyValue
         {

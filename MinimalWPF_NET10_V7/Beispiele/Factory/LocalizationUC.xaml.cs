@@ -40,6 +40,19 @@ namespace MinimalWPF.Beispiel
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+
+        public IEnumerable<string> LocalizationKeys
+        {
+            get => base.GetValue<IEnumerable<string>>();
+            set => base.SetValue(value);
+        }
+
+        public string SelectedLocalizationValue
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
 
         #endregion Properties
@@ -51,6 +64,19 @@ namespace MinimalWPF.Beispiel
             if (App.EventAgg.IsSubscription<StatusEvent>() == true)
             {
                 await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
+            }
+
+            this.LocalizationKeys = LocalizationValue.Keys; 
+        }
+
+        private void cbKeys_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb)
+            {
+                object val = ((object[])e.AddedItems)[0];
+                string content = LocalizationValue.Get(val.ToString());
+
+                this.SelectedLocalizationValue = LocalizationValue.Get(val.ToString(), "zusätzlicher Parameter", "und einem zweiten Parameter");
             }
         }
         #endregion Windows Events
@@ -73,6 +99,5 @@ namespace MinimalWPF.Beispiel
             }
         }
         #endregion Command Events
-
     }
 }
