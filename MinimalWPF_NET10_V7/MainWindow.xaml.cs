@@ -210,6 +210,9 @@ namespace MinimalWPF
         }
         #endregion Event Aggregator Handler
 
+        /// <summary>
+        /// Dialog aus UserControls werden hier für die Factory registriert 😊
+        /// </summary>
         private void RegisterFactory()
         {
             Factory.RegisterSingleton<CommandButtons>(CommandButtons.Home, () => new HelloUC());

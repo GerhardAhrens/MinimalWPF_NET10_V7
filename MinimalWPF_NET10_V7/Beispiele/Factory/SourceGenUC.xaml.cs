@@ -112,6 +112,16 @@ namespace MinimalWPF.Beispiele
                 SourceGenerator.CreateSourceFile("NeuPublicClass", ClassName);
                 this.Message.Hinweis("SourceGen", "Source Generator wurde ausgeführt. Die erstellte Dateien können über die Zwischenablage eingefügt werden.");
             }
+            else if (commandParam != null && commandParam.Equals("Gen_5") == true)
+            {
+                SourceGenerator.CreateSourceFile("NeuStaticExtensionBlock", ClassName);
+                this.Message.Hinweis("SourceGen", "Source Generator wurde ausgeführt. Die erstellte Dateien können über die Zwischenablage eingefügt werden.");
+            }
+            else if (commandParam != null && commandParam.Equals("Gen_6") == true)
+            {
+                SourceGenerator.CreateSourceFile("NeuStaticExtension", ClassName);
+                this.Message.Hinweis("SourceGen", "Source Generator wurde ausgeführt. Die erstellte Dateien können über die Zwischenablage eingefügt werden.");
+            }
         }
 
         #endregion Command Events

@@ -106,28 +106,42 @@
                     Height="30"
                     Command="{Binding Path=ShowSourceGenCommand}"
                     CommandParameter="Gen_1"
-                    Content="Erstelle UserControl Klasse mit .xaml und .xaml.cs Datei aus Resource" />
+                    Content="Erstelle einer UserControl Klasse mit .xaml und .xaml.cs Datei" />
 
                 <Button
                     Height="30"
                     Margin="0,5,0,0"
                     Command="{Binding Path=ShowSourceGenCommand}"
                     CommandParameter="Gen_2"
-                    Content="Erstellet eine Window Klasse mit .xaml und .xaml.cs Datei aus Resource" />
+                    Content="Erstellt einer Window Klasse mit .xaml und .xaml.cs Datei" />
 
                 <Button
                     Height="30"
                     Margin="0,5,0,0"
                     Command="{Binding Path=ShowSourceGenCommand}"
                     CommandParameter="Gen_3"
-                    Content="Erstellen einer Enum-Klasse aus Resource" />
+                    Content="Erstellen einer 'public Enum' -Klasse" />
 
                 <Button
                     Height="30"
                     Margin="0,5,0,0"
                     Command="{Binding Path=ShowSourceGenCommand}"
                     CommandParameter="Gen_4"
-                    Content="Erstellen einer Public Klasse aus Resource" />
+                    Content="Erstellen einer 'public class'" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=ShowSourceGenCommand}"
+                    CommandParameter="Gen_5"
+                    Content="Erstellen einer 'public static class' für Extension (statische Typen)" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=ShowSourceGenCommand}"
+                    CommandParameter="Gen_6"
+                    Content="Erstellen einer 'public static class' für Extension" />
             </StackPanel>
         </GroupBox>
     </Grid>
