@@ -11,6 +11,55 @@
     <!--#endregion XAML Icon Quelle-->
 
     <!--#region Farbige Icon Symbole auf Basis von DrawingImage-->
+    <DrawingImage x:Key="IconFactoryPattern">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF4A90E2">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="M9,7L15,7Q17,7,17,9L17,15Q17,17,15,17L9,17Q7,17,7,15L7,9Q7,7,9,7z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <GeometryGroup.Children>
+                                    <EllipseGeometry RadiusX="2" RadiusY="2" Center="12,12" />
+                                    <RectangleGeometry Rect="11.5,7.8,1,2" />
+                                    <RectangleGeometry Rect="11.5,14.2,1,2" />
+                                    <RectangleGeometry Rect="14.2,11.5,2,1" />
+                                    <RectangleGeometry Rect="7.8,11.5,2,1" />
+                                </GeometryGroup.Children>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FF7FB3FF">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <GeometryGroup.Children>
+                                    <RectangleGeometry Rect="17,11.3,3,1.4" />
+                                    <RectangleGeometry Rect="4,11.3,3,1.4" />
+                                    <RectangleGeometry Rect="11.3,17,1.4,3" />
+                                </GeometryGroup.Children>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFBFD9FF">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <GeometryGroup.Children>
+                                    <EllipseGeometry RadiusX="1.8" RadiusY="1.8" Center="22,12" />
+                                    <EllipseGeometry RadiusX="1.8" RadiusY="1.8" Center="2,12" />
+                                    <EllipseGeometry RadiusX="1.8" RadiusY="1.8" Center="12,22" />
+                                </GeometryGroup.Children>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
     <DrawingImage x:Key="IconEventAggregator">
         <DrawingImage.Drawing>
             <DrawingGroup>

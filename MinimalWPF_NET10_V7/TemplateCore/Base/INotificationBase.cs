@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IMessageBase.cs" company="Lifeprojects.de">
-//     Class: IMessageBase
+// <copyright file="INotificationBase.cs" company="Lifeprojects.de">
+//     Class: INotificationBase
 //     Copyright © Lifeprojects.de 2026
 // </copyright>
 //
@@ -15,10 +15,7 @@
 
 namespace System.Windows
 {
-    public interface IMessageBase
+    public interface INotificationBase
     {
-        MessageBoxResult ShowMessage(string titel, string message, MessageBoxButton mboxButton, MessageBoxImage icon, MessageBoxResult defaultResult);
-        MessageBoxResult ShowMessage(string titel, string message, bool withSound = false);
-        MessageBoxResult ShowMessage(string titel, string message);
     }
 }

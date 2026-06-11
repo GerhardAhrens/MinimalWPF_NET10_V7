@@ -26,6 +26,8 @@
         Localization = 9,
         [Description("Demo zum Event Aggregator")]
         ShowEventAggregator = 10,
+        [Description("Demo zum Factory Pattern")]
+        ShowFactoryPattern = 11,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

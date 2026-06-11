@@ -1,12 +1,12 @@
 //-----------------------------------------------------------------------
-// <copyright file="EventAggregatorUC.cs" company="Lifeprojects.de">
-//     Class: EventAggregatorUC
+// <copyright file="FactoryUC.cs" company="Lifeprojects.de">
+//     Class: FactoryUC
 //     Copyright © Lifeprojects.de 2026
 // </copyright>
 //
 // <author>Gerhard Ahrens - Lifeprojects.de</author>
 // <email>developer@lifeprojects.de</email>
-// <date>09.06.2026</date>
+// <date>11.06.2026</date>
 //
 // <summary>
 // Template für eine neues UserControl
@@ -21,11 +21,11 @@ namespace MinimalWPF.Beispiel
     using MinimalWPF.Beispiele;
 
     /// <summary>
-    /// Interaktionslogik für EventAggregatorUC.xaml
+    /// Interaktionslogik für FactoryUC.xaml
     /// </summary>
-    public partial class EventAggregatorUC : UserControlBase
+    public partial class FactoryUC : UserControlBase
     {
-        public EventAggregatorUC(ChangeViewEventArgs args) : base(typeof(EventAggregatorUC))
+        public FactoryUC(ChangeViewEventArgs args) : base(typeof(FactoryUC))
 
         {
             this.InitializeComponent();
@@ -34,41 +34,12 @@ namespace MinimalWPF.Beispiel
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
-            this.SendWTCommand = new CommandBase(commandParam => this.OnChangeWT(commandParam), () => true);
-            this.SendSBCommand = new CommandBase(commandParam => this.OnChangeSB(commandParam), () => true);
 
             this.DataContext = this;
         }
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
-        public CommandBase SendWTCommand { get; private set; }
-        public CommandBase SendSBCommand { get; private set; }
-
-        public string InputTitel
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string InputStatusBar
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string EventAggregatorName
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public int CountEventAggregator
-        {
-            get => base.GetValue<int>();
-            set => base.SetValue(value);
-        }
-
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
 
         #endregion Properties
@@ -81,9 +52,6 @@ namespace MinimalWPF.Beispiel
             {
                 await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
             }
-
-            this.EventAggregatorName = string.Join("; ", App.EventAgg.Names);
-            this.CountEventAggregator = App.EventAgg.Count;
         }
         #endregion Windows Events
 
@@ -104,23 +72,6 @@ namespace MinimalWPF.Beispiel
                 }
             }
         }
-
-        private async void OnChangeSB(object commandParam)
-        {
-            if (App.EventAgg.IsSubscription<StatusEvent>() == true)
-            {
-                await App.EventAgg.PublishAsync(new StatusEvent(this.InputStatusBar));
-            }
-        }
-
-        private async void OnChangeWT(object commandParam)
-        {
-            if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
-            {
-                await App.EventAgg.PublishAsync(new WindowsTitelEvent(this.InputTitel));
-            }
-        }
-
         #endregion Command Events
 
     }
