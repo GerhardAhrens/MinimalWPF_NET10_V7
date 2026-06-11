@@ -53,7 +53,7 @@
 
         private void ShowMessageBoxSTA()
         {
-            var msg = new NotificationBoxView(this.Message, this.Caption, this.Buttons, this.Image);
+            var msg = new NotificationBoxView(this.Caption, this.Message, this.Buttons, this.Image);
 
             msg.YesButtonText = this.YesButtonCaption ?? msg.YesButtonText;
             msg.NoButtonText = this.NoButtonCaption ?? msg.NoButtonText;

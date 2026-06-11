@@ -14,7 +14,7 @@
 
         #region Constructor
 
-        internal NotificationBoxView(string message, string caption, MessageBoxButton button, MessageBoxImage image)
+        internal NotificationBoxView(string caption, string message, MessageBoxButton button, MessageBoxImage image)
         {
             this.InitializeComponent();
 

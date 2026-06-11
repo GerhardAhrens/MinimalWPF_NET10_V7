@@ -24,6 +24,12 @@ namespace System.Windows
             return result;
         }
 
+        public static MessageBoxResult Hinweis(this INotificationBase self, string titel, string message)
+        {
+            MessageBoxResult result = self.Show(titel, message);
+            return result;
+        }
+
         public static MessageBoxResult Question(this INotificationBase self, string titel, string message)
         {
             MessageBoxResult result = self.ShowYesNo(titel, message,"Ja","Nein");

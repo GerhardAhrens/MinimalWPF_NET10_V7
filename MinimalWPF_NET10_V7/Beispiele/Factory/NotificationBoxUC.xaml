@@ -14,7 +14,7 @@
         x:Name="gridMain"
         Background="WhiteSmoke"
         ColumnDefinitions="*"
-        RowDefinitions="Auto,*">
+        RowDefinitions="Auto,Auto,*">
 
         <!--#region Hauptmenübar-->
         <GroupBox
@@ -51,5 +51,130 @@
         </GroupBox>
 
         <!--#endregion Hauptmenübar-->
+
+        <GroupBox
+            Grid.Row="1"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Erklärung" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <TextBlock FontSize="13" TextWrapping="Wrap">
+                <Run Text="Die NotificationBoxView wurde um einen Basisklasse" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="NotificationBase" />
+                <Run Text="als Wrapper erweitert. So ist es nun möglich die NotificationBox über Extension-Methoden anzusprechen. Auf diese Weise, können alle Meldungen in einer zentralen Klasse verwaltet werden." />
+                <LineBreak />
+                <Run
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Text="Beispiel:" />
+                <Run FontSize="14" Text="MessageBoxResult msgYN = " />
+                <Run
+                    FontSize="14"
+                    Foreground="SteelBlue"
+                    Text="this." />
+                <Run FontSize="14" Text="Notification." />
+                <Run
+                    FontSize="14"
+                    Foreground="Red"
+                    Text="AppExitMessage();" />
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="2"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Beispiel" />
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Windows Default MessageBox" />
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="Custom NotificationBox" />
+                <Line
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    VerticalAlignment="Center"
+                    Stretch="Fill"
+                    Stroke="Black"
+                    StrokeThickness="2"
+                    X1="0"
+                    X2="1"
+                    Y1="0"
+                    Y2="0" />
+
+                <Border
+                    Grid.Row="0"
+                    Grid.RowSpan="9"
+                    Grid.Column="0"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,2,0" />
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Width="250"
+                    Margin="0,10,0,0"
+                    Command="{Binding Path=DefaultMessageBoxOKCommand}"
+                    CommandParameter="OK"
+                    Content="MessageBox 'OK'" />
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Width="250"
+                    Height="30"
+                    Margin="0,10,0,0"
+                    Command="{Binding Path=CustomMessageBoxOKCommand}"
+                    CommandParameter="OK"
+                    Content="MessageBox 'OK'" />
+
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Width="250"
+                    Height="30"
+                    Margin="0,10,0,0"
+                    Command="{Binding Path=DefaultMessageBoxOKCommand}"
+                    CommandParameter="YES_NO"
+                    Content="MessageBox Question (Yes/No)" />
+
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="250"
+                    Height="30"
+                    Margin="0,10,0,0"
+                    Command="{Binding Path=CustomMessageBoxOKCommand}"
+                    CommandParameter="YES_NO"
+                    Content="MessageBox Question (Yes/No)" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </base:UserControlBase>

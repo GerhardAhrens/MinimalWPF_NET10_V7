@@ -79,7 +79,6 @@ namespace MinimalWPF
             set { base.SetValue(value); }
         }
 
-        private NotificationBase Notification { get;  } = new NotificationBase();
         private MessageBase Message { get; } = new MessageBase();
 
         #endregion Properties

@@ -71,7 +71,7 @@
                     Background="LightGray"
                     Foreground="Black"
                     Text="MessageBase" />
-                <Run Text="als Wrapper erweitert. So ist es nun möglich die MasseBox über Extension-Methoden anzusprechen. Auf diese Weise, können alle Meldungen in einer zentralen Klasse verwaltet werden." />
+                <Run Text="als Wrapper erweitert. So ist es nun möglich die MessageBox über Extension-Methoden anzusprechen. Auf diese Weise, können alle Meldungen in einer zentralen Klasse verwaltet werden." />
                 <LineBreak />
                 <Run
                     FontSize="14"

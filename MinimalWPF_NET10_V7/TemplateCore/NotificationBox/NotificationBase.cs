@@ -27,18 +27,20 @@ namespace System.Windows
         {
             var msgData = new MessageBoxData()
             {
-                Message = messageBoxText
+                Message = messageBoxText,
+                Image = MessageBoxImage.Information
             };
 
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult Show(string messageBoxText, string caption)
+        public MessageBoxResult Show(string caption, string messageBoxText)
         {
             var msgData = new MessageBoxData()
             {
                 Message = messageBoxText,
-                Caption = caption
+                Caption = caption,
+                Image = MessageBoxImage.Information
             };
 
             return msgData.ShowMessageBox();
@@ -49,37 +51,40 @@ namespace System.Windows
             var msgData = new MessageBoxData()
             {
                 Message = messageBoxText,
-                Owner = owner
+                Owner = owner,
+                Image = MessageBoxImage.Information
             };
 
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult Show(Window owner, string messageBoxText, string caption)
+        public MessageBoxResult Show(Window owner, string caption, string messageBoxText)
         {
             var msgData = new MessageBoxData()
             {
                 Message = messageBoxText,
                 Caption = caption,
-                Owner = owner
+                Owner = owner,
+                Image = MessageBoxImage.Information
             };
 
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button)
+        public MessageBoxResult Show(string caption, string messageBoxText, MessageBoxButton button)
         {
             var msgData = new MessageBoxData()
             {
                 Message = messageBoxText,
                 Caption = caption,
-                Buttons = button
+                Buttons = button,
+                Image = MessageBoxImage.Information
             };
 
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
+        public MessageBoxResult Show(string caption,string messageBoxText, MessageBoxButton button, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
@@ -92,20 +97,21 @@ namespace System.Windows
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult ShowOK(string messageBoxText, string caption, string okButtonText)
+        public MessageBoxResult ShowOK(string caption,string messageBoxText, string okButtonText)
         {
             var msgData = new MessageBoxData()
             {
                 Message = messageBoxText,
                 Caption = caption,
                 Buttons = MessageBoxButton.YesNoCancel,
-                OkButtonCaption = okButtonText
+                OkButtonCaption = okButtonText,
+                Image = MessageBoxImage.Information
             };
 
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult ShowOK(string messageBoxText, string caption, string okButtonText, MessageBoxImage icon)
+        public MessageBoxResult ShowOK(string caption,string messageBoxText, string okButtonText, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
@@ -119,7 +125,7 @@ namespace System.Windows
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult ShowOKCancel(string messageBoxText, string caption, string okButtonText, string cancelButtonText)
+        public MessageBoxResult ShowOKCancel(string caption,string messageBoxText, string okButtonText, string cancelButtonText)
         {
             var msgData = new MessageBoxData()
             {
@@ -127,13 +133,14 @@ namespace System.Windows
                 Caption = caption,
                 Buttons = MessageBoxButton.OKCancel,
                 OkButtonCaption = okButtonText,
-                CancelButtonCaption = cancelButtonText
+                CancelButtonCaption = cancelButtonText,
+                Image = MessageBoxImage.Question
             };
 
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult ShowOKCancel(string messageBoxText, string caption, string okButtonText, string cancelButtonText, MessageBoxImage icon)
+        public MessageBoxResult ShowOKCancel(string caption,string messageBoxText, string okButtonText, string cancelButtonText, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
@@ -148,7 +155,7 @@ namespace System.Windows
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult ShowYesNo(string messageBoxText, string caption, string yesButtonText, string noButtonText)
+        public MessageBoxResult ShowYesNo(string caption,string messageBoxText, string yesButtonText, string noButtonText)
         {
             var msgData = new MessageBoxData()
             {
@@ -156,13 +163,14 @@ namespace System.Windows
                 Caption = caption,
                 Buttons = MessageBoxButton.YesNo,
                 YesButtonCaption = yesButtonText,
-                NoButtonCaption = noButtonText
+                NoButtonCaption = noButtonText,
+                Image = MessageBoxImage.Question
             };
 
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult ShowYesNo(string messageBoxText, string caption, string yesButtonText, string noButtonText, MessageBoxImage icon)
+        public MessageBoxResult ShowYesNo(string caption,string messageBoxText, string yesButtonText, string noButtonText, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
@@ -171,13 +179,13 @@ namespace System.Windows
                 Buttons = MessageBoxButton.YesNo,
                 Image = icon,
                 YesButtonCaption = yesButtonText,
-                NoButtonCaption = noButtonText
+                NoButtonCaption = noButtonText,
             };
 
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult ShowYesNoCancel(string messageBoxText, string caption, string yesButtonText, string noButtonText, string cancelButtonText)
+        public MessageBoxResult ShowYesNoCancel(string caption,string messageBoxText, string yesButtonText, string noButtonText, string cancelButtonText)
         {
             var msgData = new MessageBoxData()
             {
@@ -192,7 +200,7 @@ namespace System.Windows
             return msgData.ShowMessageBox();
         }
 
-        public MessageBoxResult ShowYesNoCancel(string messageBoxText, string caption, string yesButtonText, string noButtonText, string cancelButtonText, MessageBoxImage icon)
+        public MessageBoxResult ShowYesNoCancel(string caption,string messageBoxText, string yesButtonText, string noButtonText, string cancelButtonText, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {

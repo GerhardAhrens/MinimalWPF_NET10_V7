@@ -30,7 +30,7 @@ namespace System.Windows
         /// <param name="messageBoxText">Ein System.String, der den anzuzeigenden Text angibt.</param>
         /// <param name="caption">Ein System.String, der die anzuzeigende Beschriftung der Titelleiste angibt.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult Show(string messageBoxText, string caption)
+        public static MessageBoxResult Show(string caption,string messageBoxText)
         {
             var msgData = new MessageBoxData()
             {
@@ -65,7 +65,7 @@ namespace System.Windows
         /// <param name="messageBoxText">Ein System.String, der den anzuzeigenden Text angibt.</param>
         /// <param name="caption">Ein System.String, der die anzuzeigende Beschriftung der Titelleiste angibt.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult Show(Window owner, string messageBoxText, string caption)
+        public static MessageBoxResult Show(Window owner, string caption, string messageBoxText)
         {
             var msgData = new MessageBoxData()
             {
@@ -84,7 +84,7 @@ namespace System.Windows
         /// <param name="caption">Ein System.String, der die anzuzeigende Beschriftung der Titelleiste angibt.</param>
         /// <param name="button">Ein Wert für „System.Windows.MessageBoxButton“, der angibt, welche Schaltfläche(n) angezeigt werden soll(en).</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button)
+        public static MessageBoxResult Show(string caption, string messageBoxText,MessageBoxButton button)
         {
             var msgData = new MessageBoxData()
             {
@@ -104,7 +104,7 @@ namespace System.Windows
         /// <param name="button">Ein Wert für „System.Windows.MessageBoxButton“, der angibt, welche Schaltfläche(n) angezeigt werden soll(en).</param>
         /// <param name="icon">Ein System.Windows.MessageBoxImage-Wert, der das anzuzeigende Symbol angibt.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon)
+        public static MessageBoxResult Show(string caption, string messageBoxText, MessageBoxButton button, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
@@ -124,7 +124,7 @@ namespace System.Windows
         /// <param name="caption">Ein System.String, der die anzuzeigende Beschriftung der Titelleiste angibt.</param>
         /// <param name="okButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „OK“ angezeigt werden soll.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult ShowOK(string messageBoxText, string caption, string okButtonText)
+        public static MessageBoxResult ShowOK(string caption, string messageBoxText, string okButtonText)
         {
             var msgData = new MessageBoxData()
             {
@@ -146,7 +146,7 @@ namespace System.Windows
         /// <param name="okButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „OK“ angezeigt werden soll.</param>
         /// <param name="icon">Ein System.Windows.MessageBoxImage-Wert, der das anzuzeigende Symbol angibt.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult ShowOK(string messageBoxText, string caption, string okButtonText, MessageBoxImage icon)
+        public static MessageBoxResult ShowOK(string caption, string messageBoxText, string okButtonText, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
@@ -170,7 +170,7 @@ namespace System.Windows
         /// <param name="okButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „OK“ angezeigt werden soll.</param>
         /// <param name="cancelButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „Abbrechen“ angezeigt werden soll.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult ShowOKCancel(string messageBoxText, string caption, string okButtonText, string cancelButtonText)
+        public static MessageBoxResult ShowOKCancel(string caption, string messageBoxText, string okButtonText, string cancelButtonText)
         {
             var msgData = new MessageBoxData()
             {
@@ -194,7 +194,7 @@ namespace System.Windows
         /// <param name="cancelButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „Abbrechen“ angezeigt werden soll.</param>
         /// <param name="icon">Ein System.Windows.MessageBoxImage-Wert, der das anzuzeigende Symbol angibt.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult ShowOKCancel(string messageBoxText, string caption, string okButtonText, string cancelButtonText, MessageBoxImage icon)
+        public static MessageBoxResult ShowOKCancel(string caption, string messageBoxText, string okButtonText, string cancelButtonText, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
@@ -218,7 +218,7 @@ namespace System.Windows
         /// <param name="yesButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „Ja“ angezeigt werden soll.</param>
         /// <param name="noButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „Nein“ angezeigt werden soll.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult ShowYesNo(string messageBoxText, string caption, string yesButtonText, string noButtonText)
+        public static MessageBoxResult ShowYesNo(string caption, string messageBoxText, string yesButtonText, string noButtonText)
         {
             var msgData = new MessageBoxData()
             {
@@ -242,7 +242,7 @@ namespace System.Windows
         /// <param name="noButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „Nein“ angezeigt werden soll.</param>
         /// <param name="icon">Ein System.Windows.MessageBoxImage-Wert, der das anzuzeigende Symbol angibt.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult ShowYesNo(string messageBoxText, string caption, string yesButtonText, string noButtonText, MessageBoxImage icon)
+        public static MessageBoxResult ShowYesNo(string caption, string messageBoxText, string yesButtonText, string noButtonText, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
@@ -267,7 +267,7 @@ namespace System.Windows
         /// <param name="noButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „Nein“ angezeigt werden soll.</param>
         /// <param name="cancelButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „Abbrechen“ angezeigt werden soll.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult ShowYesNoCancel(string messageBoxText, string caption, string yesButtonText, string noButtonText, string cancelButtonText)
+        public static MessageBoxResult ShowYesNoCancel(string caption, string messageBoxText, string yesButtonText, string noButtonText, string cancelButtonText)
         {
             var msgData = new MessageBoxData()
             {
@@ -293,7 +293,7 @@ namespace System.Windows
         /// <param name="cancelButtonText">Ein System.String, der den Text angibt, der auf der Schaltfläche „Abbrechen“ angezeigt werden soll.</param>
         /// <param name="icon">Ein System.Windows.MessageBoxImage-Wert, der das anzuzeigende Symbol angibt.</param>
         /// <returns>Ein Wert vom Typ „System.Windows.MessageBoxResult“, der angibt, welche Schaltfläche im Meldungsfeld vom Benutzer angeklickt wurde.</returns>
-        public static MessageBoxResult ShowYesNoCancel(string messageBoxText, string caption, string yesButtonText, string noButtonText, string cancelButtonText, MessageBoxImage icon)
+        public static MessageBoxResult ShowYesNoCancel(string caption, string messageBoxText, string yesButtonText, string noButtonText, string cancelButtonText, MessageBoxImage icon)
         {
             var msgData = new MessageBoxData()
             {
