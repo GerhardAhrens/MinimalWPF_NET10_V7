@@ -48,7 +48,6 @@ namespace MinimalWPF
 
         #region Properties
 
-
         public string WindowTitel
         {
             get => base.GetValue<string>();
@@ -90,6 +89,20 @@ namespace MinimalWPF
             App.EventAgg.Subscribe<ChangeViewEventArgs>(async (evt, ct) => this.ChangeControl(evt));
             App.EventAgg.Subscribe<WindowsTitelEvent>(async (evt, ct) => this.OnUpdateWindowTitel(evt));
             App.EventAgg.Subscribe<StatusEvent>(async (evt, ct) => this.OnUpdateStatusBar(evt));
+
+            /*
+            var result = InputBox.Show(this,
+                        new InputBoxOptions<int>
+                        {
+                            Title = "Alter",
+                            Message = "Bitte Alter eingeben",
+                            DefaultValue = 18,
+                            MinInt = 0,
+                            MaxInt = 120
+                        });
+            */
+
+            var result1 = InputBox.Show<string>(this, "Name eingeben");
 
             StatusbarMain.Statusbar.DatabaseInfo = "Keine";
             StatusbarMain.Statusbar.DatabaseInfoTooltip = "Keine Datenbank verbunden";

@@ -8,7 +8,7 @@
     /// </summary>
     internal sealed partial class NotificationBoxView : Window
     {
-        // ... API Importe (GetWindowLong, SetWindowLong) ...
+        /* API Importe (GetWindowLong, SetWindowLong) */
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
 
