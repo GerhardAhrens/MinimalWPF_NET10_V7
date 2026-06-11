@@ -90,6 +90,7 @@ namespace MinimalWPF
             App.EventAgg.Subscribe<WindowsTitelEvent>(async (evt, ct) => this.OnUpdateWindowTitel(evt));
             App.EventAgg.Subscribe<StatusEvent>(async (evt, ct) => this.OnUpdateStatusBar(evt));
 
+
             /*
             var result = InputBox.Show(this,
                         new InputBoxOptions<int>
@@ -102,7 +103,7 @@ namespace MinimalWPF
                         });
             */
 
-            var result1 = InputBox.Show<string>(this, "Name eingeben");
+            //var result1 = InputBox.Show<DateTime>(this, "alter eingeben",DateTime.Now);
 
             StatusbarMain.Statusbar.DatabaseInfo = "Keine";
             StatusbarMain.Statusbar.DatabaseInfoTooltip = "Keine Datenbank verbunden";

@@ -131,6 +131,7 @@
                 };
 
                 this._datePicker.SelectedDateChanged += (_, _) => this.ValidateInputDefault();
+                this._datePicker.PreviewTextInput += (_, _) => this.ValidateInputDefault();
 
                 InputHost.Content = this._datePicker;
                 return;
@@ -212,27 +213,36 @@
                 }
             }
 
-            if (this._targetType == typeof(DateTime))
+            if (_targetType == typeof(DateTime))
             {
-                var value = _datePicker?.SelectedDate;
-
-                if (options.IsRequired && value == null)
+                if (string.IsNullOrWhiteSpace(_datePicker?.Text))
                 {
-                    this.TxtError.Text = "Datum auswählen.";
-                    this.BtnOk.IsEnabled = false;
-                    return;
+                    if (options.IsRequired)
+                    {
+                        TxtError.Text = "Datum auswählen.";
+                        BtnOk.IsEnabled = false;
+                        return;
+                    }
                 }
-
-                if (value != null)
+                else
                 {
-                    if (options.MinDate != null && value < options.MinDate)
+                    bool validDate = DateTime.TryParse(_datePicker.Text, CultureInfo.CurrentCulture, DateTimeStyles.None, out DateTime parsedDate);
+
+                    if (!validDate)
+                    {
+                        this.TxtError.Text = "Ungültiges Datum.";
+                        this.BtnOk.IsEnabled = false;
+                        return;
+                    }
+
+                    if (options.MinDate != null && parsedDate < options.MinDate)
                     {
                         this.TxtError.Text = $"Datum ab {options.MinDate:d}";
                         this.BtnOk.IsEnabled = false;
                         return;
                     }
 
-                    if (options.MaxDate != null && value > options.MaxDate)
+                    if (options.MaxDate != null && parsedDate > options.MaxDate)
                     {
                         this.TxtError.Text = $"Datum bis {options.MaxDate:d}";
                         this.BtnOk.IsEnabled = false;
@@ -240,7 +250,6 @@
                     }
                 }
             }
-
             this.BtnOk.IsEnabled = true;
         }
 
@@ -278,11 +287,22 @@
             }
             else if (this._targetType == typeof(DateTime))
             {
-                valid = this._datePicker?.SelectedDate != null;
-
-                if (!valid)
+                if (string.IsNullOrEmpty(this._datePicker.Text) == true || this._datePicker?.SelectedDate == null)
                 {
+                    this._datePicker?.SelectedDate = null;
                     this.TxtError.Text = "Bitte ein Datum auswählen.";
+                    this.BtnOk.IsEnabled = false;
+                    return;
+                }
+
+                bool validDate = DateTime.TryParse(this._datePicker.Text, CultureInfo.CurrentCulture, DateTimeStyles.None, out DateTime parsedDate);
+
+                if (validDate == false)
+                {
+                    this._datePicker?.SelectedDate = null;
+                    this.TxtError.Text = "Ungültiges Datum.";
+                    this.BtnOk.IsEnabled = false;
+                    return;
                 }
             }
 
