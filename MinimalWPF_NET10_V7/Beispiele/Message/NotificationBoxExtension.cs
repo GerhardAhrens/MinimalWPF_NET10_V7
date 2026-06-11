@@ -23,5 +23,11 @@ namespace System.Windows
             MessageBoxResult result = self.Show(titel);
             return result;
         }
+
+        public static MessageBoxResult Question(this INotificationBase self, string titel, string message)
+        {
+            MessageBoxResult result = self.ShowYesNo(titel, message,"Ja","Nein");
+            return result;
+        }
     }
 }

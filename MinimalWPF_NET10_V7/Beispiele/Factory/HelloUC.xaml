@@ -151,6 +151,18 @@
                     Margin="5,0,0,0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
+                    Command="{Binding Path=ShowNotificationBoxCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowNotificationBox}"
+                    ToolTip="Beispiel zur NotificationBox Klasse und NotificationBox Extensions">
+                    <Image Source="{StaticResource ResourceKey=IconMessageNew}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
                     Command="{Binding Path=ShowDialogServiceCommand}"
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowDialogService}"
                     ToolTip="Beispiel zur DialogService Klasse">

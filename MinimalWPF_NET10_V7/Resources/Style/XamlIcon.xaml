@@ -11,6 +11,30 @@
     <!--#endregion XAML Icon Quelle-->
 
     <!--#region Farbige Icon Symbole auf Basis von DrawingImage-->
+    <DrawingImage x:Key="IconMessageNew">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF4A90E2">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="M5,2L19,2Q22,2,22,5L22,15Q22,18,19,18L13,18L10,22L10,18L5,18Q2,18,2,15L2,5Q2,2,5,2z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="6,7,12,1.5" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="6,11,8,1.5" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
     <DrawingImage x:Key="IconFactoryPattern">
         <DrawingImage.Drawing>
             <DrawingGroup>
