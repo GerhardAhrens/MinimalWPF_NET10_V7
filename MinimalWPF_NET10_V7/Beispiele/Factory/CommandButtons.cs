@@ -28,6 +28,8 @@
         ShowEventAggregator = 10,
         [Description("Demo zum Factory Pattern")]
         ShowFactoryPattern = 11,
+        [Description("Demo zur NotificationBox")]
+        NotificationBox = 12,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

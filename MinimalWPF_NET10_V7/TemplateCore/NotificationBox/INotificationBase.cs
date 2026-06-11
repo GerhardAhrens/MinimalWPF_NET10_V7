@@ -17,5 +17,8 @@ namespace System.Windows
 {
     public interface INotificationBase
     {
+        MessageBoxResult Show(string messageBoxText);
+        MessageBoxResult Show(string messageBoxText, string caption);
+        MessageBoxResult Show(Window owner, string messageBoxText);
     }
 }
