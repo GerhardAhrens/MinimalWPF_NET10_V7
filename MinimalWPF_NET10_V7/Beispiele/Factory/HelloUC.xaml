@@ -201,7 +201,7 @@
                     Background="Transparent"
                     Command="{Binding Path=ShowInputBoxCommand}"
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowInputBox}"
-                    ToolTip="Beispiel zum Factory Pattern">
+                    ToolTip="Beispiel zur InputBox">
                     <Image Source="{StaticResource ResourceKey=IconSoftware_Note}" Stretch="Uniform" />
                 </Button>
 
