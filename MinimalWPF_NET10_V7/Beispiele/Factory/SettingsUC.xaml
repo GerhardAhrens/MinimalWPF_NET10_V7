@@ -78,6 +78,22 @@
                     Foreground="Black"
                     Text="public sealed class ApplicationSettings : SettingsBase" />
                 <Run Text="abgeleitet werden. Die Basisklasse beinhaltet alle Methoden zum Laden und Speichern von Änderungen an den Einstellungen." />
+                <Run Text="Um die Einstellungen an einem möglichst frühen Zeitpunkt zur Verfügung zu haben werden diese in der App.cs ." />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="App.cs" />
+                <Run Text="über die Methode" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="OnStartup" />
+                <Run Text="geladen und in einer statischen public Variabel gespeichert. Beim Programmende werden die Einstellungen mit der Methode" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="OnExit" />
+                <Run Text="gespeichert. Natürlich können die Änderungen zu einem beliebigen anderen Zeitpunkt gespeichert werden." />
             </TextBlock>
         </GroupBox>
 
@@ -94,6 +110,88 @@
                         Text="Beispiel" />
                 </StackPanel>
             </GroupBox.Header>
+            <Grid
+                VerticalAlignment="Top"
+                ColumnDefinitions="150,150,*"
+                RowDefinitions="Auto,Auto,Auto,auto,auto">
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Einstellungen initalisierten" />
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=InitSettingsCommand}"
+                    CommandParameter="init"
+                    Content="Initalisieren" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Einstellungen laden" />
+
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=ReadSettingsCommand}"
+                    CommandParameter="read"
+                    Content="Laden" />
+
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Einstellungen Verzeichnis" />
+
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Einstellungen Properties" />
+
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1" Grid.ColumnSpan="3"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    FontWeight="Black"
+                    Text="{Binding Path=SettingsPfad, FallbackValue=~SettingsPfad}" />
+
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1" Grid.ColumnSpan="3"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    FontWeight="Black"
+                    Text="{Binding Path=SettingsProperties, FallbackValue=~SettingsProperties}" />
+
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Änderung speichen" />
+
+                <Button
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=ReadSettingsCommand}"
+                    CommandParameter="save"
+                    Content="Speichern" />
+            </Grid>
 
         </GroupBox>
     </Grid>

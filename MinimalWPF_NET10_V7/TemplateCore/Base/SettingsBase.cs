@@ -37,7 +37,7 @@ namespace System.Windows
     /// <summary>
     /// Base class for settings.
     /// </summary>
-    [DebuggerStepThrough]
+    //[DebuggerStepThrough]
     [Serializable]
     [SupportedOSPlatform("windows")]
     public abstract class SettingsBase : DisposableCoreBase
@@ -80,10 +80,7 @@ namespace System.Windows
         {
             get
             {
-                string settingsPath = this.CurrentSettingsPath();
-                string settingsName = $"{UserSettingsName()}.{this.NamePrefix}";
-                string settingsFile = Path.Combine(settingsPath, settingsName);
-                return settingsFile;
+                return $"{this.NamePrefix}.{UserSettingsName()}";
             }
         }
 
