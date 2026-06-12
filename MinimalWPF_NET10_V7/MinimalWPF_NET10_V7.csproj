@@ -8,7 +8,7 @@
     <UseWPF>true</UseWPF>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
-    <ApplicationIcon>Resources\Picture\ApplicationIcon.ico</ApplicationIcon>
+    <ApplicationIcon>ApplicationIcon.ico</ApplicationIcon>
     <AssemblyVersion>1.7.2026.8</AssemblyVersion>
     <FileVersion>1.7.2026.8</FileVersion>
     <Authors>Lifeprojects.de</Authors>
@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\Picture\ApplicationIcon.ico" />
+    <Content Include="ApplicationIcon.ico" />
   </ItemGroup>
 
   <ItemGroup>
