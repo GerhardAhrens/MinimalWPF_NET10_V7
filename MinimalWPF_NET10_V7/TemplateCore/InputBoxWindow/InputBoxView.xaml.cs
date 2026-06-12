@@ -75,6 +75,8 @@
                 };
 
                 this.InputHost.Content = _checkBox;
+                this._checkBox.Focus();
+
                 return;
             }
 
@@ -88,6 +90,8 @@
                 this._datePicker.SelectedDateChanged += (_, _) => this.ValidateInput();
 
                 InputHost.Content = this._datePicker;
+                this._datePicker.Focus();
+
                 return;
             }
 
@@ -106,6 +110,7 @@
             }
 
             this._textBox.TextChanged += (_, _) => this.ValidateInput();
+            this._textBox.Focus();
 
             InputHost.Content = this._textBox;
         }
@@ -120,6 +125,7 @@
                 };
 
                 InputHost.Content = this._checkBox;
+                this._checkBox.Focus();
                 return;
             }
 
@@ -130,8 +136,10 @@
                     SelectedDate = defaultValue as DateTime?
                 };
 
+                this._datePicker.Focus();
                 this._datePicker.SelectedDateChanged += (_, _) => this.ValidateInputDefault();
                 this._datePicker.PreviewTextInput += (_, _) => this.ValidateInputDefault();
+                this._datePicker.Focus();
 
                 InputHost.Content = this._datePicker;
                 return;
@@ -145,6 +153,7 @@
             }
 
             this._textBox.TextChanged += (_, _) => this.ValidateInputDefault();
+            this._textBox.Focus();
 
             InputHost.Content = this._textBox;
         }

@@ -215,6 +215,22 @@ namespace System.Windows
 
             return msgData.ShowMessageBox();
         }
+
+        public MessageBoxResult ShowAbortRetryIgnore(string caption, string messageBoxText, string yesButtonText, string noButtonText, string cancelButtonText, MessageBoxImage icon)
+        {
+            var msgData = new MessageBoxData()
+            {
+                Message = messageBoxText,
+                Caption = caption,
+                Buttons = MessageBoxButton.AbortRetryIgnore,
+                Image = icon,
+                YesButtonCaption = yesButtonText,
+                NoButtonCaption = noButtonText,
+                CancelButtonCaption = cancelButtonText
+            };
+
+            return msgData.ShowMessageBox();
+        }
     }
 }
  

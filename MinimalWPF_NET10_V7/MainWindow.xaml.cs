@@ -90,21 +90,6 @@ namespace MinimalWPF
             App.EventAgg.Subscribe<WindowsTitelEvent>(async (evt, ct) => this.OnUpdateWindowTitel(evt));
             App.EventAgg.Subscribe<StatusEvent>(async (evt, ct) => this.OnUpdateStatusBar(evt));
 
-
-            /*
-            var result = InputBox.Show(this,
-                        new InputBoxOptions<int>
-                        {
-                            Title = "Alter",
-                            Message = "Bitte Alter eingeben",
-                            DefaultValue = 18,
-                            MinInt = 0,
-                            MaxInt = 120
-                        });
-            */
-
-            //var result1 = InputBox.Show<DateTime>(this, "alter eingeben",DateTime.Now);
-
             StatusbarMain.Statusbar.DatabaseInfo = "Keine";
             StatusbarMain.Statusbar.DatabaseInfoTooltip = "Keine Datenbank verbunden";
             StatusbarMain.Statusbar.Notification = "Bereit";
@@ -200,7 +185,7 @@ namespace MinimalWPF
                     {
                         this.OnQuit();
                     }
-                    else if (button.In(CommandButtons.Home, CommandButtons.GoBack, CommandButtons.ShowResult, CommandButtons.ShowMessage, 
+                    else if (button.In(CommandButtons.Home, CommandButtons.GoBack, CommandButtons.ShowResult, CommandButtons.ShowInputBox, 
                         CommandButtons.ShowDialogService, CommandButtons.ShowSourceGen, CommandButtons.Localization, 
                         CommandButtons.ShowEventAggregator, CommandButtons.ShowFactoryPattern, CommandButtons.ShowNotificationBox))
                     {
@@ -232,13 +217,13 @@ namespace MinimalWPF
         {
             Factory.RegisterSingleton<CommandButtons>(CommandButtons.Home, () => new HelloUC());
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowResult, (param) => new ResultUC((ChangeViewEventArgs)param!));
-            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowMessage, (param) => new MessageUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowDialogService, (param) => new DialogServiceUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowSourceGen, (param) => new SourceGenUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Localization, (param) => new LocalizationUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowEventAggregator, (param) => new EventAggregatorUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowFactoryPattern, (param) => new FactoryUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowNotificationBox, (param) => new NotificationBoxUC((ChangeViewEventArgs)param!));
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowInputBox, (param) => new InputBoxUC((ChangeViewEventArgs)param!));
         }
     }
 }

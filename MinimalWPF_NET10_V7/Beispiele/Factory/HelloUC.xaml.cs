@@ -17,7 +17,7 @@
 
             this.QuitCommand = new CommandBase(commandParam => this.OnQuit(commandParam), () => true);
             this.ShowResultCommand = new CommandBase(commandParam => this.OnShowResult(commandParam), () => true);
-            this.ShowMessageCommand = new CommandBase(commandParam => this.OnShowMessage(commandParam), () => true);
+            this.ShowInputBoxCommand = new CommandBase(commandParam => this.OnShowInputBox(commandParam), () => true);
             this.ShowDialogServiceCommand = new CommandBase(commandParam => this.OnShowDialogService(commandParam), () => true);
             this.ShowSourceGenCommand = new CommandBase(commandParam => this.OnShowSourceGen(commandParam), () => true);
             this.ShowLocalizationCommand = new CommandBase(commandParam => this.OnLocalization(commandParam), () => true);
@@ -37,7 +37,7 @@
         public CommandBase QuitCommand { get; private set; }
         public CommandBase HelpCommand { get; private set; }
         public CommandBase ShowResultCommand { get; private set; }
-        public CommandBase ShowMessageCommand { get; private set; }
+        public CommandBase ShowInputBoxCommand { get; private set; }
         public CommandBase ShowDialogServiceCommand { get; private set; }
         public CommandBase ShowSourceGenCommand { get; private set; }
         public CommandBase ShowLocalizationCommand { get; private set; }
@@ -135,11 +135,11 @@
             }
         }
 
-        private async void OnShowMessage(object commandParam)
+        private async void OnShowInputBox(object commandParam)
         {
             if (commandParam != null && commandParam is CommandButtons button)
             {
-                if (button == CommandButtons.ShowMessage)
+                if (button == CommandButtons.ShowInputBox)
                 {
                     ChangeViewEventArgs args = new();
                     args.MenuButton = button;

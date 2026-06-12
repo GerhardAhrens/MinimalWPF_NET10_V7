@@ -110,12 +110,16 @@
 
         public MessageBoxResult Result { get; set; }
 
+        private MessageBoxButton CurrentButtons { get; set; }
+
         #endregion
 
         #region Methods
 
         private void DisplayButtons(MessageBoxButton button)
         {
+            this.CurrentButtons = button;
+
             switch (button)
             {
                 case MessageBoxButton.OKCancel:
@@ -139,6 +143,16 @@
                     break;
 
                 case MessageBoxButton.YesNoCancel:
+                    // Hide only OK
+                    this.Button_Yes.Visibility = System.Windows.Visibility.Visible;
+                    this.Button_Yes.Focus();
+                    this.Button_No.Visibility = System.Windows.Visibility.Visible;
+                    this.Button_Cancel.Visibility = System.Windows.Visibility.Visible;
+
+                    this.Button_OK.Visibility = System.Windows.Visibility.Collapsed;
+                    break;
+
+                case MessageBoxButton.AbortRetryIgnore:
                     // Hide only OK
                     this.Button_Yes.Visibility = System.Windows.Visibility.Visible;
                     this.Button_Yes.Focus();
@@ -202,19 +216,43 @@
 
         private void Button_Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MessageBoxResult.Cancel;
+            if (this.CurrentButtons == MessageBoxButton.AbortRetryIgnore)
+            {
+                this.Result = MessageBoxResult.Ignore;
+            }
+            else
+            {
+                this.Result = MessageBoxResult.Cancel;
+            }
+
             this.Close();
         }
 
         private void Button_Yes_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MessageBoxResult.Yes;
+            if (this.CurrentButtons == MessageBoxButton.AbortRetryIgnore)
+            {
+                this.Result = MessageBoxResult.Abort;
+            }
+            else
+            {
+                this.Result = MessageBoxResult.Yes;
+            }
+
             this.Close();
         }
 
         private void Button_No_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MessageBoxResult.No;
+            if (this.CurrentButtons == MessageBoxButton.AbortRetryIgnore)
+            {
+                this.Result = MessageBoxResult.Retry;
+            }
+            else
+            {
+                this.Result = MessageBoxResult.No;
+            }
+
             this.Close();
         }
 

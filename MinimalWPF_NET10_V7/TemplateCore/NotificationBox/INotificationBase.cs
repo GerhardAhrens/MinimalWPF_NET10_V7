@@ -31,5 +31,6 @@ namespace System.Windows
         MessageBoxResult ShowYesNo(string caption, string messageBoxText, string yesButtonText, string noButtonText, MessageBoxImage icon);
         MessageBoxResult ShowYesNoCancel(string caption, string messageBoxText, string yesButtonText, string noButtonText, string cancelButtonText);
         MessageBoxResult ShowYesNoCancel(string caption, string messageBoxText, string yesButtonText, string noButtonText, string cancelButtonText, MessageBoxImage icon);
+        MessageBoxResult ShowAbortRetryIgnore(string caption, string messageBoxText, string yesButtonText, string noButtonText, string cancelButtonText, MessageBoxImage icon);
     }
 }

@@ -11,6 +11,26 @@
     <!--#endregion XAML Icon Quelle-->
 
     <!--#region Farbige Icon Symbole auf Basis von DrawingImage-->
+    <DrawingImage x:Key="IconSoftware_Note">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Transform>
+                    <ScaleTransform ScaleX="0.25" ScaleY="0.25" />
+                </DrawingGroup.Transform>
+
+                <GeometryDrawing Brush="#FFEFC979" Geometry="F1M72.424,172.257L235.369,172.257 235.369,50.71 72.424,50.71 72.424,172.257z" />
+                <GeometryDrawing Brush="#FF785936" Geometry="F1M158.99,73.261L214.337,73.261 214.337,82.374 158.274,82.374 158.274,74.615 158.99,73.261z" />
+                <GeometryDrawing Brush="#FF785936" Geometry="F1M214.337,104.456L142.5,104.456 147.319,95.342 214.337,95.342 214.337,104.456z" />
+                <GeometryDrawing Brush="#FF1388B1" Geometry="F1M72.424,20.998C72.424,9.4,81.826,0,93.421,0L214.37,0C225.968,0,235.369,9.4,235.369,20.998L235.369,41.996 72.424,41.996 72.424,20.998z" />
+                <GeometryDrawing Brush="#FF2D658C" Geometry="F1M17.023,187.493L41.832,212.301 117.898,136.235 93.091,111.427 17.023,187.493z" />
+                <GeometryDrawing Brush="#FFD34B31" Geometry="F1M0.288,211.808C1.238,205.968,4.434,200.083,9.281,195.238L34.089,220.043C29.242,224.893 23.356,228.086 17.518,229.038 11.938,229.953 7.086,228.679 3.866,225.459 0.646,222.238 -0.624,217.392 0.288,211.808z" />
+                <GeometryDrawing Brush="#FF5A545B" Geometry="F1M102.295,103.516L152.176,77.149 125.81,127.03 102.295,103.516z" />
+                <GeometryDrawing Brush="#FF785936" Geometry="F1M214.337,125.488L131.382,125.488 136.2,116.375 214.337,116.375 214.337,125.488z" />
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <DrawingImage x:Key="IconMessageNew">
         <DrawingImage.Drawing>
             <DrawingGroup>

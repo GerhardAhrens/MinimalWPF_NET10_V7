@@ -99,6 +99,38 @@ namespace MinimalWPF.Beispiel
                     this.Message.Warning("Antwort", "Sie haben 'Nein' gewählt.");
                 }
             }
+            else if (commandParam != null && commandParam.Equals("YES_NO_CANCEL") == true)
+            {
+                MessageBoxResult result = this.Message.QuestionCancel("Frage", "Soll 'Ja', 'Nein' oder 'Abbrechen' ausgewählt werden?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.Message.Hinweis("Antwort", "Sie haben 'Ja' gewählt.");
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    this.Message.Warning("Antwort", "Sie haben 'Nein' gewählt.");
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    this.Message.Warning("Antwort", "Sie haben 'Abbrechen' gewählt.");
+                }
+            }
+            else if (commandParam != null && commandParam.Equals("ABORT_RETRY_IGNORE") == true)
+            {
+                MessageBoxResult result = this.Message.QuestionAbortRetryIgnore("Frage", "Soll 'Abbrechen', 'Retry' oder 'Ignore' ausgewählt werden?");
+                if (result == MessageBoxResult.Abort)
+                {
+                    this.Message.Warning("Antwort", "Sie haben 'Abbrechen' gewählt.");
+                }
+                else if (result == MessageBoxResult.Retry)
+                {
+                    this.Message.Hinweis("Antwort", "Sie haben 'Retry' gewählt.");
+                }
+                else if (result == MessageBoxResult.Ignore)
+                {
+                    this.Message.Warning("Antwort", "Sie haben 'Ignore' gewählt.");
+                }
+            }
         }
 
         private void OnMessageBoxCustom(object commandParam)
@@ -117,6 +149,38 @@ namespace MinimalWPF.Beispiel
                 else if (result == MessageBoxResult.No)
                 {
                     this.Notification.Hinweis("Antwort", "Sie haben 'Nein' gewählt.");
+                }
+            }
+            else if (commandParam != null && commandParam.Equals("YES_NO_CANCEL") == true)
+            {
+                MessageBoxResult result = this.Notification.QuestionCancel("Frage", "Soll 'Ja', 'Nein' oder 'Abbrechen' ausgewählt werden?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.Notification.Hinweis("Antwort", "Sie haben 'Ja' gewählt.");
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    this.Notification.Hinweis("Antwort", "Sie haben 'Nein' gewählt.");
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    this.Notification.Hinweis("Antwort", "Sie haben 'Abbrechen' gewählt.");
+                }
+            }
+            else if (commandParam != null && commandParam.Equals("ABORT_RETRY_IGNORE") == true)
+            {
+                MessageBoxResult result = this.Notification.QuestionAbortRetryIgnore("Frage", "Soll 'Abbrechen', 'Retry' oder 'Ignore' ausgewählt werden?");
+                if (result == MessageBoxResult.Abort)
+                {
+                    this.Notification.Hinweis("Antwort", "Sie haben 'Abbrechen' gewählt.");
+                }
+                else if (result == MessageBoxResult.Retry)
+                {
+                    this.Notification.Hinweis("Antwort", "Sie haben 'Retry' gewählt.");
+                }
+                else if (result == MessageBoxResult.Ignore)
+                {
+                    this.Notification.Hinweis("Antwort", "Sie haben 'Ignore' gewählt.");
                 }
             }
         }

@@ -139,18 +139,6 @@
                     Margin="5,0,0,0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
-                    Command="{Binding Path=ShowMessageCommand}"
-                    CommandParameter="{x:Static beispiel:CommandButtons.ShowMessage}"
-                    ToolTip="Beispiel zur Message Klasse und Message Extensions">
-                    <Image Source="{StaticResource ResourceKey=IconSoftware_Message}" Stretch="Uniform" />
-                </Button>
-
-                <Button
-                    Width="50"
-                    Height="50"
-                    Margin="5,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
                     Command="{Binding Path=ShowNotificationBoxCommand}"
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowNotificationBox}"
                     ToolTip="Beispiel zur NotificationBox Klasse und NotificationBox Extensions">
@@ -203,6 +191,18 @@
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowFactoryPattern}"
                     ToolTip="Beispiel zum Factory Pattern">
                     <Image Source="{StaticResource ResourceKey=IconFactoryPattern}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=ShowInputBoxCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowInputBox}"
+                    ToolTip="Beispiel zum Factory Pattern">
+                    <Image Source="{StaticResource ResourceKey=IconSoftware_Note}" Stretch="Uniform" />
                 </Button>
 
                 <Button

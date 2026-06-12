@@ -66,7 +66,7 @@
                         Name="Label_Cancel"
                         Margin="10,0"
                         Padding="0">
-                        _Cancel
+                        _Abrechen
                     </Label>
                 </Button>
                 <!--  End Cancel Button  -->
@@ -86,7 +86,7 @@
                         Name="Label_No"
                         Margin="10,0"
                         Padding="0">
-                        _No
+                        _Nein
                     </Label>
                 </Button>
                 <!--  End No Button  -->
@@ -106,7 +106,7 @@
                         Name="Label_Yes"
                         Margin="10,0"
                         Padding="0">
-                        _Yes
+                        _Ja
                     </Label>
                 </Button>
                 <!--  End Yes Button  -->
