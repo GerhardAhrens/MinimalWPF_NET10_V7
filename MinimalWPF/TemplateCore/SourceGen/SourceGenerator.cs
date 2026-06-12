@@ -4,6 +4,8 @@
     using System.IO;
     using System.Windows.Resources;
     using System.Collections.Specialized;
+    using System.Globalization;
+    using System.ComponentModel;
 
     internal static class SourceGenerator
     {
@@ -13,18 +15,25 @@
             {
                 Directory.CreateDirectory(TemplatePath);
             }
+            else
+            {
+                foreach (string filePath in Directory.EnumerateFiles(TemplatePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
         }
 
         public static string TemplatePath { get; private set; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template");
 
         public static void CreateSourceFile(string className, string newClassName)
         {
+            string rootNamespace = AppDomain.CurrentDomain.FriendlyName;
             StringCollection files = new StringCollection();
 
             (string,string) sources = GetSourceFromResources(className);
             if (string.IsNullOrEmpty(sources.Item1) == false && string.IsNullOrEmpty(sources.Item2) == false)
             {
-                string rootNamespace = AppDomain.CurrentDomain.FriendlyName;
                 string csFilePath = Path.Combine(TemplatePath, $"{newClassName}.xaml.cs");
                 if (string.IsNullOrEmpty(sources.Item1) == false)
                 {
@@ -44,7 +53,8 @@
             else
             {
                 string csFilePath = Path.Combine(TemplatePath, $"{className}.cs");
-                File.WriteAllText(csFilePath, sources.Item1);
+                string csContent = sources.Item1.Replace("[[ClassName]]", newClassName).Replace("[[RootNamespace]]", $"{rootNamespace}.Beispiel");
+                File.WriteAllText(csFilePath, csContent);
                 files.Add(csFilePath);
             }
 
@@ -56,17 +66,30 @@
 
         public static (string,string) GetSourceFromResources(string className)
         {
-            Uri uriCS;
+            Uri uriXAMLCS;
             Uri uriXAML;
+            Uri uriCS;
             string outCodeCS = string.Empty;
             string outCodeXAML = string.Empty;
 
-            uriCS = new Uri($"pack://application:,,,/Resources/Source/{className}.xaml.cs.source", UriKind.Absolute);
+            uriXAMLCS = new Uri($"pack://application:,,,/Resources/Source/{className}.xaml.cs.source", UriKind.Absolute);
+            if (DoesResourceExist(uriXAMLCS) == true)
+            {
+                StreamResourceInfo sri = Application.GetResourceStream(uriXAMLCS);
+                using StreamReader reader = new StreamReader(sri.Stream);
+                outCodeCS = reader.ReadToEnd();
+
+                outCodeCS = new ReplaceContent().Replace(outCodeCS);
+            }
+
+            uriCS = new Uri($"pack://application:,,,/Resources/Source/{className}.cs.source", UriKind.Absolute);
             if (DoesResourceExist(uriCS) == true)
             {
                 StreamResourceInfo sri = Application.GetResourceStream(uriCS);
                 using StreamReader reader = new StreamReader(sri.Stream);
                 outCodeCS = reader.ReadToEnd();
+
+                outCodeCS = new ReplaceContent().Replace(outCodeCS);
             }
 
             uriXAML = new Uri($"pack://application:,,,/Resources/Source/{className}.xaml.source", UriKind.Absolute);
@@ -102,5 +125,63 @@
                 return false;
             }
         }
+    }
+
+    internal sealed class ReplaceContent
+    {
+        private const string FIRMA = "Lifeprojects.de";
+        private const string FULLNAME = "Gerhard Ahrens";
+        private const string EMAIL = "developer@lifeprojects.de";
+
+        private readonly List<ReplaceValues> _replaceValues;
+        public ReplaceContent()
+        {
+            this._replaceValues = new List<ReplaceValues>();
+            this._replaceValues.Add(new ReplaceValues() { Placeholder = "$firma$", Value = FIRMA });
+            this._replaceValues.Add(new ReplaceValues() { Placeholder = "$company$", Value = FIRMA });
+            this._replaceValues.Add(new ReplaceValues() { Placeholder = "$name$", Value = FULLNAME });
+            this._replaceValues.Add(new ReplaceValues() { Placeholder = "$email$", Value = EMAIL });
+            this._replaceValues.Add(new ReplaceValues() { Placeholder = "$year$", Value = DateTime.Now.Year.ToString(CultureInfo.CurrentCulture) });
+            this._replaceValues.Add(new ReplaceValues() { Placeholder = "$date$", Value = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.CurrentCulture) });
+        }
+
+        public string Replace(string content)
+        {
+            if (this._replaceValues != null && this._replaceValues.Count > 0)
+            {
+                foreach (ReplaceValues item in this._replaceValues)
+                {
+                    content = content.Replace(item.Placeholder, item.Value, StringComparison.OrdinalIgnoreCase);
+                }
+            }
+
+            return content;
+        }
+
+        private sealed class ReplaceValues
+        {
+            public string Placeholder { get; set; }
+            public string Value { get; set; }
+        }
+    }
+
+    public enum ClassTypes
+    {
+        [Description("Keine Auswahl")]
+        None = 0,
+        [Description("Erstelle UserControl Class mit .xaml und .xaml.cs Datei")]
+        UserControlClass = 1,
+        [Description("Erstellet eine Window Class mit .xaml und .xaml.cs Datei")]
+        WindowClass = 2,
+        [Description("Erstellen einer 'enum class'")]
+        EnumClass = 3,
+        [Description("Erstellen einer 'public class'")]
+        PublicClass = 4,
+        [Description("Erstellen einer 'public static class'")]
+        StaticPublicClass = 5,
+        [Description("Erstellen einer 'public static class' die für Extenstion verwendet wird")]
+        PublicExtensionClass = 6,
+        [Description("Erstellen einer 'public disposable class'")]
+        PublicDisposableClass = 7,
     }
 }

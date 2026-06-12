@@ -21,6 +21,7 @@
 
         public static string[] Names { get { return _registrations.Keys.Select(k => k.Key.ToString()).ToArray(); } }
 
+
         // Registrierungseintrag
         private sealed class Registration
         {
