@@ -70,7 +70,7 @@
                     Grid.Row="0"
                     Background="#FAFAFB"
                     CornerRadius="5">
-                    <beispiel:SettingsUC DataContext="{Binding Path=., RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <beispiel:SettingsPopupUC DataContext="{Binding Path=., RelativeSource={RelativeSource AncestorType=Window}}" />
                 </Border>
 
                 <base:IconButton
@@ -203,6 +203,18 @@
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowInputBox}"
                     ToolTip="Beispiel zur InputBox">
                     <Image Source="{StaticResource ResourceKey=IconSoftware_Note}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=ShowSettingsCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowSettings}"
+                    ToolTip="Beispiel zur InputBox">
+                    <Image Source="{StaticResource ResourceKey=IconConfiguration}" Stretch="Uniform" />
                 </Button>
 
                 <Button

@@ -4,11 +4,11 @@
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaktionslogik für SettingsUC.xaml
+    /// Interaktionslogik für SettingsPopupUC.xaml
     /// </summary>
-    public partial class SettingsUC : UserControl
+    public partial class SettingsPopupUC : UserControl
     {
-        public SettingsUC()
+        public SettingsPopupUC()
         {
             this.InitializeComponent();
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);

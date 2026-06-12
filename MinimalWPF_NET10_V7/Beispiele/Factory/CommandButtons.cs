@@ -30,6 +30,8 @@
         ShowFactoryPattern = 11,
         [Description("Demo zur NotificationBox")]
         ShowNotificationBox = 12,
+        [Description("Demo zu Applikation Settings")]
+        ShowSettings = 13,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

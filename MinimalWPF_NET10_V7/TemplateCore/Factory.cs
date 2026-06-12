@@ -113,8 +113,7 @@
 
             if (instance is not T result)
             {
-                throw new InvalidCastException(
-                    $"Instanz ist nicht vom Typ '{typeof(T).Name}'.");
+                throw new InvalidCastException($"Instanz ist nicht vom Typ '{typeof(T).Name}'.");
             }
 
             return result;
