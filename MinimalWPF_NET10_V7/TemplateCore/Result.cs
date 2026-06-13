@@ -1,6 +1,10 @@
 ﻿namespace System.Windows
 {
+    using System.Diagnostics;
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000:Statische Member nicht in generischen Typen deklarieren", Justification = "<Ausstehend>")]
+    [DebuggerStepThrough]
+    [Serializable]
     public struct Result<TResult>
     {
         public bool IsSuccess { get; private set; }

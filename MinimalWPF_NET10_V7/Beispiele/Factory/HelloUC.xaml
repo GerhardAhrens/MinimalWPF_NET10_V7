@@ -199,6 +199,30 @@
                     Margin="5,0,0,0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
+                    Command="{Binding Path=ShowSingletonPatternCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowSingletonPattern}"
+                    ToolTip="Beispiel zum SingletonPattern Pattern">
+                    <Image Source="{StaticResource ResourceKey=IconSingletonPattern}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=ShowMessengerPatternCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowMessengerPattern}"
+                    ToolTip="Beispiel zum Messenger Pattern">
+                    <Image Source="{StaticResource ResourceKey=IconMessengerPattern}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
                     Command="{Binding Path=ShowInputBoxCommand}"
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowInputBox}"
                     ToolTip="Beispiel zur InputBox">

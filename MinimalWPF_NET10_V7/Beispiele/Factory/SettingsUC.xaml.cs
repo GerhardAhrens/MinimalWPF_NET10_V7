@@ -62,6 +62,18 @@ namespace MinimalWPF.Beispiel
             set => base.SetValue(value);
         }
 
+        public DateTime SettingsLastAccess
+        {
+            get => base.GetValue<DateTime>();
+            set => base.SetValue(value);
+        }
+
+        public bool SettingsFrageExit
+        {
+            get => base.GetValue<bool>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
 
         #endregion Properties
@@ -116,6 +128,8 @@ namespace MinimalWPF.Beispiel
                     App.Settings = settings;
                     this.SettingsPfad = settings.Pathname;
                     this.SettingsProperties = string.Join(";", settings.GetProperties.Select(s => s.Name).ToArray());
+                    this.SettingsLastAccess = settings.LetzterZugriff;
+                    this.SettingsFrageExit = settings.FrageExit;
                 }
             }
             else if (commandParam != null && commandParam.Equals("read") == true)
@@ -130,7 +144,25 @@ namespace MinimalWPF.Beispiel
                     App.Settings = settings;
                     this.SettingsPfad = Path.Combine(settings.Pathname, settings.Filename);
                     this.SettingsProperties = string.Join("; ", settings.GetProperties.Select(s => $"{s.Name} ({s.PropertyType.Name})").ToArray());
+                    this.SettingsLastAccess = settings.LetzterZugriff;
+                    this.SettingsFrageExit = settings.FrageExit;
                 }
+            }
+            else if (commandParam != null && commandParam.Equals("save") == true)
+            {
+                App.Settings.LetzterZugriff = DateTime.Now;
+                App.Settings.FrageExit = this.SettingsFrageExit;
+
+                using (ApplicationSettings settings = new ApplicationSettings())
+                {
+                    if (settings.IsExitSettings() == true)
+                    {
+                        settings.Load();
+                        settings.SetSetting(App.Settings);
+                        settings.Save();
+                    }
+                }
+
             }
         }
 

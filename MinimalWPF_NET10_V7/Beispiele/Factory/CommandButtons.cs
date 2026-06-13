@@ -32,6 +32,10 @@
         ShowNotificationBox = 12,
         [Description("Demo zu Applikation Settings")]
         ShowSettings = 13,
+        [Description("Demo zu Singleton Pattern")]
+        ShowSingletonPattern = 14,
+        [Description("Demo zu Messenger Pattern")]
+        ShowMessengerPattern = 15,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

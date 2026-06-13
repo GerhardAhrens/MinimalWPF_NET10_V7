@@ -187,7 +187,8 @@ namespace MinimalWPF
                     }
                     else if (button.In(CommandButtons.Home, CommandButtons.GoBack, CommandButtons.ShowResult, CommandButtons.ShowInputBox, 
                         CommandButtons.ShowDialogService, CommandButtons.ShowSourceGen, CommandButtons.Localization, 
-                        CommandButtons.ShowEventAggregator, CommandButtons.ShowFactoryPattern, CommandButtons.ShowNotificationBox, CommandButtons.ShowSettings))
+                        CommandButtons.ShowEventAggregator, CommandButtons.ShowFactoryPattern, CommandButtons.ShowSingletonPattern,CommandButtons.ShowMessengerPattern,
+                        CommandButtons.ShowNotificationBox, CommandButtons.ShowSettings))
                     {
 
                         if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
@@ -222,6 +223,8 @@ namespace MinimalWPF
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Localization, (param) => new LocalizationUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowEventAggregator, (param) => new EventAggregatorUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowFactoryPattern, (param) => new FactoryUC((ChangeViewEventArgs)param!));
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowSingletonPattern, (param) => new SingletonUC((ChangeViewEventArgs)param!));
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowMessengerPattern, (param) => new SingletonUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowNotificationBox, (param) => new NotificationBoxUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowInputBox, (param) => new InputBoxUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowSettings, (param) => new SettingsUC((ChangeViewEventArgs)param!));

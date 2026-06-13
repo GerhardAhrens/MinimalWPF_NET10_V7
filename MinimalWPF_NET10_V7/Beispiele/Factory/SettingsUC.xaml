@@ -113,7 +113,7 @@
             <Grid
                 VerticalAlignment="Top"
                 ColumnDefinitions="150,150,*"
-                RowDefinitions="Auto,Auto,Auto,auto,auto">
+                RowDefinitions="Auto,Auto,Auto,auto,auto,auto,auto">
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="0"
@@ -154,15 +154,9 @@
                     Text="Einstellungen Verzeichnis" />
 
                 <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Height="20"
-                    HorizontalAlignment="Left"
-                    Text="Einstellungen Properties" />
-
-                <TextBlock
                     Grid.Row="2"
-                    Grid.Column="1" Grid.ColumnSpan="3"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
                     Height="20"
                     HorizontalAlignment="Left"
                     FontWeight="Black"
@@ -170,7 +164,15 @@
 
                 <TextBlock
                     Grid.Row="3"
-                    Grid.Column="1" Grid.ColumnSpan="3"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Einstellungen Properties" />
+
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
                     Height="20"
                     HorizontalAlignment="Left"
                     FontWeight="Black"
@@ -181,10 +183,37 @@
                     Grid.Column="0"
                     Height="20"
                     HorizontalAlignment="Left"
+                    Text="Property 'LetzterZugriff'" />
+
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    FontWeight="Black"
+                    Text="{Binding Path=SettingsLastAccess, FallbackValue=~SettingsLastAccess}" />
+
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Property 'FrageExit'" />
+
+                <CheckBox
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    IsChecked="{Binding Path=SettingsFrageExit, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
                     Text="Änderung speichen" />
 
                 <Button
-                    Grid.Row="4"
+                    Grid.Row="6"
                     Grid.Column="1"
                     Width="100"
                     Margin="0,5,0,0"

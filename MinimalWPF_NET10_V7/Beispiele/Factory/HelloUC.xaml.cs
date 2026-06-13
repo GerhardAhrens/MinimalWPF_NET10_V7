@@ -23,6 +23,8 @@
             this.ShowLocalizationCommand = new CommandBase(commandParam => this.OnLocalization(commandParam), () => true);
             this.ShowEventAggregatorCommand = new CommandBase(commandParam => this.OnEventAggregator(commandParam), () => true);
             this.ShowFactoryCommand = new CommandBase(commandParam => this.OnFactory(commandParam), () => true);
+            this.ShowSingletonPatternCommand = new CommandBase(commandParam => this.OnSingletonPattern(commandParam), () => true);
+            this.ShowMessengerPatternCommand = new CommandBase(commandParam => this.OnMessengerPattern(commandParam), () => true);
             this.ShowNotificationBoxCommand = new CommandBase(commandParam => this.OnNotificationBox(commandParam), () => true);
             this.ShowSettingsCommand = new CommandBase(commandParam => this.OnSettings(commandParam), () => true);
 
@@ -44,6 +46,8 @@
         public CommandBase ShowLocalizationCommand { get; private set; }
         public CommandBase ShowEventAggregatorCommand { get; private set; }
         public CommandBase ShowFactoryCommand { get; private set; }
+        public CommandBase ShowSingletonPatternCommand { get; private set; }
+        public CommandBase ShowMessengerPatternCommand { get; private set; }
         public CommandBase ShowNotificationBoxCommand { get; private set; }
         public CommandBase ShowSettingsCommand { get; private set; }
 
@@ -232,6 +236,42 @@
             if (commandParam != null && commandParam is CommandButtons button)
             {
                 if (button == CommandButtons.ShowFactoryPattern)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.MenuButton = button;
+                    args.FromPage = CommandButtons.Home;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
+
+        private async void OnSingletonPattern(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ShowSingletonPattern)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.MenuButton = button;
+                    args.FromPage = CommandButtons.Home;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
+
+        private async void OnMessengerPattern(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ShowMessengerPattern)
                 {
                     ChangeViewEventArgs args = new();
                     args.MenuButton = button;

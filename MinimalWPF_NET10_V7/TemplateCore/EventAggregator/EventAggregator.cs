@@ -2,7 +2,10 @@
 {
     using System.Collections.Concurrent;
     using System.Collections.Immutable;
+    using System.Diagnostics;
 
+    [DebuggerStepThrough]
+    [Serializable]
     public sealed class EventAggregator : IEventAggregator
     {
         private readonly ConcurrentDictionary<Type, ImmutableArray<ISubscription>> _subscriptions = new();
