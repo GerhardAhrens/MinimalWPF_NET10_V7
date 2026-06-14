@@ -14,7 +14,7 @@
         x:Name="gridMain"
         Background="WhiteSmoke"
         ColumnDefinitions="*"
-        RowDefinitions="Auto,*">
+        RowDefinitions="Auto,auto,*">
 
         <!--#region Hauptmenübar-->
         <GroupBox
@@ -51,5 +51,98 @@
         </GroupBox>
 
         <!--#endregion Hauptmenübar-->
+
+        <GroupBox
+            Grid.Row="1"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Erklärung" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <TextBlock FontSize="13" TextWrapping="Wrap">
+                <Run Text="Das Singelton Pattern ermöglicht eine Instanz zu erstellen und bei jedm Aufruf genau diese eine Instanz zurückzuliefern" />
+                <Run Text="Die Singelton-Klasse ist als eine generisch Basisklasse implementiert. Über die Interfaces" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="ISingletonInitializable" />
+                <Run Text="und" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="ISingletonReloadable" />
+                <Run Text="kann gesteuert werden, ob zusätzlich eine Methode zum" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="Initialize()" />
+                <Run Text="und" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="ReloadContent()" />
+                <Run Text="implementiert werden können." />
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="2"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Beispiel" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <Grid
+                VerticalAlignment="Top"
+                ColumnDefinitions="150,150,*"
+                RowDefinitions="Auto,Auto,Auto,auto,auto,auto,auto">
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Erste Instanz erstellen" />
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=InitInstanzCommand}"
+                    CommandParameter="init"
+                    Content="Instanz erstellen" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="App Name" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    FontWeight="Black"
+                    Text="{Binding Path=AppName, FallbackValue=~AppName}" />
+
+            </Grid>
+        </GroupBox>
     </Grid>
 </base:UserControlBase>

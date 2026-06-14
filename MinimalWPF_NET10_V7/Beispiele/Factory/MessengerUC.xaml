@@ -14,7 +14,7 @@
         x:Name="gridMain"
         Background="WhiteSmoke"
         ColumnDefinitions="*"
-        RowDefinitions="Auto,*">
+        RowDefinitions="Auto,auto,*">
 
         <!--#region Hauptmenübar-->
         <GroupBox
@@ -51,5 +51,44 @@
         </GroupBox>
 
         <!--#endregion Hauptmenübar-->
+
+        <GroupBox
+            Grid.Row="1"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Erklärung" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <TextBlock FontSize="13" TextWrapping="Wrap">
+                <Run Text="Das Factory Pattern ermöglicht über die" />
+            </TextBlock>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="2"
+            Padding="10"
+            BorderBrush="Gray">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Blue"
+                        Text="Beispiel" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <TextBlock FontSize="13" TextWrapping="Wrap">
+                <Run Text="Das Factory Pattern ermöglicht über die" />
+            </TextBlock>
+        </GroupBox>
+
     </Grid>
 </base:UserControlBase>

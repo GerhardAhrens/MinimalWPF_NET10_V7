@@ -23,6 +23,7 @@ namespace MinimalWPF.Beispiel
     /// <summary>
     /// Interaktionslogik für SingletonUC.xaml
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>")]
     public partial class SingletonUC : UserControlBase
     {
         public SingletonUC(ChangeViewEventArgs args) : base(typeof(SingletonUC))
@@ -34,12 +35,22 @@ namespace MinimalWPF.Beispiel
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
+            this.InitInstanzCommand = new CommandBase(commandParam => this.OnInitInstanz(commandParam), () => true);
+
 
             this.DataContext = this;
         }
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase InitInstanzCommand { get; private set; }
+
+        public string AppName
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
 
         #endregion Properties
@@ -72,7 +83,16 @@ namespace MinimalWPF.Beispiel
                 }
             }
         }
-        #endregion Command Events
 
+        private void OnInitInstanz(object commandParam)
+        {
+            ConfigurationManager conf = SingletonBase<ConfigurationManager>.Instance;
+            if (conf != null)
+            {
+                this.AppName = conf.ApplicationName;
+            }
+        }
+
+        #endregion Command Events
     }
 }
