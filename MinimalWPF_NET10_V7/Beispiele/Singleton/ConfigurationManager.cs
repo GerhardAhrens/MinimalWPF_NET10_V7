@@ -17,13 +17,27 @@
 
         public void Initialize()
         {
+            Debug.WriteLine("Initialisierung läuft...");
+
             // Beispielwerte erstellen
             this.LoadConfiguration();
+
+            Debug.WriteLine("Initialisierung abgeschlossen");
         }
 
         public void ReloadContent()
         {
+            Debug.WriteLine("Reload gestartet...");
+
             this.LoadConfiguration();
+
+            Debug.WriteLine("Reload abgeschlossen");
+        }
+
+        public void Print()
+        {
+            Debug.WriteLine($"App: {this.ApplicationName}");
+            Debug.WriteLine($"Startup: {this.LastReload}");
         }
 
         private void LoadConfiguration()

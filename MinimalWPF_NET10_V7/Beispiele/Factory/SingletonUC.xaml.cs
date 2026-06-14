@@ -17,6 +17,7 @@ namespace MinimalWPF.Beispiel
 {
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
 
     using MinimalWPF.Beispiele;
 
@@ -36,6 +37,7 @@ namespace MinimalWPF.Beispiel
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
             this.InitInstanzCommand = new CommandBase(commandParam => this.OnInitInstanz(commandParam), () => true);
+            this.ReloadInstanzCommand = new CommandBase(commandParam => this.OnReloadInstanz(commandParam), () => true);
 
 
             this.DataContext = this;
@@ -44,8 +46,27 @@ namespace MinimalWPF.Beispiel
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
         public CommandBase InitInstanzCommand { get; private set; }
+        public CommandBase ReloadInstanzCommand { get; private set; }
 
         public string AppName
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
+        public string AppNameInit
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
+        public string AppNameDefault
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
+        public string InstanzEquals
         {
             get => base.GetValue<string>();
             set => base.SetValue(value);
@@ -90,6 +111,36 @@ namespace MinimalWPF.Beispiel
             if (conf != null)
             {
                 this.AppName = conf.ApplicationName;
+            }
+        }
+
+        private void OnReloadInstanz(object commandParam)
+        {
+            ConfigurationManager conf = SingletonBase<ConfigurationManager>.Instance;
+            if (conf != null)
+            {
+                this.AppNameInit = conf.ApplicationName;
+                App.DoEvents();
+                this.Dispatcher.Invoke(() => Mouse.OverrideCursor = Cursors.Wait);
+
+                Thread.Sleep(5000);
+                conf.ReloadContent();
+
+                this.AppNameDefault = conf.ApplicationName;
+                App.DoEvents();
+
+                this.Dispatcher.Invoke(() => Mouse.OverrideCursor = null);
+
+            }
+
+            ConfigurationManager conf1 = SingletonBase<ConfigurationManager>.Instance;
+            if (conf.Equals(conf1) == true)
+            {
+                this.InstanzEquals = "conf.Equals(conf1) == true";
+            }
+            else
+            {
+                this.InstanzEquals = "conf.Equals(conf1) == false";
             }
         }
 
