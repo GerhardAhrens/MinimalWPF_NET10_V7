@@ -67,7 +67,7 @@
             </GroupBox.Header>
 
             <TextBlock FontSize="13" TextWrapping="Wrap">
-                <Run Text="Das Factory Pattern ermöglicht über die" />
+                <Run Text="Mit dem Messenger-Pattern Messenger-Pattern kann die Kommunikation zwischen verschiedenen Programmkomponenten oder Systemen entkoppelt werden. Anstatt dass Objekte direkt miteinander reden, senden sie Nachrichten über eine zentrale Vermittlungsstelle – den Messenger" />
             </TextBlock>
         </GroupBox>
 
@@ -85,9 +85,42 @@
                 </StackPanel>
             </GroupBox.Header>
 
-            <TextBlock FontSize="13" TextWrapping="Wrap">
-                <Run Text="Das Factory Pattern ermöglicht über die" />
-            </TextBlock>
+            <Grid
+                VerticalAlignment="Top"
+                ColumnDefinitions="150,150,*"
+                RowDefinitions="Auto,Auto,Auto,auto,auto,auto,auto">
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Messenger ausführen" />
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="150"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=ReadMessengerCommand}"
+                    CommandParameter="init"
+                    Content="ausführen" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    Text="Menüpunkte" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    FontWeight="Black"
+                    Text="{Binding Path=MenuItem, FallbackValue=~MenuItem}" />
+            </Grid>
         </GroupBox>
 
     </Grid>

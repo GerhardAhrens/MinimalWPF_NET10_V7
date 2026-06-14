@@ -29,5 +29,18 @@
 
             return default;
         }
+
+        public IEnumerable<TResult> SendRequestAll<TMessage, TResult>(TMessage message)
+        {
+            if (!_handlers.TryGetValue(typeof(TMessage), out var handlers))
+            {
+                return Enumerable.Empty<TResult>();
+            }
+
+            return handlers
+                .Cast<Func<TMessage, TResult>>()
+                .Select(handler => handler(message))
+                .ToList();
+        }
     }
 }

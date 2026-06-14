@@ -78,6 +78,9 @@ namespace MinimalWPF
         /// </summary>
         public static EventAggregator EventAgg { get; } = new();
 
+        public static Messenger CurrentMessenger { get; set; } = new Messenger();
+
+
         /// <summary>
         /// Statische Eigenschaft für die globalen Einstellungen der Anwendung, hier können alle Einstellungen gespeichert werden, 
         /// die in der gesamten Anwendung benötigt werden, z.B. Spracheinstellung, Benutzername, etc.
