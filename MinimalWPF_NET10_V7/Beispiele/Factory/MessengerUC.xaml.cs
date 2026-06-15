@@ -89,7 +89,7 @@ namespace MinimalWPF.Beispiel
             _ = new ModulAService(App.CurrentMessenger);
             _ = new ModulBService(App.CurrentMessenger);
 
-            var menuItems = App.CurrentMessenger.SendRequestAll<GetMenuItemsRequest, MenuItemInfo>(new GetMenuItemsRequest());
+            var menuItems = App.CurrentMessenger.RequestAll<GetMenuItemsRequest, MenuItemInfo>(new GetMenuItemsRequest());
             this.MenuItem = string.Join("; ", menuItems.Select(s => s.Header));
         }
 
