@@ -1,6 +1,6 @@
 ﻿namespace System.Windows
 {
-    internal class IMessenger
+    interface IMessenger
     {
     }
 }

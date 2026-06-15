@@ -98,7 +98,7 @@ namespace MinimalWPF
             args.MenuButton = CommandButtons.Home;
             args.FromPage = CommandButtons.Home;
             this.ChangeControl(args);
-
+            var aa = Baustelle.Show();
         }
         #endregion Windows Events
 
