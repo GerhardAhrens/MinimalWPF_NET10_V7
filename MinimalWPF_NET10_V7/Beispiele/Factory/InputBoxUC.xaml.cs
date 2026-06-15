@@ -121,15 +121,17 @@ namespace MinimalWPF.Beispiel
             }
             else if (commandParam != null && commandParam.Equals("IB_DATETIME") == true)
             {
-                InputBoxResult<DateTime> result = InputBox.Show(Application.Current.MainWindow,
-                            new InputBoxOptions<DateTime>
+                InputBoxResult<DateTime?> result = InputBox.Show(Application.Current.MainWindow,
+                            new InputBoxOptions<DateTime?>
                             {
                                 Title = "Geburtstag",
                                 Message = "Gib deinen Geburtstag ein",
+                                IsRequired = false,
                             });
+
                 if (result != null && result.IsOk == true)
                 {
-                    this.Notification.Hinweis(result.Value.ToShortDateString());
+                    this.Notification.Hinweis(result.Value?.ToShortDateString());
                 }
             }
         }
