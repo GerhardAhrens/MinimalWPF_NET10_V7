@@ -67,7 +67,20 @@
             </GroupBox.Header>
 
             <TextBlock FontSize="13" TextWrapping="Wrap">
-                <Run Text="Ein Custom Data Type (benutzerdefinierter Datentyp) dient primär dazu, Daten in einer sinnvollen Struktur zusammenzufassen." />
+                <Run Text="Ein Custom Data Type (benutzerdefinierter Datentyp, CDT) dient primär dazu, Daten in einer sinnvollen Struktur zusammenzufassen." />
+                <LineBreak />
+                <Run Text="Custom Data Types sind besonders gut geeignet, wenn du zusammengehörige Daten als eigenständigen Typ modellieren möchtest, anstatt primitive Typen wie string, int oder decimal überall direkt zu verwenden." />
+                <LineBreak />
+                <Run Text="Ein weiter Vorteil besteht darin, das CDT besser lesbar und dem vertauschen von Parametern vorbeugen. So ist" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="public record EmailAddress(string Value); EmailAddress = " />
+                <Run Text="deutlicher erkennbar als" />
+                <Run
+                    Background="LightGray"
+                    Foreground="Black"
+                    Text="string email = &quot;max.mustermann@beispiel.de &quot;" />
             </TextBlock>
         </GroupBox>
 
