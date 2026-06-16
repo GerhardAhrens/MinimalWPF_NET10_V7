@@ -8,7 +8,7 @@
     xmlns:local="clr-namespace:MinimalWPF.Beispiele"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
-    d:DesignWidth="900"
+    d:DesignWidth="950"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -251,6 +251,18 @@
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowHtmlTextBlock}"
                     ToolTip="Demo Html TextBlock">
                     <Image Source="{StaticResource ResourceKey=IconHTMLTagBR}" Stretch="Uniform" />
+                </Button>
+
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=ShowDomainClassCommand}"
+                    CommandParameter="{x:Static beispiel:CommandButtons.ShowCustomDataType}"
+                    ToolTip="Demo zu Custom Data Type">
+                    <Image Source="{StaticResource ResourceKey=IconCustomDataType}" Stretch="Uniform" />
                 </Button>
 
                 <Button

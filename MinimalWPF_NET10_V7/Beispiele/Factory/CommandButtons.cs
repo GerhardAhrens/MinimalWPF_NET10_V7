@@ -38,6 +38,8 @@
         ShowMessengerPattern = 15,
         [Description("Demo zu Html TextBlock")]
         ShowHtmlTextBlock = 16,
+        [Description("Demo zu Domain Typ")]
+        ShowCustomDataType = 17,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

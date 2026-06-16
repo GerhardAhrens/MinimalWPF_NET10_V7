@@ -11,6 +11,146 @@
     <!--#endregion XAML Icon Quelle-->
 
     <!--#region Farbige Icon Symbole auf Basis von DrawingImage-->
+    <DrawingImage x:Key="IconCustomDataType">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+
+                <!--  Rahmen  -->
+                <GeometryDrawing Brush="#7A5AF8">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="2,2,12,12" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Datenspalten  -->
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="4,4,2,7" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="7,4,2,7" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="10,4,2,7" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Typ-Kennzeichnung  -->
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="5,12,6,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="IconCustomDataType2">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+
+                <GeometryDrawing Brush="#7A5AF8">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry Figures="M5,2 L4,2 3,3 3,6 2,7 3,8 3,13 4,14 5,14 M11,2 L12,2 13,3 13,6 14,7 13,8 13,13 12,14 11,14" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Datenzeilen  -->
+                <GeometryDrawing Brush="#7A5AF8">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="6,5,4,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <GeometryDrawing Brush="#7A5AF8">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="6,8,4,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <GeometryDrawing Brush="#7A5AF8">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="6,11,4,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="IconDomainClass">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+
+                <!--  Hintergrund  -->
+                <GeometryDrawing Brush="#4A90E2">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="2,2,12,12" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Klassenkopf  -->
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="4,4,8,3" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Attribute  -->
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="4,8,6,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="4,10,5,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Methoden  -->
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="4,12,7,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="IconDomainClassDDD">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+
+                <!--  Hexagon  -->
+                <GeometryDrawing Brush="#2D7D46">
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry Figures="M8,1 L14,4.5 L14,11.5 L8,15 L2,11.5 L2,4.5 Z" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  D  -->
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <RectangleGeometry Rect="5,4,1.5,8" />
+                            <PathGeometry Figures="M6.5,4 L9,4 C11,4 12,5.5 12,8 C12,10.5 11,12 9,12 L6.5,12 Z" />
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <DrawingImage x:Key="IconHTMLTagBR">
         <DrawingImage.Drawing>
             <DrawingGroup>
@@ -33,137 +173,145 @@
         <DrawingImage.Drawing>
             <DrawingGroup>
 
-                <!-- Verbindungslinien -->
+                <!--  Verbindungslinien  -->
                 <GeometryDrawing>
                     <GeometryDrawing.Pen>
-                        <Pen Brush="#1E5EFF"
-                         Thickness="6"
-                         DashStyle="{x:Static DashStyles.Dash}" />
+                        <Pen
+                            Brush="#1E5EFF"
+                            DashStyle="{x:Static DashStyles.Dash}"
+                            Thickness="6" />
                     </GeometryDrawing.Pen>
 
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
-                            <LineGeometry StartPoint="256,256" EndPoint="120,120"/>
-                            <LineGeometry StartPoint="256,256" EndPoint="392,120"/>
-                            <LineGeometry StartPoint="256,256" EndPoint="120,392"/>
-                            <LineGeometry StartPoint="256,256" EndPoint="392,392"/>
+                            <LineGeometry StartPoint="256,256" EndPoint="120,120" />
+                            <LineGeometry StartPoint="256,256" EndPoint="392,120" />
+                            <LineGeometry StartPoint="256,256" EndPoint="120,392" />
+                            <LineGeometry StartPoint="256,256" EndPoint="392,392" />
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
 
-                <!-- Pfeilspitzen -->
+                <!--  Pfeilspitzen  -->
                 <GeometryDrawing Brush="#1E5EFF">
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
 
-                            <!-- links oben -->
-                            <PathGeometry Figures="M135,135 L110,125 L125,150 Z"/>
+                            <!--  links oben  -->
+                            <PathGeometry Figures="M135,135 L110,125 L125,150 Z" />
 
-                            <!-- rechts oben -->
-                            <PathGeometry Figures="M377,135 L402,125 L387,150 Z"/>
+                            <!--  rechts oben  -->
+                            <PathGeometry Figures="M377,135 L402,125 L387,150 Z" />
 
-                            <!-- links unten -->
-                            <PathGeometry Figures="M135,377 L110,387 L125,362 Z"/>
+                            <!--  links unten  -->
+                            <PathGeometry Figures="M135,377 L110,387 L125,362 Z" />
 
-                            <!-- rechts unten -->
-                            <PathGeometry Figures="M377,377 L402,387 L387,362 Z"/>
+                            <!--  rechts unten  -->
+                            <PathGeometry Figures="M377,377 L402,387 L387,362 Z" />
 
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
 
-                <!-- Umschlag -->
+                <!--  Umschlag  -->
                 <GeometryDrawing Brush="#4C8DFF">
                     <GeometryDrawing.Geometry>
-                        <RectangleGeometry Rect="180,180,152,152"
-                                       RadiusX="20"
-                                       RadiusY="20"/>
+                        <RectangleGeometry
+                            RadiusX="20"
+                            RadiusY="20"
+                            Rect="180,180,152,152" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
 
-                <!-- Umschlag-Klappe -->
+                <!--  Umschlag-Klappe  -->
                 <GeometryDrawing Brush="White">
                     <GeometryDrawing.Geometry>
-                        <PathGeometry Figures="
-                        M180,180
-                        L256,240
-                        L332,180
-                        L320,180
-                        L256,225
-                        L192,180 Z"/>
+                        <PathGeometry Figures="                         M180,180                         L256,240                         L332,180                         L320,180                         L256,225                         L192,180 Z" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
 
-                <!-- Benutzerkreise -->
+                <!--  Benutzerkreise  -->
                 <GeometryDrawing Brush="#1E5EFF">
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
 
-                            <EllipseGeometry Center="80,80"
-                                         RadiusX="55"
-                                         RadiusY="55"/>
+                            <EllipseGeometry
+                                Center="80,80"
+                                RadiusX="55"
+                                RadiusY="55" />
 
-                            <EllipseGeometry Center="432,80"
-                                         RadiusX="55"
-                                         RadiusY="55"/>
+                            <EllipseGeometry
+                                Center="432,80"
+                                RadiusX="55"
+                                RadiusY="55" />
 
-                            <EllipseGeometry Center="80,432"
-                                         RadiusX="55"
-                                         RadiusY="55"/>
+                            <EllipseGeometry
+                                Center="80,432"
+                                RadiusX="55"
+                                RadiusY="55" />
 
-                            <EllipseGeometry Center="432,432"
-                                         RadiusX="55"
-                                         RadiusY="55"/>
-
-                        </GeometryGroup>
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-
-                <!-- Köpfe -->
-                <GeometryDrawing Brush="White">
-                    <GeometryDrawing.Geometry>
-                        <GeometryGroup>
-
-                            <EllipseGeometry Center="80,65"
-                                         RadiusX="18"
-                                         RadiusY="18"/>
-
-                            <EllipseGeometry Center="432,65"
-                                         RadiusX="18"
-                                         RadiusY="18"/>
-
-                            <EllipseGeometry Center="80,417"
-                                         RadiusX="18"
-                                         RadiusY="18"/>
-
-                            <EllipseGeometry Center="432,417"
-                                         RadiusX="18"
-                                         RadiusY="18"/>
+                            <EllipseGeometry
+                                Center="432,432"
+                                RadiusX="55"
+                                RadiusY="55" />
 
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
 
-                <!-- Körper -->
+                <!--  Köpfe  -->
                 <GeometryDrawing Brush="White">
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
 
-                            <RectangleGeometry Rect="52,90,56,26"
-                                           RadiusX="10"
-                                           RadiusY="10"/>
+                            <EllipseGeometry
+                                Center="80,65"
+                                RadiusX="18"
+                                RadiusY="18" />
 
-                            <RectangleGeometry Rect="404,90,56,26"
-                                           RadiusX="10"
-                                           RadiusY="10"/>
+                            <EllipseGeometry
+                                Center="432,65"
+                                RadiusX="18"
+                                RadiusY="18" />
 
-                            <RectangleGeometry Rect="52,442,56,26"
-                                           RadiusX="10"
-                                           RadiusY="10"/>
+                            <EllipseGeometry
+                                Center="80,417"
+                                RadiusX="18"
+                                RadiusY="18" />
 
-                            <RectangleGeometry Rect="404,442,56,26"
-                                           RadiusX="10"
-                                           RadiusY="10"/>
+                            <EllipseGeometry
+                                Center="432,417"
+                                RadiusX="18"
+                                RadiusY="18" />
+
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Körper  -->
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+
+                            <RectangleGeometry
+                                RadiusX="10"
+                                RadiusY="10"
+                                Rect="52,90,56,26" />
+
+                            <RectangleGeometry
+                                RadiusX="10"
+                                RadiusY="10"
+                                Rect="404,90,56,26" />
+
+                            <RectangleGeometry
+                                RadiusX="10"
+                                RadiusY="10"
+                                Rect="52,442,56,26" />
+
+                            <RectangleGeometry
+                                RadiusX="10"
+                                RadiusY="10"
+                                Rect="404,442,56,26" />
 
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
@@ -172,7 +320,7 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
-    
+
     <DrawingImage x:Key="IconSingletonPattern">
         <DrawingImage.Drawing>
             <DrawingGroup>

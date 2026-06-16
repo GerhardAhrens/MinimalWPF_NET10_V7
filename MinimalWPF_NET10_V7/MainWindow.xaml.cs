@@ -187,7 +187,7 @@ namespace MinimalWPF
                     else if (button.In(CommandButtons.Home, CommandButtons.GoBack, CommandButtons.ShowResult, CommandButtons.ShowInputBox, 
                         CommandButtons.ShowDialogService, CommandButtons.ShowSourceGen, CommandButtons.Localization, 
                         CommandButtons.ShowEventAggregator, CommandButtons.ShowFactoryPattern, CommandButtons.ShowSingletonPattern,CommandButtons.ShowMessengerPattern,
-                        CommandButtons.ShowNotificationBox, CommandButtons.ShowSettings, CommandButtons.ShowHtmlTextBlock))
+                        CommandButtons.ShowNotificationBox, CommandButtons.ShowSettings, CommandButtons.ShowHtmlTextBlock, CommandButtons.ShowCustomDataType))
                     {
 
                         if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
@@ -228,6 +228,7 @@ namespace MinimalWPF
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowInputBox, (param) => new InputBoxUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowSettings, (param) => new SettingsUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowHtmlTextBlock, (param) => new HtmlUC((ChangeViewEventArgs)param!));
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowCustomDataType, (param) => new CustomDataTypeUC((ChangeViewEventArgs)param!));
         }
     }
 }
