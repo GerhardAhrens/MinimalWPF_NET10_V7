@@ -20,10 +20,4 @@
     <Resource Include="Resources\Picture\ApplicationIcon.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="TemplateCore\InputBoxWindow\InputBoxView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
 </Project>

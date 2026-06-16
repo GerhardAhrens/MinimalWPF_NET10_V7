@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MinimalWPF.Beispiele"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
+    d:DesignHeight="490"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
@@ -141,6 +141,13 @@
                     Command="{Binding Path=DialogServiceCommand}"
                     CommandParameter="6"
                     Content="Variante 6; Aufruf mit Konfiguration (.Show()/.ShowDialog())" />
+
+                <Button
+                    Height="30"
+                    Margin="0,5,0,0"
+                    Command="{Binding Path=DialogServiceCommand}"
+                    CommandParameter="7"
+                    Content="Variante 7; Custom static Dialog" />
             </StackPanel>
         </GroupBox>
     </Grid>

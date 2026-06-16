@@ -27,6 +27,7 @@
             this.ShowMessengerPatternCommand = new CommandBase(commandParam => this.OnMessengerPattern(commandParam), () => true);
             this.ShowNotificationBoxCommand = new CommandBase(commandParam => this.OnNotificationBox(commandParam), () => true);
             this.ShowSettingsCommand = new CommandBase(commandParam => this.OnSettings(commandParam), () => true);
+            this.ShowHtmlCommand = new CommandBase(commandParam => this.OnHtml(commandParam), () => true);
 
             this.InformationCommand = new CommandBase(commandParam =>  this.OnPopup(commandParam));
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
@@ -50,6 +51,7 @@
         public CommandBase ShowMessengerPatternCommand { get; private set; }
         public CommandBase ShowNotificationBoxCommand { get; private set; }
         public CommandBase ShowSettingsCommand { get; private set; }
+        public CommandBase ShowHtmlCommand { get; private set; }
 
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
@@ -321,6 +323,23 @@
             }
         }
 
+        private async void OnHtml(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ShowHtmlTextBlock)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.MenuButton = button;
+                    args.FromPage = CommandButtons.Home;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
         #endregion Command Events
     }
 }

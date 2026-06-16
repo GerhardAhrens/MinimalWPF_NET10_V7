@@ -19,8 +19,11 @@ namespace System.Windows
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Runtime.CompilerServices;
 
+    [DebuggerStepThrough]
+    [Serializable]
     public static class StatusbarMain
     {
         private static StatusbarModel _StatusbarModel = new StatusbarModel();
@@ -31,6 +34,8 @@ namespace System.Windows
         }
     }
 
+    [DebuggerStepThrough]
+    [Serializable]
     public class StatusbarModel : INotifyPropertyChanged
     {
         public StatusbarModel()

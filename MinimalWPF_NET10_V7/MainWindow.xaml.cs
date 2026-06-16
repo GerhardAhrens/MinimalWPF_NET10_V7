@@ -98,7 +98,6 @@ namespace MinimalWPF
             args.MenuButton = CommandButtons.Home;
             args.FromPage = CommandButtons.Home;
             this.ChangeControl(args);
-            var aa = Baustelle.Show();
         }
         #endregion Windows Events
 
@@ -188,7 +187,7 @@ namespace MinimalWPF
                     else if (button.In(CommandButtons.Home, CommandButtons.GoBack, CommandButtons.ShowResult, CommandButtons.ShowInputBox, 
                         CommandButtons.ShowDialogService, CommandButtons.ShowSourceGen, CommandButtons.Localization, 
                         CommandButtons.ShowEventAggregator, CommandButtons.ShowFactoryPattern, CommandButtons.ShowSingletonPattern,CommandButtons.ShowMessengerPattern,
-                        CommandButtons.ShowNotificationBox, CommandButtons.ShowSettings))
+                        CommandButtons.ShowNotificationBox, CommandButtons.ShowSettings, CommandButtons.ShowHtmlTextBlock))
                     {
 
                         if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
@@ -228,6 +227,7 @@ namespace MinimalWPF
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowNotificationBox, (param) => new NotificationBoxUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowInputBox, (param) => new InputBoxUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowSettings, (param) => new SettingsUC((ChangeViewEventArgs)param!));
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowHtmlTextBlock, (param) => new HtmlUC((ChangeViewEventArgs)param!));
         }
     }
 }

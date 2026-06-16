@@ -172,6 +172,15 @@ namespace MinimalWPF.Beispiele
                     // Abbrechen
                 }
             }
+            else if (commandParam != null && commandParam.Equals("7") == true)
+            {
+                DialogResult response = Baustelle.Show();
+                if (response.Accepted == true)
+                {
+                    // OK
+                }
+
+            }
         }
 
         #endregion Command Events

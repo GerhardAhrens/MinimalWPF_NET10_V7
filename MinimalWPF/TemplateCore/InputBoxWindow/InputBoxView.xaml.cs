@@ -20,13 +20,14 @@
         private TextBox _textBox;
         private CheckBox _checkBox;
         private DatePicker _datePicker;
+        private bool _hasDateError;
 
         public object ResultValue { get; private set; }
 
         public InputBoxView()
         {
             this.InitializeComponent();
-
+            this.ShowInTaskbar = false;
             this.SourceInitialized += (s, e) => {
                 IntPtr hwnd = new WindowInteropHelper(this).Handle;
                 // API Aufruf zum Entfernen des Systemmenüs
@@ -80,14 +81,27 @@
                 return;
             }
 
-            if (this._targetType == typeof(DateTime))
+            if (this._targetType == typeof(DateTime?))
             {
-                this._datePicker = new DatePicker
+                if (options.DefaultValue == null)
                 {
-                    SelectedDate = (DateTime?)(object)options.DefaultValue
-                };
+                    this._datePicker = new DatePicker
+                    {
+                        SelectedDate = null
+                    };
+                }
+                else
+                {
+                    this._datePicker = new DatePicker
+                    {
+                        SelectedDate = (DateTime?)(object)options.DefaultValue
+                    };
+                }
 
+
+                this._datePicker.DateValidationError += this.DatePicker_DateValidationError;
                 this._datePicker.SelectedDateChanged += (_, _) => this.ValidateInput();
+                this._datePicker.PreviewTextInput += (_, _) => this.ValidateInput();
 
                 InputHost.Content = this._datePicker;
                 this._datePicker.Focus();
@@ -129,19 +143,29 @@
                 return;
             }
 
-            if (this._targetType == typeof(DateTime))
+            if (this._targetType == typeof(DateTime?))
             {
-                this._datePicker = new DatePicker
+                if (defaultValue == null)
                 {
-                    SelectedDate = defaultValue as DateTime?
-                };
+                    this._datePicker = new DatePicker
+                    {
+                        SelectedDate = null
+                    };
+                }
+                else
+                {
+                    this._datePicker = new DatePicker
+                    {
+                        SelectedDate = (DateTime?)(object)defaultValue
+                    };
+                }
 
-                this._datePicker.Focus();
+                this._datePicker.DateValidationError += this.DatePicker_DateValidationError;
                 this._datePicker.SelectedDateChanged += (_, _) => this.ValidateInputDefault();
                 this._datePicker.PreviewTextInput += (_, _) => this.ValidateInputDefault();
-                this._datePicker.Focus();
 
                 InputHost.Content = this._datePicker;
+                this._datePicker.Focus();
                 return;
             }
 
@@ -156,6 +180,12 @@
             this._textBox.Focus();
 
             InputHost.Content = this._textBox;
+        }
+
+        private void DatePicker_DateValidationError(object sender, DatePickerDateValidationErrorEventArgs e)
+        {
+            this._hasDateError = true;
+            e.ThrowException = false;
         }
 
         private void ValidateInput()
@@ -222,18 +252,16 @@
                 }
             }
 
-            if (_targetType == typeof(DateTime))
+            if (_targetType == typeof(DateTime?))
             {
-                if (string.IsNullOrWhiteSpace(_datePicker?.Text))
+                if (this._hasDateError)
                 {
-                    if (options.IsRequired)
-                    {
-                        TxtError.Text = "Datum auswählen.";
-                        BtnOk.IsEnabled = false;
-                        return;
-                    }
+                    TxtError.Text = "Ungültiges Datum.";
+                    BtnOk.IsEnabled = false;
+                    return;
                 }
-                else
+
+                if (string.IsNullOrWhiteSpace(_datePicker?.Text) == false)
                 {
                     bool validDate = DateTime.TryParse(_datePicker.Text, CultureInfo.CurrentCulture, DateTimeStyles.None, out DateTime parsedDate);
 
@@ -255,6 +283,15 @@
                     {
                         this.TxtError.Text = $"Datum bis {options.MaxDate:d}";
                         this.BtnOk.IsEnabled = false;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (options.IsRequired)
+                    {
+                        TxtError.Text = "Datum auswählen.";
+                        BtnOk.IsEnabled = false;
                         return;
                     }
                 }
@@ -294,9 +331,16 @@
             {
                 valid = true;
             }
-            else if (this._targetType == typeof(DateTime))
+            else if (this._targetType == typeof(DateTime?))
             {
-                if (string.IsNullOrEmpty(this._datePicker.Text) == true || this._datePicker?.SelectedDate == null)
+                if (this._hasDateError)
+                {
+                    TxtError.Text = "Ungültiges Datum.";
+                    BtnOk.IsEnabled = false;
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(this._datePicker.Text) == true)
                 {
                     this._datePicker?.SelectedDate = null;
                     this.TxtError.Text = "Bitte ein Datum auswählen.";

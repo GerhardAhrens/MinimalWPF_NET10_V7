@@ -36,6 +36,8 @@
         ShowSingletonPattern = 14,
         [Description("Demo zu Messenger Pattern")]
         ShowMessengerPattern = 15,
+        [Description("Demo zu Html TextBlock")]
+        ShowHtmlTextBlock = 16,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]
