@@ -36,7 +36,7 @@
                     Grid.Row="0"
                     Background="#FAFAFB"
                     CornerRadius="5">
-                    <beispiel:InformationUC DataContext="{Binding Path=., RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <beispiel:InformationUC />
                 </Border>
 
                 <base:IconButton
@@ -70,7 +70,7 @@
                     Grid.Row="0"
                     Background="#FAFAFB"
                     CornerRadius="5">
-                    <beispiel:SettingsPopupUC DataContext="{Binding Path=., RelativeSource={RelativeSource AncestorType=Window}}" />
+                    <beispiel:SettingsPopupUC />
                 </Border>
 
                 <base:IconButton

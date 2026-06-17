@@ -40,33 +40,12 @@ namespace MinimalWPF
 
             this.RegisterFactory();
 
-            this.ApplikationVersion = base.ApplicationVersion.ToString();
-            this.LaufzeitVersion = base.RuntimeVersion;
-            this.WinVersion = base.WindowsVersion;
             this.DataContext = this;
         }
 
         #region Properties
 
         public string WindowTitel
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string ApplikationVersion
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string LaufzeitVersion
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string WinVersion
         {
             get => base.GetValue<string>();
             set => base.SetValue(value);
