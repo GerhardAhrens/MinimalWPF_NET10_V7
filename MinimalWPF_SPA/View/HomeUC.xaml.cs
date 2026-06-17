@@ -51,12 +51,20 @@ namespace MinimalWPF.View
         public CommandBase CloseInformationPopupCommand { get; private set; }
         public CommandBase CloseSettingsPopupCommand { get; private set; }
 
+        public string WindowTitel
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
         #endregion Properties
 
         #region Windows Events
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
+
             if (App.EventAgg.IsSubscription<StatusEvent>() == true)
             {
                 await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));

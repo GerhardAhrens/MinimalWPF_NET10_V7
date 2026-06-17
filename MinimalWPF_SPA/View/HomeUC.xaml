@@ -101,18 +101,11 @@
         </base:DialogPopup>
         <!--#endregion Popup im MainWindow Dialog-->
 
-        <ToolBar
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            Background="WhiteSmoke"
-            Band="1"
-            BandIndex="1"
-            BorderBrush="Black"
-            BorderThickness="0,0,0,2"
-            DockPanel.Dock="Top">
-            <DockPanel Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ToolBarPanel}}}">
+        <Border BorderBrush="DarkGray" BorderThickness="0,0,0,2">
+            <DockPanel>
                 <!--  Linke Buttons  -->
                 <Button
+                    Grid.Column="0"
                     Width="{StaticResource ResourceKey=ButtonSize}"
                     Height="{StaticResource ResourceKey=ButtonSize}"
                     Margin="5,0,0,0"
@@ -124,7 +117,11 @@
                     <Image Source="{StaticResource ResourceKey=IconApplicationEnd}" Stretch="Uniform" />
                 </Button>
 
+                <Separator Margin="5,0,0,0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
+
                 <Button
+                    Grid.Column="1"
                     Width="{StaticResource ResourceKey=ButtonSize}"
                     Height="{StaticResource ResourceKey=ButtonSize}"
                     Margin="5,0,0,0"
@@ -132,6 +129,7 @@
 
                 <!--  Rechte Buttons (müssen zuerst im DockPanel definiert werden, damit die Reihenfolge stimmt)  -->
                 <Button
+                    Grid.Column="3"
                     Width="{StaticResource ResourceKey=ButtonSize}"
                     Height="{StaticResource ResourceKey=ButtonSize}"
                     Margin="0,0,5,0"
@@ -145,6 +143,7 @@
                 </Button>
 
                 <Button
+                    Grid.Column="4"
                     Width="{StaticResource ResourceKey=ButtonSize}"
                     Height="{StaticResource ResourceKey=ButtonSize}"
                     Margin="0,0,5,0"
@@ -157,10 +156,14 @@
                     <Image Source="{StaticResource ResourceKey=ApplicationSettingsIcon}" Stretch="Uniform" />
                 </Button>
 
-                <!--  Platzhalter (lässt den leeren Raum in der Mitte frei)  -->
-                <Separator Visibility="Collapsed" />
+                <Separator
+                    Width="1"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
             </DockPanel>
-        </ToolBar>
+        </Border>
 
         <TextBlock
             Grid.Row="2"
