@@ -33,6 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Source\DemoCustomDataType.cs.source" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="ApplicationIcon.ico" />
   </ItemGroup>
 

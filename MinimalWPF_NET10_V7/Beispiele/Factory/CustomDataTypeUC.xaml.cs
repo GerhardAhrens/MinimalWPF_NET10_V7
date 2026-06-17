@@ -15,8 +15,11 @@
 
 namespace MinimalWPF.Beispiel
 {
+    using System.IO;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Resources;
 
     using MinimalWPF.Beispiele;
 
@@ -31,7 +34,7 @@ namespace MinimalWPF.Beispiel
         {
             this.InitializeComponent();
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
-
+            
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
@@ -51,6 +54,15 @@ namespace MinimalWPF.Beispiel
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            string outCodeCS = string.Empty;
+            string className = "DemoCustomDataType";
+            Uri uriCS = new Uri($"pack://application:,,,/Resources/Source/{className}.cs.source", UriKind.Absolute);
+            StreamResourceInfo sri = Application.GetResourceStream(uriCS);
+            using StreamReader reader = new StreamReader(sri.Stream);
+            outCodeCS = reader.ReadToEnd();
+
+            this.TxtSyntaxBox.Text = outCodeCS;
+
             if (App.EventAgg.IsSubscription<StatusEvent>() == true)
             {
                 await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));

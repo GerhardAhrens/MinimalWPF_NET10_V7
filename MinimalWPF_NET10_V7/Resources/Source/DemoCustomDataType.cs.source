@@ -1,0 +1,68 @@
+namespace MinimalWPF.Beispiel
+{
+    using System.Windows;
+
+    public class DemoCustomDataType
+    {
+        public DemoCustomDataType()
+        {
+            DemoA();
+            DemoB();
+            DemoC();
+            DemoD();
+        }
+
+        public record Email(string value); 
+
+        private static void DemoA()
+        {
+            Email mail = new Email("max.mustermann@beispiel.de");
+        }
+
+        private static void DemoB()
+        {
+            ID id = Guid.NewGuid();
+            ID.IDStatus status = id.Status;
+            if (status == ID.IDStatus.New)
+            {
+                // New ID
+            }
+            else if (status == ID.IDStatus.Edit)
+            {
+                // Edit
+            }
+            else
+            {
+                // Fehler
+            }
+        }
+
+        private static void DemoC()
+        {
+            ID id = Guid.Empty;
+            ID.IDStatus status = id.Status;
+            if (status == ID.IDStatus.New)
+            {
+                // New ID
+            }
+            else if (status == ID.IDStatus.Edit)
+            {
+                // Edit
+            }
+            else
+            {
+                // Fehler
+            }
+        }
+
+        private static void DemoD()
+        {
+            ID id1 = Guid.NewGuid();
+            ID id2 = id1;
+            if (id2.Equals(id1) == true)
+            {
+
+            }
+        }
+    }
+}

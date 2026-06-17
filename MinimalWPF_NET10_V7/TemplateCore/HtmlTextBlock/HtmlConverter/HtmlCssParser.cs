@@ -14,18 +14,10 @@ namespace System.Windows
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Text;
     using System.Xml;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1310:\"StringComparison\" für Richtigkeit angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:CultureInfo angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1866:Char-Überladung verwenden", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:IFormatProvider angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1311:Geben Sie eine Kultur an oder verwenden Sie eine invariante Version", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1845:\"string.Concat\" auf span-Basis verwenden", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:CultureInfo angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1862:\"StringComparison\"-Methodenüberladungen verwenden, um Zeichenfolgenvergleiche ohne Beachtung der Groß-/Kleinschreibung durchzuführen", Justification = "<Ausstehend>")]
     internal static class HtmlCssParser
     {
         internal static void GetElementPropertiesFromCssAttributes(XmlElement htmlElement, string elementName, CssStylesheet stylesheet, Hashtable localProperties, List<XmlElement> sourceContext)
@@ -53,8 +45,8 @@ namespace System.Windows
                     styleNameValue = styleValues[i].Split(':');
                     if (styleNameValue.Length == 2)
                     {
-                        string styleName = styleNameValue[0].Trim().ToLower();
-                        string styleValue = HtmlToXamlConverter.UnQuote(styleNameValue[1].Trim()).ToLower();
+                        string styleName = styleNameValue[0].Trim().ToLower(CultureInfo.CurrentCulture);
+                        string styleValue = HtmlToXamlConverter.UnQuote(styleNameValue[1].Trim()).ToLower(CultureInfo.CurrentCulture);
                         int nextIndex = 0;
 
                         switch (styleName)
@@ -335,7 +327,6 @@ namespace System.Windows
                                 "threedface", "threedhighlight", "threedlightshadow", "threedshadow", "window", "windowframe", "windowtext",
                 };
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1862:\"StringComparison\"-Methodenüberladungen verwenden, um Zeichenfolgenvergleiche ohne Beachtung der Groß-/Kleinschreibung durchzuführen", Justification = "<Ausstehend>")]
         private static string ParseCssColor(string styleValue, ref int nextIndex)
         {
             //  Implement color parsing
@@ -358,7 +349,7 @@ namespace System.Windows
                     nextIndex++;
                     while (nextIndex < styleValue.Length)
                     {
-                        character = Char.ToUpper(styleValue[nextIndex]);
+                        character = Char.ToUpper(styleValue[nextIndex],CultureInfo.CurrentCulture);
                         if (!('0' <= character && character <= '9' || 'A' <= character && character <= 'F'))
                         {
                             break;
@@ -370,7 +361,7 @@ namespace System.Windows
                         color = styleValue.Substring(startIndex, nextIndex - startIndex);
                     }
                 }
-                else if (styleValue.Substring(nextIndex, 3).ToLower() == "rbg")
+                else if (styleValue.Substring(nextIndex, 3).Equals("rbg", StringComparison.Ordinal))
                 {
                     //  Implement real rgb() color parsing
                     while (nextIndex < styleValue.Length && styleValue[nextIndex] != ')')
@@ -817,16 +808,6 @@ namespace System.Windows
         }
     }
 
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1310:\"StringComparison\" für Richtigkeit angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:CultureInfo angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1866:Char-Überladung verwenden", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:IFormatProvider angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1311:Geben Sie eine Kultur an oder verwenden Sie eine invariante Version", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1845:\"string.Concat\" auf span-Basis verwenden", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:CultureInfo angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1862:\"StringComparison\"-Methodenüberladungen verwenden, um Zeichenfolgenvergleiche ohne Beachtung der Groß-/Kleinschreibung durchzuführen", Justification = "<Ausstehend>")]
     internal sealed class CssStylesheet
     {
         // Constructor
@@ -842,14 +823,14 @@ namespace System.Windows
         // for further cascading style application
         public void DiscoverStyleDefinitions(XmlElement htmlElement)
         {
-            if (htmlElement.LocalName.ToLower() == "link")
+            if (htmlElement.LocalName.Equals("link", StringComparison.OrdinalIgnoreCase))
             {
                 return;
                 //  Add LINK elements processing for included stylesheets
                 // <LINK href="http://sc.msn.com/global/css/ptnr/orange.css" type=text/css \r\nrel=stylesheet>
             }
 
-            if (htmlElement.LocalName.ToLower() != "style")
+            if (!htmlElement.LocalName.Equals("style", StringComparison.OrdinalIgnoreCase))
             {
                 // This is not a STYLE element. Recurse into it
                 for (XmlNode htmlChildNode = htmlElement.FirstChild; htmlChildNode != null; htmlChildNode = htmlChildNode.NextSibling)
@@ -928,29 +909,29 @@ namespace System.Windows
         }
 
         // Returns a string with all c-style comments replaced by spaces
-        private string RemoveComments(string text)
+        private static string RemoveComments(string text)
         {
-            int commentStart = text.IndexOf("/*");
+            int commentStart = text.IndexOf("/*",StringComparison.Ordinal);
             if (commentStart < 0)
             {
                 return text;
             }
 
-            int commentEnd = text.IndexOf("*/", commentStart + 2);
+            int commentEnd = text.IndexOf("*/", commentStart + 2, StringComparison.Ordinal);
             if (commentEnd < 0)
             {
                 return text.Substring(0, commentStart);
             }
 
-            return text.Substring(0, commentStart) + " " + RemoveComments(text.Substring(commentEnd + 2));
+            return string.Concat(text.AsSpan(0, commentStart), " ", RemoveComments(text.Substring(commentEnd + 2)));
         }
 
 
         public void AddStyleDefinition(string selector, string definition)
         {
             // Notrmalize parameter values
-            selector = selector.Trim().ToLower();
-            definition = definition.Trim().ToLower();
+            selector = selector.Trim().ToLower(CultureInfo.CurrentCulture);
+            definition = definition.Trim().ToLower(CultureInfo.CurrentCulture);
             if (selector.Length == 0 || definition.Length == 0)
             {
                 return;
@@ -1001,7 +982,7 @@ namespace System.Windows
             return null;
         }
 
-        private bool MatchSelectorLevel(string selectorLevel, XmlElement xmlElement)
+        private static bool MatchSelectorLevel(string selectorLevel, XmlElement xmlElement)
         {
             if (selectorLevel.Length == 0)
             {

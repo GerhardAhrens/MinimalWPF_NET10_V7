@@ -26,7 +26,12 @@ namespace System.Windows
             this.Value = id;
         }
 
-        public int Value { get; }
+        public ID(Guid id)
+        {
+            this.Value = id;
+        }
+
+        public object Value { get; }
 
         public IDStatus Status { get; private set; }
 
@@ -37,7 +42,47 @@ namespace System.Windows
 
         public override string ToString()
         {
-            return this.Value.ToString(CultureInfo.CurrentCulture);
+            return this.Value.ToString();
+        }
+
+        public static implicit operator ID(Guid value)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(value.ToString(), nameof(value));
+            IDStatus state = IDStatus.None;
+
+            if (value == Guid.Empty)
+            {
+                state = IDStatus.New;
+            }
+            else
+            {
+                state = IDStatus.Edit;
+            }
+
+            Guid outInt = Guid.Empty;
+            if (Guid.TryParse(value.ToString(), out outInt) == false)
+            {
+                state = IDStatus.Error;
+            }
+            else
+            {
+                if (outInt == Guid.Empty)
+                {
+                    outInt = Guid.Empty;
+                    state = IDStatus.New;
+                }
+                else
+                {
+                    state = IDStatus.Edit;
+                }
+            }
+
+            ID instance = new ID((Guid)outInt)
+            {
+                Status = state
+            };
+
+            return instance;
         }
 
         public static implicit operator ID(int value)

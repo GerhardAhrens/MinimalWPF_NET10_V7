@@ -97,10 +97,70 @@
                         Text="Beispiel" />
                 </StackPanel>
             </GroupBox.Header>
+            <TextBox
+                x:Name="TxtSyntaxBox"
+                beispiel:SyntaxBox.AutoIndent="True"
+                beispiel:SyntaxBox.Enable="True"
+                beispiel:SyntaxBox.ExpandTabs="False"
+                beispiel:SyntaxBox.LineNumbersBackground="LightGray"
+                beispiel:SyntaxBox.LineNumbersForeground="SlateGray"
+                beispiel:SyntaxBox.ShowLineNumbers="True"
+                AcceptsReturn="True"
+                AcceptsTab="True"
+                FontFamily="Consolas"
+                FontSize="11pt"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto" >
+                <beispiel:SyntaxBox.SyntaxDrivers>
+                    <beispiel:SyntaxConfig>
+                        <!--  Keywords  -->
+                        <beispiel:KeywordRule Foreground="Blue" Keywords="abstract,as,base,bool,break,byte,case,catch,char,checked,class,const,continue,decimal,default,delegate,do,double,else,enum,event,explicit,extern,false,finally,fixed,float,for,foreach,goto,if,implicit,in,int,interface,internal,is,lock,long,namespace,new,null,object,operator,out,override,params,private,protected,public,readonly,ref,return,sbyte,sealed,short,sizeof,stackalloc,static,string,struct,switch,this,throw,true,try,typeof,uint,ulong,unchecked,unsafe,ushort,using,using,static,virtual,void,volatile,while,get,set,yield,var" />
 
-            <TextBlock FontSize="13" TextWrapping="Wrap">
-                <Run Text="Bei den Domain Klasse " />
-            </TextBlock>
+                        <!--  Operators  -->
+                        <beispiel:KeywordRule
+                                Foreground="Purple"
+                                Keywords="!,+,-,/,*,%,=,&amp;,^,|,&lt;,&gt;"
+                                WholeWordsOnly="False" />
+
+                        <beispiel:RegexRule
+                                Foreground="Purple"
+                                Op="Line"
+                                Pattern="[\!+-\/\*%=&amp;\^|\?&lt;&gt;]" />
+
+                        <!--  Preproc directives  -->
+                        <beispiel:RegexRule
+                                Foreground="Gray"
+                                Op="Line"
+                                Pattern="^\s*#.*" />
+
+                        <!--  String  -->
+                        <beispiel:RegexRule
+                                Foreground="Maroon"
+                                Op="Line"
+                                Pattern="&quot;(?:[^&quot;\\]|\\.)*&quot;" />
+
+                        <!--  Verbatim string  -->
+                        <beispiel:RegexRule
+                                Foreground="Maroon"
+                                Op="Block"
+                                Pattern="@&quot;(?:[^&quot;])*&quot;" />
+
+                        <!--  Comment  -->
+                        <beispiel:RegexRule
+                                Foreground="Green"
+                                Op="Line"
+                                Pattern="//.*" />
+
+                        <!--  Multiline comment  -->
+                        <beispiel:RegexRule
+                                Foreground="Green"
+                                Op="Block"
+                                Pattern="(?m)/\*[^*]*\*+(?:[^\/*][^*]*\*+)*/" />
+
+
+                    </beispiel:SyntaxConfig>
+                </beispiel:SyntaxBox.SyntaxDrivers>
+            </TextBox>
         </GroupBox>
     </Grid>
 </base:UserControlBase>

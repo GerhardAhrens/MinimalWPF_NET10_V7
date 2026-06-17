@@ -20,7 +20,7 @@
         {
             var asmName = System.Reflection.Assembly.GetExecutingAssembly().FullName;
             var myDictionary = new ResourceDictionary();
-            myDictionary.Source = new Uri($"/{asmName};component/ModernUI/TextBox/Themes/SyntaxBox.xaml", UriKind.RelativeOrAbsolute);
+            myDictionary.Source = new Uri($"/{asmName};component/Resources/Style/SyntaxBox.xaml", UriKind.RelativeOrAbsolute);
             _syntaxTemplate = (ControlTemplate)myDictionary["SyntaxTextBoxTemplate"];
             _defaultTemplate = (ControlTemplate)myDictionary["DefaultTextBoxTemplate"];
         }
@@ -40,6 +40,7 @@
                 false, 
                 FrameworkPropertyMetadataOptions.AffectsRender, 
                 new PropertyChangedCallback(OnEnableChanged)));
+
         /// <summary>
         /// Enable property set accessor
         /// </summary>

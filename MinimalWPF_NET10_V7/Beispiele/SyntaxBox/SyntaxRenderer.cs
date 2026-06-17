@@ -32,9 +32,6 @@
         private Brush _defaultFg, _lineNumbersFg;
         private double _numWidth;
         private int _numDigits;
-#if DEBUG
-        private TimeSpan own = new TimeSpan(0), ms = new TimeSpan(0);
-#endif
         private long count;
         private static MethodInfo _getLineHeight;
         private LineBuffer _lineBuffer = new LineBuffer();
@@ -347,10 +344,6 @@
             // Draw the text onto the context.
             drawingContext.DrawText(syntaxText, new Point(2 - this.Target.HorizontalOffset, (firstVisible) * lineHeight - this.Target.VerticalOffset));
             drawingContext.Pop();
-#if DEBUG
-            sw.Stop();
-            ms += sw.Elapsed;
-#endif
             count++;
             base.OnRender(drawingContext);
         }
