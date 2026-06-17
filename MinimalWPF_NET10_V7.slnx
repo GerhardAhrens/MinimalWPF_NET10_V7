@@ -9,11 +9,7 @@
     <File Path="Settings.png" />
   </Folder>
   <Project Path="MinimalWPF.Test/MinimalWPF.Test.csproj" Id="09c36ae0-3b62-4934-b6f0-47167f5d45a4" />
-  <Project Path="MinimalWPF/MinimalWPF.csproj" Id="713d9b14-2e15-46fd-a331-26af4f9bbb99">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
+  <Project Path="MinimalWPF/MinimalWPF.csproj" Id="713d9b14-2e15-46fd-a331-26af4f9bbb99" />
   <Project Path="MinimalWPF_NET10_V7/MinimalWPF_NET10_V7.csproj" />
-  <Project Path="MinimalWPF_SPA/MinimalWPF_SPA.csproj" Id="af757fd1-309a-4ccd-ac1e-f6fd081c3b93">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
+  <Project Path="MinimalWPF_SPA/MinimalWPF_SPA.csproj" Id="af757fd1-309a-4ccd-ac1e-f6fd081c3b93" />
 </Solution>

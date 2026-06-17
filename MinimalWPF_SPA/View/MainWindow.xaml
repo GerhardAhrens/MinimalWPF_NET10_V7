@@ -1,4 +1,4 @@
-﻿<Window
+﻿<base:WindowBase
     x:Class="MinimalWPF_SPA.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -95,4 +95,4 @@
         </StatusBar>
         <!--#endregion Statuszeile-->
     </Grid>
-</Window>
+</base:WindowBase>

@@ -57,6 +57,7 @@ namespace MinimalWPF
         private MessageBase Message { get; } = new MessageBase();
         #endregion Properties
 
+        #region Windows Events
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             StatusbarMain.Statusbar.DatabaseInfo = "Keine";
@@ -98,6 +99,8 @@ namespace MinimalWPF
                 e.Cancel = true;
             }
         }
+
+        #endregion Windows Events
 
         #region Command Handler
         private void OnQuit(string param)
