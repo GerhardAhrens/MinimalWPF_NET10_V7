@@ -12,6 +12,7 @@ namespace System.Windows
 {
     using System;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Xml;
@@ -20,12 +21,6 @@ namespace System.Windows
     /// HtmlToXamlConverter is a static class that takes an HTML string
     /// and converts it into XAML
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1310:\"StringComparison\" für Richtigkeit angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:CultureInfo angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1866:Char-Überladung verwenden", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:IFormatProvider angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1311:Geben Sie eine Kultur an oder verwenden Sie eine invariante Version", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1845:\"string.Concat\" auf span-Basis verwenden", Justification = "<Ausstehend>")]
     internal static class HtmlFromXamlConverter
     {
         #region Internal Methods
@@ -149,10 +144,10 @@ namespace System.Windows
                         css = "font-family:" + xamlReader.Value + ";";
                         break;
                     case "FontStyle":
-                        css = "font-style:" + xamlReader.Value.ToLower() + ";";
+                        css = "font-style:" + xamlReader.Value.ToLower(CultureInfo.CurrentCulture) + ";";
                         break;
                     case "FontWeight":
-                        css = "font-weight:" + xamlReader.Value.ToLower() + ";";
+                        css = "font-weight:" + xamlReader.Value.ToLower(CultureInfo.CurrentCulture) + ";";
                         break;
                     case "FontStretch":
                         break;
@@ -244,10 +239,10 @@ namespace System.Windows
 
         private static string ParseXamlColor(string color)
         {
-            if (color.StartsWith("#"))
+            if (color.StartsWith("#",StringComparison.OrdinalIgnoreCase))
             {
                 // Remove transparancy value
-                color = "#" + color.Substring(3);
+                color = string.Concat("#", color.AsSpan(3));
             }
             return color;
         }
@@ -261,7 +256,7 @@ namespace System.Windows
                 double value;
                 if (double.TryParse(values[i], out value))
                 {
-                    values[i] = Math.Ceiling(value).ToString();
+                    values[i] = Math.Ceiling(value).ToString(CultureInfo.CurrentCulture);
                 }
                 else
                 {
@@ -388,7 +383,7 @@ namespace System.Windows
         {
             Debug.Assert(xamlReader.NodeType == XmlNodeType.Element);
 
-            if (inlineStyle != null && xamlReader.Name.EndsWith(".TextDecorations"))
+            if (inlineStyle != null && xamlReader.Name.EndsWith(".TextDecorations",StringComparison.OrdinalIgnoreCase))
             {
                 inlineStyle.Append("text-decoration:underline;");
             }

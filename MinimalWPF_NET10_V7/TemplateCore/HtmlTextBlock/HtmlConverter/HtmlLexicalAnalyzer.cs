@@ -21,15 +21,6 @@ namespace System.Windows
     /// recognizes tokens as groups of characters separated by arbitrary amounts of whitespace
     /// also classifies tokens according to type
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1310:\"StringComparison\" für Richtigkeit angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:CultureInfo angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1866:Char-Überladung verwenden", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:IFormatProvider angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1311:Geben Sie eine Kultur an oder verwenden Sie eine invariante Version", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1845:\"string.Concat\" auf span-Basis verwenden", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:CultureInfo angeben", Justification = "<Ausstehend>")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1862:\"StringComparison\"-Methodenüberladungen verwenden, um Zeichenfolgenvergleiche ohne Beachtung der Groß-/Kleinschreibung durchzuführen", Justification = "<Ausstehend>")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1001:Typen mit eigenen verwerfbaren Feldern müssen verwerfbar sein", Justification = "<Ausstehend>")]
     internal sealed class HtmlLexicalAnalyzer
     {
@@ -488,7 +479,7 @@ namespace System.Windows
         /// true if the character can be the first character in a name
         /// false otherwise
         /// </returns>
-        private bool IsGoodForNameStart(char character)
+        private static bool IsGoodForNameStart(char character)
         {
             return character == '_' || Char.IsLetter(character);
         }
@@ -504,16 +495,11 @@ namespace System.Windows
         /// <returns>
         /// true if the character can be a valid part of a name
         /// </returns>
-        private bool IsGoodForName(char character)
+        private static bool IsGoodForName(char character)
         {
             // we are not concerned with escaped characters in names
             // we assume that character entities are allowed as part of a name
-            return
-                    this.IsGoodForNameStart(character) ||
-                    character == '.' ||
-                    character == '-' ||
-                    character == ':' ||
-                    Char.IsDigit(character) ||
+            return IsGoodForNameStart(character) || character == '.' || character == '-' || character == ':' || Char.IsDigit(character) ||
                     IsCombiningCharacter(character) ||
                     IsExtender(character);
         }
@@ -529,7 +515,7 @@ namespace System.Windows
         /// <returns>
         /// true if the character is a combining character, false otherwise
         /// </returns>
-        private bool IsCombiningCharacter(char character)
+        private static bool IsCombiningCharacter(char character)
         {
             // TODO: put actual code with checks against all combining characters here
             return false;
@@ -546,7 +532,7 @@ namespace System.Windows
         /// <returns>
         /// true if the character is an extender, false otherwise
         /// </returns>
-        private bool IsExtender(char character)
+        private static bool IsExtender(char character)
         {
             // TODO: put actual code with checks against all extenders here
             return false;

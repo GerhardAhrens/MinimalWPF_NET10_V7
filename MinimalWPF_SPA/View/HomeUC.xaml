@@ -170,6 +170,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="28"
+            TextWrapping="WrapWithOverflow"
             FontWeight="Bold"
             Text="{Binding Path=WindowTitel, FallbackValue=~WindowTitel}" />
 

@@ -55,7 +55,7 @@
         #region Text
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Text",
+            nameof(Text),
             typeof(string),
             typeof(HtmlTextBlock),
             new FrameworkPropertyMetadata(
@@ -81,7 +81,7 @@
 
         private static object CoerceTextProperty(DependencyObject d, object value)
         {
-            return value ?? "";
+            return value ?? string.Empty;
         }
 
         #endregion //Text
