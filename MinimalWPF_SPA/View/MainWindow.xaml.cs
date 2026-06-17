@@ -13,10 +13,15 @@
 // </summary>
 //-----------------------------------------------------------------------
 
-namespace MinimalWPF_SPA
+namespace MinimalWPF_SPA.View
 {
     using System.Windows;
+    using System.Windows.Controls;
     using System.ComponentModel;
+
+    using MinimalWPF.Core;
+    using MinimalWPF.View;
+    using System.Windows.Input;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -26,10 +31,13 @@ namespace MinimalWPF_SPA
         public MainWindow()
         {
             this.InitializeComponent();
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             WeakEventManager<WindowBase, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
             WeakEventManager<WindowBase, CancelEventArgs>.AddHandler(this, "Closing", this.OnWindowClosing);
             this.SetVectorIcon("IconApplicationLogo", 64);
             this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
+
+            this.RegisterFactory();
 
             this.DataContext = this;
         }
@@ -53,12 +61,26 @@ namespace MinimalWPF_SPA
         #region Windows Events
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            App.EventAgg.Subscribe<ChangeViewEventArgs>(async (evt, ct) => this.ChangeControl(evt));
+            App.EventAgg.Subscribe<WindowsTitelEvent>(async (evt, ct) => this.OnUpdateWindowTitel(evt));
+            App.EventAgg.Subscribe<StatusEvent>(async (evt, ct) => this.OnUpdateStatusBar(evt));
+
             StatusbarMain.Statusbar.DatabaseInfo = "Keine";
             StatusbarMain.Statusbar.DatabaseInfoTooltip = "Keine Datenbank verbunden";
             StatusbarMain.Statusbar.Notification = "Bereit";
+
+            ChangeViewEventArgs args = new();
+            args.MenuButton = CommandButtons.Home;
+            args.FromPage = CommandButtons.Home;
+            this.ChangeControl(args);
         }
 
         private void OnCloseApplication(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void OnQuit()
         {
             this.Close();
         }
@@ -95,5 +117,72 @@ namespace MinimalWPF_SPA
 
         #endregion Windows Events
 
+        #region Event Aggregator Handler
+        private void OnUpdateStatusBar(StatusEvent evt)
+        {
+            StatusbarMain.Statusbar.Notification = evt.Notification;
+
+            if (string.IsNullOrEmpty(evt.DatabaseInfo) == false)
+            {
+                StatusbarMain.Statusbar.DatabaseInfo = evt.DatabaseInfo;
+                StatusbarMain.Statusbar.DatabaseInfoTooltip = evt.DatabaseInfoTooltip;
+            }
+        }
+
+        private void OnUpdateWindowTitel(WindowsTitelEvent evt)
+        {
+            if (string.IsNullOrEmpty(evt.DialogTitel) == true)
+            {
+                this.WindowTitel = $"{LocalizationValue.Get("WindowsTitelZeile")} ({base.ApplicationVersion})";
+                return;
+            }
+            else
+            {
+                this.WindowTitel = $"{LocalizationValue.Get("WindowsTitelZeile")} ({base.ApplicationVersion}) [{evt.DialogTitel}]";
+            }
+        }
+
+        private async void ChangeControl(ChangeViewEventArgs commandParam)
+        {
+            try
+            {
+                this.Dispatcher.Invoke(() => Mouse.OverrideCursor = Cursors.Wait);
+
+                if (commandParam != null && commandParam.MenuButton is CommandButtons button)
+                {
+                    if (button == CommandButtons.AppQuit)
+                    {
+                        this.OnQuit();
+                    }
+                    else if (button.In(CommandButtons.Home, CommandButtons.GoBack))
+                    {
+
+                        if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
+                        {
+                            await App.EventAgg.PublishAsync(new WindowsTitelEvent(button.ToDescription()));
+                        }
+
+                        this.WorkContent = null;
+                        this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
+                    }
+                }
+
+                this.Dispatcher.Invoke(() => Mouse.OverrideCursor = null);
+            }
+            catch (Exception ex)
+            {
+                string errorText = ex.Message;
+                App.ErrorMessage(ex, $"Fehler in {this.GetType().Name}");
+            }
+        }
+        #endregion Event Aggregator Handler
+
+        /// <summary>
+        /// Dialog aus UserControls werden hier für die Factory registriert 😊
+        /// </summary>
+        private void RegisterFactory()
+        {
+            Factory.RegisterSingleton<CommandButtons>(CommandButtons.Home, () => new HomeUC());
+        }
     }
 }
