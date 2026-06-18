@@ -59,6 +59,7 @@
   <ItemGroup>
     <Folder Include="Beispiele\EventAggregator\" />
     <Folder Include="Beispiele\SyntaxBox\" />
+    <Folder Include="_Template\" />
     <Folder Include="Resources\Localization\" />
     <Folder Include="TemplateCore\EventAggregator\" />
     <Folder Include="TemplateCore\HtmlTextBlock\HtmlConverter\" />
