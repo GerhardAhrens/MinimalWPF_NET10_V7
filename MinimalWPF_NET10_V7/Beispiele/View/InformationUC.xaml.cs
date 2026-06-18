@@ -10,6 +10,7 @@
     /// <summary>
     /// Interaktionslogik für InformationUC.xaml
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>")]
     public partial class InformationUC : UserControlBase
     {
         public static readonly DependencyProperty IsParentOpenProperty =
