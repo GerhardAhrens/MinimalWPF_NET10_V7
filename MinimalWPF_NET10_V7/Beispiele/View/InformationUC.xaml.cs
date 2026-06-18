@@ -12,6 +12,9 @@
     /// </summary>
     public partial class InformationUC : UserControlBase
     {
+        public static readonly DependencyProperty IsParentOpenProperty =
+    DependencyProperty.Register(nameof(IsParentOpen), typeof(bool), typeof(InformationUC), new PropertyMetadata(false, OnIsParentOpenChanged));
+
         public InformationUC()
         {
             this.InitializeComponent();
@@ -33,6 +36,12 @@
         {
             get => base.GetValue<string>();
             set => base.SetValue(value);
+        }
+
+        public bool IsParentOpen
+        {
+            get { return (bool)GetValue(IsParentOpenProperty); }
+            set { SetValue(IsParentOpenProperty, value); }
         }
 
         public string ApplikationVersion
@@ -104,7 +113,27 @@
         }
         #endregion WindowEventHandler
 
-        private static string[] ReadAllRAM()
+        private static void OnIsParentOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // Hier optional Code ausführen, wenn sich der Zustand ändert
+            var control = (InformationUC)d;
+            bool popupIsOpen = (bool)e.NewValue;
+            if (popupIsOpen == true)
+            {
+                string[] readRAM = control.ReadAllRAM();
+                if (readRAM != null)
+                {
+                    control.TotalRAM = readRAM[0];
+                    control.FreeRAM = readRAM[1];
+                    control.UsedRAM = readRAM[2];
+                }
+
+                control.InstallFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                control.SettingsFolder = App.Settings.Pathname;
+            }
+        }
+
+        private string[] ReadAllRAM()
         {
             string[] result = new string[] { string.Empty, string.Empty, string.Empty };
             ulong totalKb = 0;

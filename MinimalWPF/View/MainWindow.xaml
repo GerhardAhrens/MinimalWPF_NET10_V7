@@ -5,9 +5,9 @@
     xmlns:base="clr-namespace:System.Windows"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MinimalWPF"
-    Title="{Binding Path=WindowTitel, FallbackValue=~MainWindow}"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:MinimalWPF.View"
+    Title="{Binding Path=WindowTitel, FallbackValue=~MainWindow}"
     Width="800"
     Height="500"
     mc:Ignorable="d">
@@ -46,7 +46,7 @@
                     Grid.Row="0"
                     Background="#FAFAFB"
                     CornerRadius="5">
-                    <views:InformationUC />
+                    <views:InformationUC IsParentOpen="{Binding Path=IsOpen, UpdateSourceTrigger=PropertyChanged, ElementName=InformationPopup}" />
                 </Border>
 
                 <base:IconButton

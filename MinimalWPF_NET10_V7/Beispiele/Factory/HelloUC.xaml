@@ -36,7 +36,8 @@
                     Grid.Row="0"
                     Background="#FAFAFB"
                     CornerRadius="5">
-                    <beispiel:InformationUC />
+                    <beispiel:InformationUC IsParentOpen="{Binding Path=IsOpen, UpdateSourceTrigger=PropertyChanged, ElementName=InformationPopup}" />
+
                 </Border>
 
                 <base:IconButton

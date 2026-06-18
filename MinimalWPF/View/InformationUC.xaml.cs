@@ -2,7 +2,6 @@
 {
     using System.Diagnostics;
     using System.IO;
-    using System.IO.Pipelines;
     using System.Management;
     using System.Reflection;
     using System.Windows;
@@ -13,6 +12,9 @@
     /// </summary>
     public partial class InformationUC : UserControlBase
     {
+        public static readonly DependencyProperty IsParentOpenProperty = 
+            DependencyProperty.Register(nameof(IsParentOpen), typeof(bool), typeof(InformationUC), new PropertyMetadata(false, OnIsParentOpenChanged));
+
         public InformationUC()
         {
             this.InitializeComponent();
@@ -34,6 +36,12 @@
         {
             get => base.GetValue<string>();
             set => base.SetValue(value);
+        }
+
+        public bool IsParentOpen
+        {
+            get { return (bool)GetValue(IsParentOpenProperty); }
+            set { SetValue(IsParentOpenProperty, value); }
         }
 
         public string ApplikationVersion
@@ -91,19 +99,30 @@
         {
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
             {
-                string[] readRAM = ReadAllRAM();
-                if (readRAM != null)
-                {
-                    this.TotalRAM = readRAM[0];
-                    this.FreeRAM = readRAM[1];
-                    this.UsedRAM = readRAM[2];
-                }
-
-                this.InstallFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                this.SettingsFolder = App.Settings.Pathname;
+                /* hier ist Source, der im Design Mode nicht ausgeführt werden darf */
             }
         }
         #endregion WindowEventHandler
+
+        private static void OnIsParentOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // Hier optional Code ausführen, wenn sich der Zustand ändert
+            var control = (InformationUC)d;
+            bool popupIsOpen = (bool)e.NewValue;
+            if (popupIsOpen == true)
+            {
+                string[] readRAM = control.ReadAllRAM();
+                if (readRAM != null)
+                {
+                    control.TotalRAM = readRAM[0];
+                    control.FreeRAM = readRAM[1];
+                    control.UsedRAM = readRAM[2];
+                }
+
+                control.InstallFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                control.SettingsFolder = App.Settings.Pathname;
+            }
+        }
 
         private string[] ReadAllRAM()
         {
