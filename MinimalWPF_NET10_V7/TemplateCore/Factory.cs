@@ -44,10 +44,20 @@
             Register(id, factory, Lifetime.Singleton);
         }
 
+        public static void RegisterSingleton(string id, Func<object> factory)
+        {
+            Register(id, factory, Lifetime.Singleton);
+        }
+
         /// <summary>
         /// Registrierung als Transient
         /// </summary>
         public static void RegisterTransient<TEnum>(TEnum id, Func<object,object> factory) where TEnum : struct, Enum
+        {
+            Register(id, factory, Lifetime.Transient);
+        }
+
+        public static void RegisterTransient(string id, Func<object, object> factory)
         {
             Register(id, factory, Lifetime.Transient);
         }
@@ -64,10 +74,34 @@
             };
         }
 
+        // Overload für parameterlose Factory (z.B. Singleton)
+        public static void Register(string id, Func<object> factory, Lifetime lifetime)
+        {
+            var key = (typeof(string), (object)id);
+
+            _registrations[key] = new Registration
+            {
+                FactoryMethod = _ => factory(),
+                Lifetime = lifetime
+            };
+        }
+
         // Overload für Factory mit Parameter (z.B. Transient)
         private static void Register<TEnum>(TEnum id, Func<object, object> factory, Lifetime lifetime) where TEnum : struct, Enum
         {
             var key = (typeof(TEnum), (object)id);
+
+            _registrations[key] = new Registration
+            {
+                FactoryMethod = factory,
+                Lifetime = lifetime
+            };
+        }
+
+        // Overload für Factory mit Parameter (z.B. Transient)
+        public static void Register(string id, Func<object, object> factory, Lifetime lifetime)
+        {
+            var key = (typeof(string), (object)id);
 
             _registrations[key] = new Registration
             {
@@ -97,6 +131,49 @@
                     Lazy<object> lazy = _singletons.GetOrAdd(key, _ =>
                     {
                         return new Lazy<object>( () => registration.FactoryMethod(parameter), isThreadSafe: true);
+                    });
+
+                    instance = lazy.Value;
+                    break;
+
+                case Lifetime.Transient:
+
+                    instance = registration.FactoryMethod(parameter);
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+
+            if (instance is not T result)
+            {
+                throw new InvalidCastException($"Instanz ist nicht vom Typ '{typeof(T).Name}'.");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Liefert eine Instanz
+        /// </summary>
+        public static T Get<T>(string id, object parameter = null) where T : class
+        {
+            var key = (typeof(string), (object)id);
+
+            if (!_registrations.TryGetValue(key, out Registration registration))
+            {
+                throw new InvalidOperationException($"Keine Registrierung für '{typeof(string).Name}.{id}'.");
+            }
+
+            object instance;
+
+            switch (registration.Lifetime)
+            {
+                case Lifetime.Singleton:
+
+                    Lazy<object> lazy = _singletons.GetOrAdd(key, _ =>
+                    {
+                        return new Lazy<object>(() => registration.FactoryMethod(parameter), isThreadSafe: true);
                     });
 
                     instance = lazy.Value;
