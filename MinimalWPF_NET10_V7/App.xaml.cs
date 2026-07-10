@@ -48,6 +48,10 @@ namespace MinimalWPF
         /// behandelt und angezeigt werden.</remarks>
         public App()
         {
+            /*
+            XResult<decimal> aa = Parsing.ParseDecimal("123");
+            decimal bb = aa;
+            */
             try
             {
                 /* Name der EXE Datei*/
