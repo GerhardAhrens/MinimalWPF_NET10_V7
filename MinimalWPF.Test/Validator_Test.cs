@@ -96,6 +96,42 @@
             }
         }
 
+        [TestMethod]
+        public void Validator_RegisterMany_True_Test()
+        {
+            var registry = new ValidatorRegistry();
+            registry.Register(new UrlValidator());
+            registry.Register(new ZipCodeValidator());
+
+            if (registry.TryGet<ZipCodeValidator>(out var zipValidator) == true)
+            {
+                ValidationResult result = zipValidator.Validate("68165");
+                if (result.IsValid == true)
+                {
+                    /* ZIP Ok */
+                    Assert.IsTrue(result.IsValid == true);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Validator_RegisterMany_False_Test()
+        {
+            var registry = new ValidatorRegistry();
+            registry.Register(new UrlValidator());
+            registry.Register(new ZipCodeValidator());
+
+            if (registry.TryGet<ZipCodeValidator>(out var zipValidator) == true)
+            {
+                ValidationResult result = zipValidator.Validate("168165");
+                if (result.IsValid == false)
+                {
+                    /* ZIP Fehler */
+                    Assert.IsFalse(result.IsValid == true);
+                }
+            }
+        }
+
         [DataRow("", "")]
         [TestMethod]
         public void DataRowInputTest(string input, string expected)
