@@ -2,7 +2,7 @@
 {
     using System.Windows;
 
-    public class Parsing
+    public partial class Parsing
     {
         public static Result<long> ParseLong(string value)
         {
