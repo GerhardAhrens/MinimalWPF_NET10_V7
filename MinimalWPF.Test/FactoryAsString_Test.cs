@@ -6,7 +6,7 @@
     using System.Windows.Controls;
 
     [STATestClass]
-    public sealed class Factory_Test : BaseTest
+    public sealed class FactoryAsString_Test : BaseTest
     {
         [TestInitialize]
         public void Initialize()
@@ -20,12 +20,12 @@
         public void FactoryMeta_Test()
         {
             DataService service = new();
-            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, (param) => new DashboardControl(service));
-            Factory.RegisterSingleton<WindowId>(WindowId.Login, () => new LoginWindow());
-            Factory.RegisterSingleton<NormalClassId>(NormalClassId.SingletonClass, () => new SingletonClass());
+            Factory.RegisterTransient("Dashboard", (param) => new DashboardControl(service));
+            Factory.RegisterSingleton("Login", () => new LoginWindow());
+            Factory.RegisterSingleton("SingletonClass", () => new SingletonClass());
 
             Assert.AreEqual(3, Factory.Count);
-            string names = string.Join(',', Factory.Names);
+            string names = string.Join(',', Factory.Names.Order());
             Assert.AreEqual("Dashboard,Login,SingletonClass", names);
         }
 
@@ -33,29 +33,29 @@
         public void FactoryRegister_Test()
         {
             DataService service = new();
-            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, (param) => new DashboardControl(service));
-            Factory.RegisterSingleton<WindowId>(WindowId.Login, () => new LoginWindow());
-            Factory.RegisterSingleton<NormalClassId>(NormalClassId.SingletonClass, () => new SingletonClass());
+            Factory.RegisterTransient("Dashboard", (param) => new DashboardControl(service));
+            Factory.RegisterSingleton("Login", () => new LoginWindow());
+            Factory.RegisterSingleton("SingletonClass", () => new SingletonClass());
 
             Assert.AreEqual(3, Factory.Count);
             Assert.AreEqual("Login", Factory.Names.Where(name => name == "Login").FirstOrDefault());
             Assert.AreEqual("Dashboard", Factory.Names.Where(name => name == "Dashboard").FirstOrDefault());
             Assert.AreEqual("SingletonClass", Factory.Names.Where(name => name == "SingletonClass").FirstOrDefault());
 
-            Assert.AreEqual(service.Id, (Factory.Get<DashboardControl, ViewId>(ViewId.Dashboard).Service).Id);
+            Assert.AreEqual(service.Id, (Factory.Get<DashboardControl>("Dashboard").Service).Id);
         }
 
         [TestMethod]
         public void FactoryGet_Test()
         {
             DataService service = new();
-            Factory.RegisterTransient<ViewId>(ViewId.Dashboard, (param) => new DashboardControl(service));
-            Factory.RegisterSingleton<WindowId>(WindowId.Login, () => new LoginWindow());
-            Factory.RegisterSingleton<NormalClassId>(NormalClassId.SingletonClass, () => new SingletonClass());
+            Factory.RegisterTransient("Dashboard", (param) => new DashboardControl(service));
+            Factory.RegisterSingleton("Login", () => new LoginWindow());
+            Factory.RegisterSingleton("SingletonClass", () => new SingletonClass());
 
-            var dashboard = Factory.Get<UserControl, ViewId>(ViewId.Dashboard);
-            var logWindow = Factory.Get<LoginWindow, WindowId>(WindowId.Login);
-            var normalClass = Factory.Get<SingletonClass, NormalClassId>(NormalClassId.SingletonClass);
+            var dashboard = Factory.Get<UserControl>("Dashboard");
+            var logWindow = Factory.Get<LoginWindow>("Login");
+            var normalClass = Factory.Get<SingletonClass>("SingletonClass");
             Assert.AreEqual(typeof(DashboardControl), dashboard.GetType());
             Assert.AreEqual(typeof(LoginWindow), logWindow.GetType());
             Assert.AreEqual(typeof(SingletonClass), normalClass.GetType());
@@ -80,16 +80,16 @@
         }
     }
 
-    internal class DataService
+    internal class DataServiceB
     {
         public Guid Id { get; } = Guid.NewGuid();
     }
 
-    internal class DashboardControl : UserControl
+    internal class DashboardControlB : UserControl
     {
         public DataService Service { get; }
 
-        public DashboardControl(DataService service)
+        public DashboardControlB(DataService service)
         {
             this.Service = service;
 
@@ -97,34 +97,46 @@
         }
     }
 
-    internal class LoginWindow : Window
+    internal class LoginWindowB : Window
     {
-        public LoginWindow()
+        public LoginWindowB()
         {
             Debug.WriteLine($"Die Instanz {this.GetType().Name} erstellt");
         }
     }
 
-    internal class SingletonClass : SingletonBase<SingletonClass>
+    internal class SingletonClassB : SingletonBase<SingletonClassB>
     {
-        public SingletonClass()
+        public SingletonClassB()
         {
             Debug.WriteLine($"Die Instanz {this.GetType().Name} erstellt");
         }
     }
 
-    internal enum ViewId
+    public sealed record ButtonId(string Name);
+
+    public static partial class Buttons
     {
-        Dashboard,
+        public static readonly ButtonId Dashboard = new("Dashboard");
+        public static readonly ButtonId Login = new("Login");
+        public static readonly ButtonId SingletonClass = new("SingletonClass");
     }
 
-    internal enum WindowId
-    {
-        Login,
-    }
+    /*
+     * Festlegung in XAML
+     * CommandParameter="{x:Static local:Buttons.Dashboard}"
+     */
 
-    internal enum NormalClassId
-    {
-        SingletonClass,
-    }
+    /*
+     * Das ist sogar typsicherer als Strings.
+     * und im Command:
+     * private void Execute(object? parameter)
+     * {
+     *      if (parameter is ButtonId button)
+     *      {
+     *          
+     *      }
+     * }
+     */
+
 }
