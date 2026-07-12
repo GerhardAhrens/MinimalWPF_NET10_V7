@@ -30,6 +30,12 @@
             {
                 case DomainResult<Person>.Ok ok:
                     Assert.AreEqual(typeof(Person),ok.Item.GetType());
+
+                    Person p = (Person)ok.Item;
+                    EMail em = p.EMail;
+                    FullName fn = p.FullName;
+                    FirstName n = fn.FirstName;
+                    LastName ln = fn.LastName;
                     break;
 
                 case DomainResult<Person>.Failure failure:
