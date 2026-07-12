@@ -34,7 +34,7 @@
 
             if (registry.TryGet<IbanValidator>(out var ibanValidator) == true)
             {
-                ValidationResult result = ibanValidator.Validate("DE79 5455 0010 0241 0203 04");
+                ValidationResult result = ibanValidator.Validate("DE89 3704 0044 0532 0130 00");
                 if (result.IsValid == true)
                 {
                     /* IBAN OK */
@@ -79,19 +79,54 @@
         }
 
         [TestMethod]
-        public void Validator_URL_False_Test()
+        public void Validator_EMail_False_Test()
         {
             var registry = new ValidatorRegistry();
-            registry.Register(new UrlValidator());
+            registry.Register(new EmailValidator());
 
-            if (registry.TryGet<UrlValidator>(out var urlValidator) == true)
+            if (registry.TryGet<EmailValidator>(out var emailValidator) == true)
             {
-                ValidationResult result = urlValidator.Validate("www..google.de");
+                ValidationResult result = emailValidator.Validate("developer@lifeprojectsde");
                 if (result.IsValid == false)
                 {
                     /* URL Fehler */
                     Assert.IsFalse(result.IsValid == true);
                     Assert.AreEqual(1, result.Errors.Count);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Validator_EMail_True_Test()
+        {
+            var registry = new ValidatorRegistry();
+            registry.Register(new EmailValidator());
+
+            if (registry.TryGet<EmailValidator>(out var emailValidator) == true)
+            {
+                ValidationResult result = emailValidator.Validate("developer@lifeprojects.de");
+                if (result.IsValid == true)
+                {
+                    /* URL Ok */
+                    Assert.IsTrue(result.IsValid == true);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Validator_GermanPhone_False_Test()
+        {
+            var registry = new ValidatorRegistry();
+            registry.Register(new GermanPhoneNumberValidator());
+
+            if (registry.TryGet<GermanPhoneNumberValidator>(out var germanPhoneValidator) == true)
+            {
+                ValidationResult result = germanPhoneValidator.Validate("+88-0621/332288");
+                if (result.IsValid == false)
+                {
+                    /* URL Fehler */
+                    Assert.IsFalse(result.IsValid == true);
+                    Assert.AreEqual(2, result.Errors.Count);
                 }
             }
         }
