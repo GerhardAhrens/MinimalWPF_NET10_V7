@@ -25,6 +25,7 @@ namespace MinimalWPF
     using System.Windows.Threading;
 
     using MinimalWPF.Beispiele;
+    using MinimalWPF.View;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -122,6 +123,30 @@ namespace MinimalWPF
 
                 /* Initiale Benutzer Einstellungen speichern */
                 InitializeSettings();
+
+                /* MainWindow als Startpunkt festlegen */
+                MainWindow mainWindow = new MainWindow();
+                Application.Current.MainWindow = mainWindow;
+                mainWindow.Visibility = Visibility.Hidden;
+                mainWindow.Tag = null;
+
+                /* zuvor wird aber das Start Window aufrufen */
+                AppStartWindow startScreen = new AppStartWindow();
+                if (startScreen.ShowDialog() == false)
+                {
+                    mainWindow.Tag = typeof(AppStartWindow);
+                    ApplicationExit();
+                }
+                else
+                {
+                    mainWindow.Activate();
+                    mainWindow.WindowState = WindowState.Normal;
+                    mainWindow.Show();
+                    mainWindow.Visibility = Visibility.Visible;
+                    startScreen.Close();
+                    startScreen = null;
+                }
+
             }
             catch (Exception ex)
             {
