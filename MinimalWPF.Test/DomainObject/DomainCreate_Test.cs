@@ -3,6 +3,7 @@
     using System.Diagnostics;
     using System.Globalization;
     using System.Windows;
+    using System.Windows.Domain;
 
     using MinimalWPF.Test.Sample;
 
@@ -20,58 +21,70 @@
         [TestMethod]
         public void Create_Successfully()
         {
-            DomainResult<Person> personResult = Create.From(Person.Create,
-                            Create.From(FullName.Create,
-                                FirstName.Create("Donald"),
-                                LastName.Create("Duck")),
-                            EMail.Create("donald.duck@entenhausen.eh"));
+            /* Person erstellen */
+            var nameResult = PersonName.Create("Max", "Mustermann");
 
-            switch (personResult)
-            {
-                case DomainResult<Person>.Ok ok:
-                    Assert.AreEqual(typeof(Person),ok.Item.GetType());
+            Assert.AreEqual(true,nameResult.Success);
 
-                    Person p = (Person)ok.Item;
-                    EMail em = p.EMail;
-                    FullName fn = p.FullName;
-                    FirstName n = fn.FirstName;
-                    LastName ln = fn.LastName;
-                    break;
+            /* Email erstellen */
+            var emailResult = Email.Create("max@test.de");
 
-                case DomainResult<Person>.Failure failure:
-                    foreach (var error in failure.Errors)
-                    {
-                        Console.WriteLine(error.Message);
-                    }
-                    break;
-            }
+            Assert.AreEqual(true, emailResult.Success);
+
+            /* Adresse erstellen */
+            var addressResult = Address.Create("Hauptstraße 1", "1010", "Entenhausen");
+
+            Assert.AreEqual(true, addressResult.Success);
+
+            /* Customer Objekt erstellen */
+            var customerResult = Customer.Create(
+                nameResult.Value!,
+                emailResult.Value!,
+                addressResult.Value!);
+
+            Assert.AreEqual(true, customerResult.Success);
+
+            Customer customer = customerResult.Value!;
+
+            IDomainEvent customObject = customer.DomainEvents.FirstOrDefault();
+            Guid customId = ((CustomerCreated)customObject).CustomerId.Value;
+
+            Assert.AreNotEqual(Guid.Empty, customId);
         }
 
         [TestMethod]
         public void Create_WithError()
         {
-            DomainResult<Person> personResult = Create.From(Person.Create,
-                            Create.From(FullName.Create,
-                                FirstName.Create("Gustav"),
-                                LastName.Create("Gans")),
-                            EMail.Create("gustav.gans@entenhauseneh"));
+            /* Person erstellen */
+            var nameResult = PersonName.Create("Max", "Mustermann");
 
-            switch (personResult)
-            {
-                case DomainResult<Person>.Ok ok:
-                    Assert.AreEqual(typeof(Person), ok.Item.GetType());
-                    break;
+            Assert.AreEqual(true, nameResult.Success);
 
-                case DomainResult<Person>.Failure failure:
-                    foreach (var error in failure.GetErrors())
-                    {
-                        foreach (var childerror in error.ChildErrors)
-                        {
-                            Assert.AreEqual("Gustav Gans ist auf der Sperrliste", childerror.Message);
-                        }
-                    }
-                    break;
-            }
+            /* Email erstellen */
+            var emailResult = Email.Create("max-test.de");
+
+            /* Fehler in der Email Adresse */
+            Assert.AreNotEqual(true, emailResult.Success);
+
+            /* Adresse erstellen */
+            var addressResult = Address.Create("Hauptstraße 1", "1010", "Entenhausen");
+
+            Assert.AreEqual(true, addressResult.Success);
+
+            /* Customer Objekt erstellen */
+            var customerResult = Customer.Create(
+                nameResult.Value!,
+                emailResult.Value!,
+                addressResult.Value!);
+
+            Assert.AreEqual(true, customerResult.Success);
+
+            Customer customer = customerResult.Value!;
+
+            IDomainEvent customObject = customer.DomainEvents.FirstOrDefault();
+            Guid customId = ((CustomerCreated)customObject).CustomerId.Value;
+
+            Assert.AreNotEqual(Guid.Empty, customId);
         }
 
 

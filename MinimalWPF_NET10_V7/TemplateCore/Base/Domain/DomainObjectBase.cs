@@ -9,7 +9,7 @@
 // <date>16.06.2026</date>
 //
 // <summary>
-// Basis Klasse zur Erstllung von Domain Objekten
+// Basis Klasse zur Erstellung von Domain Objekten
 // </summary>
 //-----------------------------------------------------------------------
 
