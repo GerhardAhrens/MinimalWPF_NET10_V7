@@ -13,8 +13,9 @@
 // </summary>
 //-----------------------------------------------------------------------
 
-namespace MinimalWPF
+namespace MinimalWPF.View
 {
+    using System.CodeDom;
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
@@ -96,6 +97,11 @@ namespace MinimalWPF
         private void OnWindowClosing(object sender, CancelEventArgs e)
         {
             e.Cancel = false;
+
+            if (this.Tag != null && Equals(this.Tag, typeof(AppStartWindow)))
+            {
+                return;
+            }
 
             /*
             if (App.Settings.FrageExit == false)
