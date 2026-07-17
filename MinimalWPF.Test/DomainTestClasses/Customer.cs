@@ -5,7 +5,7 @@
 
     public sealed class Customer : AuditableAggregateRoot<EntityId<Customer>>, IAuditable, ISoftDelete
     {
-        public PersonName Name { get; private set; }
+        public PersonName Fullname { get; private set; }
 
         public Email Email { get; private set; }
 
@@ -18,18 +18,18 @@
 
         public DateTime? DeletedOn { get; private set; }
         public string DeletedFrom { get; private set; }
-        private Customer(EntityId<Customer> id, PersonName name, Email email, Address address) : base(id)
+        private Customer(EntityId<Customer> id, PersonName fullName, Email email, Address address) : base(id)
         {
-            Name = name;
+            Fullname = fullName;
             Email = email;
             Address = address;
 
             Active = true;
         }
 
-        public static DomainResult<Customer> Create(PersonName name, Email email, Address address)
+        public static DomainResult<Customer> Create(PersonName fullName, Email email, Address address)
         {
-            var customer = new Customer(EntityId.New<Customer>(), name, email, address);
+            var customer = new Customer(EntityId.New<Customer>(), fullName, email, address);
 
             customer.Raise(new CustomerCreated(customer.Id));
             customer.CreatedOn = DateTime.UtcNow;
@@ -37,7 +37,7 @@
             return DomainResult<Customer>.Ok(customer);
         }
 
-        public DomainResult Rename(string firstName, string lastName)
+        public DomainResult RenamePerson(string firstName, string lastName)
         {
             var nameResult = PersonName.Create(firstName, lastName);
 
@@ -46,15 +46,15 @@
                 return DomainResult.Fail(nameResult.Errors);
             }
 
-            if (Name == nameResult.Value)
+            if (Fullname == nameResult.Value)
             {
                 return DomainResult.Ok();
             }
 
-            Name = nameResult.Value!;
+            Fullname = nameResult.Value!;
             base.ModifiedOn = DateTime.UtcNow;
             base.ModifiedFrom = Environment.UserName;
-            Raise(new CustomerRenamed(Id, Name));
+            Raise(new CustomerRenamed(Id, Fullname));
 
             return DomainResult.Ok();
         }
@@ -82,7 +82,7 @@
             return DomainResult.Ok();
         }
 
-        public DomainResult Move(string street, string zipCode, string city)
+        public DomainResult ChangeAddress(string street, string zipCode, string city)
         {
             var addressResult = Address.Create(street, zipCode, city);
             if (addressResult.Success == false)
@@ -107,12 +107,12 @@
                 return DomainResult.Fail(CustomerErrors.AlreadyDeleted);
             }
 
-            IsDeleted = true;
+            this.IsDeleted = true;
 
             this.DeletedOn = DateTime.UtcNow;
             this.DeletedFrom = Environment.UserName;
 
-            Raise(new CustomerDeleted(Id));
+            Raise(new CustomerDeleted(Id, this));
 
             return DomainResult.Ok();
         }
