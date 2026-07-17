@@ -23,37 +23,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Source\NeuEnum.cs.source" />
-    <None Remove="Resources\Source\NeuPublicClass.cs.source" />
-    <None Remove="Resources\Source\NeuStaticExtension.cs.source" />
-    <None Remove="Resources\Source\NeuUC.xaml.cs.source" />
-    <None Remove="Resources\Source\NeuUC.xaml.source" />
-    <None Remove="Resources\Source\NeuWindow.xaml.cs.source" />
-    <None Remove="Resources\Source\NeuWindow.xaml.source" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Resources\Source\DemoCustomDataType.cs.source" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="ApplicationIcon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Resources\Source\NeuEnum.cs.source" />
-    <Resource Include="Resources\Source\NeuPublicClass.cs.source" />
-    <Resource Include="Resources\Source\NeuStaticExtension.cs.source" />
-    <Resource Include="Resources\Source\NeuStaticExtensionBlock.cs.source" />
-    <Resource Include="Resources\Source\NeuUC.xaml.cs.source" />
-    <Resource Include="Resources\Source\NeuUC.xaml.source" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Picture\ApplicationIcon.ico" />
     <Resource Include="Resources\Picture\ApplicationIcon.png" />
-    <Resource Include="Resources\Source\NeuWindow.xaml.cs.source" />
-    <Resource Include="Resources\Source\NeuWindow.xaml.source" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,13 +51,7 @@
     <Compile Update="Beispiele\Factory\DialogServiceUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Beispiele\Factory\SourceGenUC.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Beispiele\Factory\NeuUC.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Resources\Source\DialogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

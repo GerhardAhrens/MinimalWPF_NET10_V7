@@ -19,7 +19,6 @@
             this.ShowResultCommand = new CommandBase(commandParam => this.OnShowResult(commandParam), () => true);
             this.ShowInputBoxCommand = new CommandBase(commandParam => this.OnShowInputBox(commandParam), () => true);
             this.ShowDialogServiceCommand = new CommandBase(commandParam => this.OnShowDialogService(commandParam), () => true);
-            this.ShowSourceGenCommand = new CommandBase(commandParam => this.OnShowSourceGen(commandParam), () => true);
             this.ShowLocalizationCommand = new CommandBase(commandParam => this.OnLocalization(commandParam), () => true);
             this.ShowEventAggregatorCommand = new CommandBase(commandParam => this.OnEventAggregator(commandParam), () => true);
             this.ShowFactoryCommand = new CommandBase(commandParam => this.OnFactory(commandParam), () => true);
@@ -44,7 +43,6 @@
         public CommandBase ShowResultCommand { get; private set; }
         public CommandBase ShowInputBoxCommand { get; private set; }
         public CommandBase ShowDialogServiceCommand { get; private set; }
-        public CommandBase ShowSourceGenCommand { get; private set; }
         public CommandBase ShowLocalizationCommand { get; private set; }
         public CommandBase ShowEventAggregatorCommand { get; private set; }
         public CommandBase ShowFactoryCommand { get; private set; }
@@ -168,24 +166,6 @@
             if (commandParam != null && commandParam is CommandButtons button)
             {
                 if (button == CommandButtons.ShowDialogService)
-                {
-                    ChangeViewEventArgs args = new();
-                    args.MenuButton = button;
-                    args.FromPage = CommandButtons.Home;
-
-                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
-                    {
-                        await App.EventAgg.PublishAsync(args);
-                    }
-                }
-            }
-        }
-
-        private async void OnShowSourceGen(object commandParam)
-        {
-            if (commandParam != null && commandParam is CommandButtons button)
-            {
-                if (button == CommandButtons.ShowSourceGen)
                 {
                     ChangeViewEventArgs args = new();
                     args.MenuButton = button;

@@ -38,7 +38,7 @@ namespace System.Windows
             // Resources\Localization\Localization.xaml
             try
             {
-                if (Application.Current != null)
+                if (Application.Current != null || Application.Current.Resources != null)
                 {
                     resourceDict = Application.Current.Resources.MergedDictionaries.Where(md => md.Source.OriginalString.EndsWith(DICTIONARYNAME, StringComparison.CurrentCulture)).FirstOrDefault();
                 }
@@ -46,7 +46,7 @@ namespace System.Windows
                 {
                     // 1. Pack-URI erstellen
                     // Format: pack://application:,,,/AssemblyName;component/PathTo/File.xaml
-                    Uri resourceUri = new Uri($"/SnippetManager.Test;component/{DICTIONARYNAME}", UriKind.Relative);
+                    Uri resourceUri = new Uri($"/MinimalWPF_NET10_V7;component/{DICTIONARYNAME}", UriKind.Relative);
                     // 2. Dictionary laden
                     resourceDict = (ResourceDictionary)Application.LoadComponent(resourceUri);
                 }

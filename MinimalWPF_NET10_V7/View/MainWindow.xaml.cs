@@ -203,7 +203,6 @@ namespace MinimalWPF.View
             Factory.RegisterSingleton<CommandButtons>(CommandButtons.Home, () => new HelloUC());
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowResult, (param) => new ResultUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowDialogService, (param) => new DialogServiceUC((ChangeViewEventArgs)param!));
-            Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowSourceGen, (param) => new SourceGenUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Localization, (param) => new LocalizationUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowEventAggregator, (param) => new EventAggregatorUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ShowFactoryPattern, (param) => new FactoryUC((ChangeViewEventArgs)param!));
