@@ -1,8 +1,6 @@
 ﻿namespace MinimalWPF.Test
 {
-    using System.Diagnostics;
     using System.Globalization;
-    using System.Windows;
     using System.Windows.Domain;
 
     using MinimalWPF.Test.Sample;
