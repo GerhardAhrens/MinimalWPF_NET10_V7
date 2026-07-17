@@ -64,7 +64,7 @@
     <Folder Include="TemplateCore\EventAggregator\" />
     <Folder Include="TemplateCore\HtmlTextBlock\HtmlConverter\" />
     <Folder Include="TemplateCore\HtmlTextBlock\Formatters\" />
-    <Folder Include="TemplateCore\DomainClass\" />
+    <Folder Include="TemplateCore\ValueObjectTyp\" />
     <Folder Include="TemplateCore\Services\" />
   </ItemGroup>
 

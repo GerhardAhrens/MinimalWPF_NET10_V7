@@ -1,7 +1,7 @@
 
 //-----------------------------------------------------------------------
-// <copyright file="DomainObjectOfTBase.cs" company="Lifeprojects.de">
-//     Class: DomainObjectOfTBase
+// <copyright file="ObjectValueBaseOfTBase.cs" company="Lifeprojects.de">
+//     Class: ObjectValueBaseOfTBase
 //     Copyright © Lifeprojects.de 2026
 // </copyright>
 //
@@ -10,13 +10,13 @@
 // <date>16.06.2026</date>
 //
 // <summary>
-// Basis Klasse zur Erstllung von Domain Objekten
+// Basis Klasse zur Erstellung von Generic Value Object
 // </summary>
 //-----------------------------------------------------------------------
 
 namespace System.Windows
 {
-    public abstract class DomainObjectOfTBase<T> where T : DomainObjectOfTBase<T>
+    public abstract class ObjectValueBase<T> where T : ObjectValueBase<T>
     {
         public override bool Equals(object obj)
         {
@@ -44,7 +44,7 @@ namespace System.Windows
 
         protected abstract int GetHashCodeCore();
 
-        public static bool operator ==(DomainObjectOfTBase<T> a, DomainObjectOfTBase<T> b)
+        public static bool operator ==(ObjectValueBase<T> a, ObjectValueBase<T> b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
             {
@@ -59,7 +59,7 @@ namespace System.Windows
             return a.Equals(b);
         }
 
-        public static bool operator !=(DomainObjectOfTBase<T> a, DomainObjectOfTBase<T> b)
+        public static bool operator !=(ObjectValueBase<T> a, ObjectValueBase<T> b)
         {
             return !(a == b);
         }

@@ -20,7 +20,7 @@ namespace System.Windows
     using System.Globalization;
     using System.Numerics;
 
-    public class ID<T> : DomainObjectBase
+    public class ID<T> : ObjectValueBase
     {
         public ID(int id)
         {

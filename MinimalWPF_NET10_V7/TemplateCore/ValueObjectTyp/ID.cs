@@ -19,7 +19,7 @@ namespace System.Windows
     using System.Collections.Generic;
     using System.Globalization;
 
-    public sealed class ID : DomainObjectBase
+    public sealed class ID : ObjectValueBase
     {
         public ID(int id)
         {

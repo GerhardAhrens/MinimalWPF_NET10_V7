@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------
-// <copyright file="DomainObjectBase.cs" company="Lifeprojects.de">
-//     Class: DomainObjectBase
+// <copyright file="ObjectValueBase.cs" company="Lifeprojects.de">
+//     Class: ObjectValueBase
 //     Copyright © Lifeprojects.de 2026
 // </copyright>
 //
@@ -9,7 +9,7 @@
 // <date>16.06.2026</date>
 //
 // <summary>
-// Basis Klasse zur Erstellung von Domain Objekten
+// Basis Klasse zur Erstellung von Value Object
 // </summary>
 //-----------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ namespace System.Windows
     using System.Collections.Generic;
     using System.Linq;
 
-    public abstract class DomainObjectBase
+    public abstract class ObjectValueBase
     {
         protected abstract IEnumerable<object> GetEqualityComponents();
 
@@ -34,7 +34,7 @@ namespace System.Windows
                 return false;
             }
 
-            var valueObject = (DomainObjectBase)obj;
+            var valueObject = (ObjectValueBase)obj;
 
             return GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());
         }
@@ -56,7 +56,7 @@ namespace System.Windows
             return base.ToString();
         }
 
-        public static bool operator ==(DomainObjectBase a, DomainObjectBase b)
+        public static bool operator ==(ObjectValueBase a, ObjectValueBase b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
             {
@@ -71,7 +71,7 @@ namespace System.Windows
             return a.Equals(b);
         }
 
-        public static bool operator !=(DomainObjectBase a, DomainObjectBase b)
+        public static bool operator !=(ObjectValueBase a, ObjectValueBase b)
         {
             return !(a == b);
         }

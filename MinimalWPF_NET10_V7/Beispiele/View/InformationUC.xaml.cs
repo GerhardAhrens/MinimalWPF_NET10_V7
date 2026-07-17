@@ -130,7 +130,10 @@
                 }
 
                 control.InstallFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                control.SettingsFolder = App.Settings.Pathname;
+                if (App.Settings != null)
+                {
+                    control.SettingsFolder = App.Settings.Pathname;
+                }
             }
         }
 
