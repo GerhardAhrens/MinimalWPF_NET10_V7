@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="DTO.cs" company="Lifeprojects.de">
-//     Class: DTO
+// <copyright file="DTOOfT.cs" company="Lifeprojects.de">
+//     Class: DTOOfT
 //     Copyright © Lifeprojects.de 2026
 // </copyright>
 //
@@ -24,14 +24,14 @@ namespace System.Windows
     using System.Text.Json;
     using System.Text.Json.Serialization;
 
-    public sealed partial class DTO
+    public sealed partial class DTOOfT<TKey> where TKey : Enum
     {
-        private Dictionary<string, object> _DtoDict = new();
+        private Dictionary<Enum,object> _DtoDict = new();
+
         public int Count { get { return this._DtoDict.Count; } }
 
-        public void Set<T>(string key, T value)
+        public void Set<T>(TKey key, T value)
         {
-            key = key.ToUpper(CultureInfo.CurrentCulture);
             if (value == null)
             {
                 this._DtoDict[key] = null;
@@ -42,16 +42,15 @@ namespace System.Windows
             }
         }
 
-        public bool Get<T>(string key, out T value)
+        public bool Get<T>(TKey key, out T value)
         {
-            key = key.ToUpper(CultureInfo.CurrentCulture);
             if (this._DtoDict.TryGetValue(key, out var obj) == true && obj is T tValue)
             {
                 value = tValue;
                 return true;
             }
 
-            if (obj == null)
+            if(obj == null)
             {
                 value = (T)obj;
                 return true;
@@ -61,9 +60,8 @@ namespace System.Windows
             return false;
         }
 
-        public T Get<T>(string key)
+        public T Get<T>(TKey key)
         {
-            key = key.ToUpper(CultureInfo.CurrentCulture);
             if (this._DtoDict.TryGetValue(key, out var obj) == true && obj is T tValue)
             {
                 return tValue;
@@ -72,7 +70,7 @@ namespace System.Windows
             return default!;
         }
 
-        public bool Equals(DTO anotherDTO)
+        public bool Equals(DTOOfT<TKey> anotherDTO)
         {
             if (ReferenceEquals(this._DtoDict, anotherDTO))
             {
@@ -92,7 +90,7 @@ namespace System.Windows
             EqualityComparer<object> valueComparer = EqualityComparer<object>.Default;
             foreach (var kvp in this._DtoDict)
             {
-                string key = kvp.Key.ToUpper(CultureInfo.CurrentCulture);
+                TKey key = (TKey)kvp.Key;
                 if (!anotherDTO.Get<object>(key, out var value))
                 {
                     return false;
@@ -126,17 +124,6 @@ namespace System.Windows
             return true;
         }
 
-        public DTO Clone()
-        {
-            DTO newDto = new();
-            foreach (var kvp in this._DtoDict)
-            {
-                newDto._DtoDict[kvp.Key] = kvp.Value;
-            }
-
-            return newDto;
-        }
-
         public void Clear()
         {
             if (_DtoDict != null && _DtoDict.Count > 0)
@@ -145,16 +132,26 @@ namespace System.Windows
             }
         }
 
+        public DTOOfT<TKey> Clone()
+        {
+            DTOOfT<TKey> newDto = new();
+            foreach (var kvp in this._DtoDict)
+            {
+                newDto._DtoDict[kvp.Key] = kvp.Value;
+            }
+
+            return newDto;
+        }
+
         public void ToJson(string filePath)
         {
             JsonSerializerOptions jsonSerializerOptions = new()
             {
                 WriteIndented = true,
             };
+            var options = jsonSerializerOptions;
 
-            JsonSerializerOptions options = jsonSerializerOptions;
-
-            options.Converters.Add(new ObjectDictionaryConverter());
+            options.Converters.Add(new EnumObjectDictionaryConverter());
             string json = JsonSerializer.Serialize(this._DtoDict, options);
             if (string.IsNullOrEmpty(json) == false)
             {
@@ -170,12 +167,12 @@ namespace System.Windows
             };
 
             JsonSerializerOptions options = jsonSerializerOptions;
-            options.Converters.Add(new ObjectDictionaryConverter());
+            options.Converters.Add(new EnumObjectDictionaryConverter());
 
             if (string.IsNullOrEmpty(filePath) == false && File.Exists(filePath) == true)
             {
                 string jsonText = File.ReadAllText(filePath);
-                this._DtoDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonText, options);
+                this._DtoDict = JsonSerializer.Deserialize<Dictionary<Enum, object>>(jsonText, options);
             }
         }
 
@@ -184,7 +181,7 @@ namespace System.Windows
             StringBuilder sb = new();
             foreach (var kvp in this._DtoDict)
             {
-                sb.AppendLine(CultureInfo.CurrentCulture, $"{kvp.Key}: {kvp.Value}");
+                sb.AppendLine(CultureInfo.CurrentCulture,$"{kvp.Key}: {kvp.Value}");
             }
 
             return sb.ToString();
@@ -206,24 +203,24 @@ namespace System.Windows
             return result;
         }
 
-        private sealed class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object>>
+        private sealed class EnumObjectDictionaryConverter : JsonConverter<Dictionary<Enum, object>>
         {
-            public override Dictionary<string, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            public override Dictionary<Enum, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                var result = new Dictionary<string, object>();
+                var result = new Dictionary<Enum, object>();
 
                 using var doc = JsonDocument.ParseValue(ref reader);
 
                 foreach (var prop in doc.RootElement.EnumerateObject())
                 {
-                    string key = prop.Name;
+                    Enum key = (Enum)Enum.Parse(typeof(TKey), prop.Name);
                     result[key] = prop.Value;
                 }
 
                 return result;
             }
 
-            public override void Write(Utf8JsonWriter writer, Dictionary<string, object> value, JsonSerializerOptions options)
+            public override void Write(Utf8JsonWriter writer, Dictionary<Enum, object> value, JsonSerializerOptions options)
             {
                 writer.WriteStartObject();
 
