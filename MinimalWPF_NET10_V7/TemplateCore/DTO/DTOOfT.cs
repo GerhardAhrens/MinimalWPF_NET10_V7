@@ -30,6 +30,9 @@ namespace System.Windows
 
         public int Count { get { return this._DtoDict.Count; } }
 
+        public string[] Keys { get { return _DtoDict.Keys.Select(k => k.ToString()).ToArray(); } }
+
+
         public void Set<T>(TKey key, T value)
         {
             if (value == null)
