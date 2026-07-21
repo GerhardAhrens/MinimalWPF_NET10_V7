@@ -23,12 +23,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Source\DemoCustomDataType.cs.source" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="ApplicationIcon.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Picture\ApplicationIcon.ico" />
     <Resource Include="Resources\Picture\ApplicationIcon.png" />
+    <Resource Include="Resources\Source\DemoCustomDataType.cs.source" />
   </ItemGroup>
 
   <ItemGroup>

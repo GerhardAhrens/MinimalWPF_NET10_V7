@@ -238,7 +238,7 @@
                     Background="Transparent"
                     Command="{Binding Path=ShowSettingsCommand}"
                     CommandParameter="{x:Static beispiel:CommandButtons.ShowSettings}"
-                    ToolTip="Beispiel zur InputBox">
+                    ToolTip="Beispiel zu Settings/Einstellungen">
                     <Image Source="{StaticResource ResourceKey=IconConfiguration}" Stretch="Uniform" />
                 </Button>
 

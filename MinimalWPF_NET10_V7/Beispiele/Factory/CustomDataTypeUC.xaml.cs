@@ -56,7 +56,7 @@ namespace MinimalWPF.Beispiel
         {
             string outCodeCS = string.Empty;
             string className = "DemoCustomDataType";
-            Uri uriCS = new Uri($"pack://application:,,,/Resources/Source/{className}.cs.source", UriKind.Absolute);
+            Uri uriCS = new Uri($"pack://application:,,,/Resources/Source/{className}.cs.source", UriKind.RelativeOrAbsolute);
             StreamResourceInfo sri = Application.GetResourceStream(uriCS);
             using StreamReader reader = new StreamReader(sri.Stream);
             outCodeCS = reader.ReadToEnd();

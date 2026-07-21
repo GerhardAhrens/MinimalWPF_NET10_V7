@@ -29,7 +29,10 @@
         #region WindowEventHandler
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
+            {
+                this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
+            }
         }
         #endregion WindowEventHandler
     }

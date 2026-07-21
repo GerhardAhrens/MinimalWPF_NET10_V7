@@ -13,7 +13,10 @@
         {
             this.InitializeComponent();
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
-            this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
+            {
+                this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
+            }
 
             this.QuitCommand = new CommandBase(commandParam => this.OnQuit(commandParam), () => true);
             this.ShowResultCommand = new CommandBase(commandParam => this.OnShowResult(commandParam), () => true);
