@@ -24,6 +24,10 @@ namespace System.Windows
 
     public class FPTreeItem : NotifiableObject
     {
+        private string name;
+        private FPTreeItem parent;
+        private ObservableCollection<FPTreeItem> childs;
+
         #region Properties
 
         public bool IsFullyLoaded { get; set; }
@@ -98,14 +102,6 @@ namespace System.Windows
 
             return path;
         }
-
-        #region Private fields
-
-        private string name;
-        private FPTreeItem parent;
-        private ObservableCollection<FPTreeItem> childs;
-
-        #endregion
     }
 
     public class DriveTreeItem : FPTreeItem
