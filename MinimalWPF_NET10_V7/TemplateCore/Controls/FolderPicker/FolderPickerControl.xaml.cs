@@ -11,7 +11,6 @@
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
@@ -23,13 +22,14 @@
     /// </summary>
     public partial class FolderPickerControl : UserControl, INotifyPropertyChanged
     {
-        #region Constants
-
         private const string EmptyItemName = "Leer";
         private const string NewFolderName = "Neues Verzeichnis";
         private const int MaxNewFolderSuffix = 10000;
 
-        #endregion
+        private FPTreeItem root;
+        private FPTreeItem selectedItem;
+        private string initialPath;
+        private Style itemContainerStyle;
 
         #region Properties
 
@@ -41,8 +41,8 @@
             }
             private set
             {
-                root = value;
-                NotifyPropertyChanged(() => Root);
+                this.root = value;
+                this.NotifyPropertyChanged(() => Root);
             }
         }
 
@@ -54,8 +54,8 @@
             }
             private set
             {
-                selectedItem = value;
-                NotifyPropertyChanged(() => SelectedItem);
+                this.selectedItem = value;
+                this.NotifyPropertyChanged(() => SelectedItem);
             }
         }
 
@@ -65,12 +65,12 @@
         {
             get
             {
-                return initialPath;
+                return this.initialPath;
             }
             set
             {
-                initialPath = value;
-                UpdateInitialPathUI();
+                this.initialPath = value;
+                this.UpdateInitialPathUI();
             }
         }
 
@@ -78,12 +78,12 @@
         {
             get
             {
-                return itemContainerStyle;
+                return this.itemContainerStyle;
             }
             set
             {
-                itemContainerStyle = value;
-                OnPropertyChanged();
+                this.itemContainerStyle = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -91,9 +91,8 @@
 
         public FolderPickerControl()
         {
-            InitializeComponent();
-
-            Init();
+            this.InitializeComponent();
+            this.Init();
         }
 
         public void CreateNewFolder()
@@ -103,8 +102,8 @@
 
         public void RefreshTree()
         {
-            Root = null;
-            Init();
+            this.Root = null;
+            this.Init();
         }
 
         #region INotifyPropertyChanged Members
@@ -297,7 +296,7 @@
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format(CultureInfo.CurrentCulture,"Can't create new folder. Error: {0}", ex.Message));
+                MessageBox.Show($"Fehler bei der Erstellung eines Verzeichnis '{ex.Message}'","Neues Verzeichnis", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
             }
         }
 
@@ -311,7 +310,7 @@
                 {
                     var nameWithIndex = string.Format(CultureInfo.CurrentCulture, NewFolderName + " {0}", i);
 
-                    if (!Directory.Exists(Path.Combine(parentPath, nameWithIndex)))
+                    if (Directory.Exists(Path.Combine(parentPath, nameWithIndex)) == false)
                     {
                         result = nameWithIndex;
                         break;
@@ -344,7 +343,7 @@
                     {
                         var dialog = new FPInputDialog()
                         {
-                            Message = string.Format(CultureInfo.CurrentCulture, "Soll das Verzeichnis umbenannt werden {0}?", context.Name),
+                            Message = $"Soll das Verzeichnis umbenannt werden '{context.Name}'?",
                             InputText = context.Name,
                             Title = "Umbenennen Verzeichnis"
                         };
@@ -354,13 +353,12 @@
                             var newFolderName = dialog.InputText;
 
                             /*
-                             * Parent for context is always not null due to the fact
-                             * that we don't allow to change the name of DriveTreeItem
+                             * „Parent“ ist im Kontext immer != null, da wir keine Änderung des Namens von „DriveTreeItem“ zulassen.
                              */
-                            var newFolderFullPath = Path.Combine(context.Parent.GetFullPath(), newFolderName);
+                            string newFolderFullPath = Path.Combine(context.Parent.GetFullPath(), newFolderName);
                             if (Directory.Exists(newFolderFullPath))
                             {
-                                MessageBox.Show(string.Format(CultureInfo.CurrentCulture, "Verzeichnis existiert bereits: {0}", newFolderFullPath));
+                                MessageBox.Show($"Verzeichnis existiert bereits: {newFolderFullPath}", "Umbenennen Verzeichnis", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                             }
                             else
                             {
@@ -373,7 +371,7 @@
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format(CultureInfo.CurrentCulture, "Verzeichnis kann nicht umbenannt werden: {0}", ex.Message));
+                MessageBox.Show($"Verzeichnis kann nicht umbenannt werden: {ex.Message}", "Umbenennen Verzeichnis", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
             }
         }
 
@@ -388,7 +386,7 @@
                     if (context != null && !(context is DriveTreeItem))
                     {
                         var confirmed =
-                            MessageBox.Show(string.Format(CultureInfo.CurrentCulture, "Möchten Sie das Verzeichnis {0} wirklich löschen?", context.Name), "Bestätigung der Verzeichnislöschung", MessageBoxButton.YesNo);
+                            MessageBox.Show($"Möchten Sie das Verzeichnis '{context.Name}' wirklich löschen?", "Bestätigung der Verzeichnislöschung", MessageBoxButton.YesNo,MessageBoxImage.Question,MessageBoxResult.No);
 
                         if (confirmed == MessageBoxResult.Yes)
                         {
@@ -401,23 +399,14 @@
             }
             catch (Exception ex)
             {
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Verzeichnis kann nicht gelöscht werden: {0}", ex.Message));
+                MessageBox.Show($"Verzeichnis kann nicht gelöscht werden: {ex.Message}", "Verzeichnis löschen", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
             }
         }
 
         #endregion
-
-        #region Private fields
-
-        private FPTreeItem root;
-        private FPTreeItem selectedItem;
-        private string initialPath;
-        private Style itemContainerStyle;
-
-        #endregion
     }
 
-    public class DriveIconConverter : IValueConverter
+    public sealed class DriveIconConverter : IValueConverter
     {
         private static BitmapImage removable;
         private static BitmapImage drive;
@@ -570,8 +559,6 @@
 
     public class NullToBoolConverter : IValueConverter
     {
-        #region IValueConverter Members
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
@@ -584,8 +571,6 @@
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 
     public static class LinqExtensions

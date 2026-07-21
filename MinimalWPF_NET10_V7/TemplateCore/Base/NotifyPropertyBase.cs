@@ -17,7 +17,6 @@
         private readonly ConcurrentDictionary<string, object> values = new();
         private readonly string className;
         private bool _IsPropertyChanged;
-        private int rowPosition;
 
         public NotifyPropertyBase() : base()
         {
