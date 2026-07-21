@@ -34,6 +34,7 @@
   <ItemGroup>
     <Folder Include="Beispiele\EventAggregator\" />
     <Folder Include="Beispiele\SyntaxBox\" />
+    <Folder Include="TemplateCore\Controls\FolderPicker\" />
     <Folder Include="_Template\" />
     <Folder Include="Resources\Localization\" />
     <Folder Include="TemplateCore\EventAggregator\" />

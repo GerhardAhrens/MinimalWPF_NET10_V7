@@ -45,6 +45,7 @@ namespace MinimalWPF.Beispiele
         public CommandBase DialogServiceCommand { get; private set; }
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
 
+        private NotificationBase Notification { get; } = new NotificationBase();
         #endregion Properties
 
         #region Windows Events
@@ -179,7 +180,18 @@ namespace MinimalWPF.Beispiele
                 {
                     // OK
                 }
-
+            }
+            else if (commandParam != null && commandParam.Equals("8") == true)
+            {
+                DialogResponse<FolderPickerDialog> response = new DialogService<FolderPickerDialog>().WithOwner(Application.Current.MainWindow).ShowDialog();
+                if (response.DialogResult == true)
+                {
+                    this.Notification.Hinweis($"Ausgewähltes Verzeichhnis: {response.ResponseObject}");
+                }
+                else
+                {
+                    // Abbrechen
+                }
             }
         }
 

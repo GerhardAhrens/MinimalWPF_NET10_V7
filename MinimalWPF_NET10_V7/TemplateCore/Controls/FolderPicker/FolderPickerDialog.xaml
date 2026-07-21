@@ -1,0 +1,59 @@
+﻿<Window
+    x:Class="System.Windows.FolderPickerDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:System.Windows"
+    Title="Select folder"
+    Width="500"
+    Height="500"
+    WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="DialogButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="75" />
+            <Setter Property="Margin" Value="8" />
+        </Style>
+        <local:NullToBoolConverter x:Key="NullToBoolConverter" />
+    </Window.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <local:FolderPickerControl
+            x:Name="FolderPickerControl"
+            Grid.Row="0"
+            Margin="8" />
+        <DockPanel Grid.Row="1">
+            <Button
+                x:Name="CreateButton"
+                Width="100"
+                Click="CreateButton_Click"
+                Content="Neues Verzeichnis"
+                IsEnabled="{Binding ElementName=FolderPickerControl, Path=SelectedItem, Converter={StaticResource NullToBoolConverter}}"
+                Style="{StaticResource DialogButtonStyle}" />
+
+            <Button
+                x:Name="RefreshButton"
+                Click="RefreshButton_Click"
+                Content="Aktualisieren"
+                Style="{StaticResource DialogButtonStyle}"
+                ToolTip="Refreshes folders tree (including drives)" />
+
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button
+                    x:Name="OkButton"
+                    Click="OkButton_Click"
+                    Content="Übernehmen"
+                    IsDefault="True"
+                    Style="{StaticResource DialogButtonStyle}" />
+
+                <Button
+                    x:Name="CancelButton"
+                    Click="CancelButton_Click"
+                    Content="Abbruch"
+                    IsCancel="True"
+                    Style="{StaticResource DialogButtonStyle}" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -56,6 +56,8 @@
             {
                 this.DialogResult = false;
             }
+
+            this.Tag = "Result vom Dialog";
         }
         #endregion WindowEventHandler
     }
