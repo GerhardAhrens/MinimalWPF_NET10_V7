@@ -6,7 +6,7 @@
 //
 // <author>Gerhard Ahrens - Lifeprojects.de</author>
 // <email>gerhard.ahrens@lifeprojects.de</email>
-// <date>05.03.2026 18:21:36</date>
+// <date>28.07.2026</date>
 //
 // <summary>
 // Startklasse App.cs
@@ -24,7 +24,7 @@ namespace MinimalWPF
     using System.Windows.Markup;
     using System.Windows.Threading;
 
-    using MinimalWPF.Beispiele;
+    using MinimalWPF.Core;
     using MinimalWPF.View;
 
     /// <summary>
@@ -49,10 +49,6 @@ namespace MinimalWPF
         /// behandelt und angezeigt werden.</remarks>
         public App()
         {
-            /*
-            XResult<decimal> aa = Parsing.ParseDecimal("123");
-            decimal bb = aa;
-            */
             try
             {
                 /* Name der EXE Datei*/
@@ -75,16 +71,6 @@ namespace MinimalWPF
                 ApplicationExit();
             }
         }
-
-        /// <summary>
-        /// Bereitstellung des Event Aggregators als statische Eigenschaft, damit er in der gesamten Anwendung verwendet werden kann, 
-        /// um lose gekoppelte Kommunikation zwischen verschiedenen Komponenten zu ermöglichen, z.B. um Ereignisse zu veröffentlichen 
-        /// und zu abonnieren, ohne direkte Abhängigkeiten zwischen den Komponenten zu schaffen.
-        /// </summary>
-        public static EventAggregator EventAgg { get; } = new();
-
-        public static Messenger CurrentMessenger { get; set; } = new Messenger();
-
 
         /// <summary>
         /// Statische Eigenschaft für die globalen Einstellungen der Anwendung, hier können alle Einstellungen gespeichert werden, 
@@ -146,6 +132,7 @@ namespace MinimalWPF
                     startScreen.Close();
                     startScreen = null;
                 }
+
             }
             catch (Exception ex)
             {
@@ -163,7 +150,6 @@ namespace MinimalWPF
         {
             base.OnExit(e);
 
-            /*
             Settings.LetzterZugriff = DateTime.Now;
 
             using (ApplicationSettings settings = new ApplicationSettings())
@@ -175,7 +161,6 @@ namespace MinimalWPF
                     settings.Save();
                 }
             }
-            */
         }
 
         /// <summary>
@@ -218,7 +203,6 @@ namespace MinimalWPF
         /// </summary>
         private static void InitializeSettings()
         {
-            /* 
             using (ApplicationSettings settings = new ApplicationSettings())
             {
                 if (settings.IsExitSettings() == false)
@@ -235,7 +219,6 @@ namespace MinimalWPF
 
                 Settings = settings;
             }
-            */
         }
 
         /// <summary>

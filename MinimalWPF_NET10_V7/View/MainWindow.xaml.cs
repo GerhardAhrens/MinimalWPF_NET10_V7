@@ -15,14 +15,13 @@
 
 namespace MinimalWPF.View
 {
-    using System.CodeDom;
+    using MinimalWPF.Beispiel;
+    using MinimalWPF.Beispiele;
+
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-
-    using MinimalWPF.Beispiel;
-    using MinimalWPF.Beispiele;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -11,6 +11,7 @@
     <File Path="README.md" />
     <File Path="Settings.png" />
   </Folder>
+  <Project Path="MinimalStartWPF/MinimalStartWPF.csproj" Id="562a47f2-e303-4412-bce4-46a021adc2a6" />
   <Project Path="MinimalWPF.Test/MinimalWPF.Test.csproj" Id="09c36ae0-3b62-4934-b6f0-47167f5d45a4" />
   <Project Path="MinimalWPF/MinimalWPF.csproj" Id="713d9b14-2e15-46fd-a331-26af4f9bbb99" />
   <Project Path="MinimalWPF_NET10_V7/MinimalWPF_NET10_V7.csproj" />
