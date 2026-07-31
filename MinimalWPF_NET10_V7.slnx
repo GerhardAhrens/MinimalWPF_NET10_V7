@@ -15,5 +15,4 @@
   <Project Path="MinimalWPF/MinimalWPF.csproj" Id="713d9b14-2e15-46fd-a331-26af4f9bbb99" />
   <Project Path="MinimalWPF_NET10_V7/MinimalWPF_NET10_V7.csproj" />
   <Project Path="MinimalWPF_SPA/MinimalWPF_SPA.csproj" Id="af757fd1-309a-4ccd-ac1e-f6fd081c3b93" />
-  <Project Path="MinimalWPF_TAB/MinimalWPF_TAB.csproj" Id="7b79a0b1-5c48-4f07-812f-fbc2a9db194d" />
 </Solution>

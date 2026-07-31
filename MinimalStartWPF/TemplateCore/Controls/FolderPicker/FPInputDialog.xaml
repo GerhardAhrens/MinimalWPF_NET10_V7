@@ -1,0 +1,55 @@
+﻿<Window
+    x:Class="System.Windows.FPInputDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Name="dialog"
+    Title="InputDialog"
+    Width="360"
+    Height="150"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="ToolWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Margin="8"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Text="{Binding ElementName=dialog, Path=Message}"
+            TextWrapping="Wrap" />
+        
+        <TextBox
+            x:Name="InputTextBox"
+            Grid.Row="1"
+            Margin="8"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            AcceptsReturn="False"
+            Text="{Binding ElementName=dialog, Path=InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        
+        <StackPanel
+            Grid.Row="2"
+            Margin="8"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Width="75"
+                Margin="4"
+                VerticalAlignment="Center"
+                Click="Button_Click"
+                Content="Ja" />
+            <Button
+                Width="75"
+                Margin="4"
+                VerticalAlignment="Center"
+                Content="Abbruch"
+                IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>
