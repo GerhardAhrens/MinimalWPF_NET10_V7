@@ -1,6 +1,9 @@
 ﻿namespace System.Windows.Controls
 {
 
+    using System.Windows.Data;
+    using System.Windows.Media;
+
     /// <summary>
     /// Erweiterte GridViewColumn für das AdvancedListView.
     /// </summary>
@@ -109,5 +112,93 @@
         }
 
         #endregion    }
+
+        #region TextAlignment
+        public static readonly DependencyProperty TextAlignmentProperty =
+            DependencyProperty.Register(
+                nameof(TextAlignment),
+                typeof(TextAlignment),
+                typeof(AdvancedGridViewColumn),
+                new PropertyMetadata(TextAlignment.Left));
+
+        public TextAlignment TextAlignment
+        {
+            get => (TextAlignment)GetValue(TextAlignmentProperty);
+            set => SetValue(TextAlignmentProperty, value);
+        }
+        #endregion TextAlignment
+
+        #region CellStyle
+        public static readonly DependencyProperty CellStyleProperty =
+            DependencyProperty.Register(
+                nameof(CellStyle),
+                typeof(Style),
+                typeof(AdvancedGridViewColumn));
+
+        public Style CellStyle
+        {
+            get => (Style)GetValue(CellStyleProperty);
+            set => SetValue(CellStyleProperty, value);
+        }
+        #endregion CellStyle
+
+        #region StringFormat
+        public static readonly DependencyProperty StringFormatProperty =
+            DependencyProperty.Register(
+                nameof(StringFormat),
+                typeof(string),
+                typeof(AdvancedGridViewColumn));
+
+        public string StringFormat
+        {
+            get => (string)GetValue(StringFormatProperty);
+            set => SetValue(StringFormatProperty, value);
+        }
+        #endregion StringFormat
+
+        internal void CreateDefaultCellTemplate()
+        {
+            if (DisplayMemberBinding is not Binding binding)
+                return;
+
+            var gridFactory = new FrameworkElementFactory(typeof(Grid));
+
+            var textFactory = new FrameworkElementFactory(typeof(TextBlock));
+
+            var newBinding = new Binding
+            {
+                Path = binding.Path,
+                Mode = binding.Mode,
+                Converter = binding.Converter,
+                ConverterCulture = binding.ConverterCulture,
+                ConverterParameter = binding.ConverterParameter,
+                FallbackValue = binding.FallbackValue,
+                TargetNullValue = binding.TargetNullValue,
+                UpdateSourceTrigger = binding.UpdateSourceTrigger,
+                StringFormat = StringFormat
+            };
+
+            textFactory.SetBinding(TextBlock.TextProperty, newBinding);
+
+            textFactory.SetValue(FrameworkElement.WidthProperty, Math.Max(0, Width - 15));
+            //textFactory.SetValue(TextBlock.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
+            textFactory.SetValue(TextBlock.TextAlignmentProperty, TextAlignment);
+            textFactory.SetValue(TextBlock.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
+            textFactory.SetValue(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center);
+
+            if (CellStyle != null)
+            {
+                textFactory.SetValue(FrameworkElement.StyleProperty, CellStyle);
+            }
+
+            gridFactory.AppendChild(textFactory);
+
+            CellTemplate = new DataTemplate
+            {
+                VisualTree = gridFactory
+            };
+
+            DisplayMemberBinding = null;
+        }
     }
 }

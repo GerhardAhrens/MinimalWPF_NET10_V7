@@ -11,12 +11,24 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
+
+    <base:WindowBase.Resources>
+        <Style x:Key="RowNumberStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="Foreground" Value="Green" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="0,0,6,0" />
+        </Style>
+    </base:WindowBase.Resources>
+
     <Grid>
         <UI:AdvancedListView
             x:Name="lvwMain"
             Margin="10"
             Background="WhiteSmoke"
             ItemsSource="{Binding Path=DataSource}"
+            RowNumberTextStyle="{StaticResource RowNumberStyle}"
             SelectedItem="{Binding Path=SelectedDataRow, UpdateSourceTrigger=PropertyChanged}"
             SelectionMode="Single"
             ShowRowNumbers="True">
@@ -35,10 +47,12 @@
                         SortMemberPath="B" />
 
                     <UI:AdvancedGridViewColumn
-                        Width="80"
+                        Width="70"
                         DisplayMemberBinding="{Binding Path=[C]}"
                         Header="Preis"
-                        SortMemberPath="C" />
+                        SortMemberPath="C"
+                        StringFormat="{}{0:N2} €"
+                        TextAlignment="Right" />
                 </GridView>
             </ListView.View>
         </UI:AdvancedListView>
