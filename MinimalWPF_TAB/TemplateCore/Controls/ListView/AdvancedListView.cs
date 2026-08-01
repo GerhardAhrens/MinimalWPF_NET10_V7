@@ -1,11 +1,15 @@
-﻿namespace System.Windows
+﻿namespace System.Windows.Controls
 {
-    using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Input;
+
+    using MinimalWPF_TAB.TemplateCore.Controls.ListView;
 
     public class AdvancedListView : ListView
     {
         private readonly SortingManager _sortingManager;
+        private RowNumberGridViewColumn? _rowNumberColumn;
+        private bool _rowNumberInitialized;
 
         static AdvancedListView()
         {
@@ -19,6 +23,7 @@
             AddHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(OnColumnHeaderClick));
 
             MouseDoubleClick += AdvancedListView_MouseDoubleClick;
+            Loaded += AdvancedListView_Loaded;
         }
 
         #region EnableSorting
@@ -45,7 +50,7 @@
                 nameof(ShowRowNumbers),
                 typeof(bool),
                 typeof(AdvancedListView),
-                new PropertyMetadata(false));
+                new PropertyMetadata(false, OnShowRowNumbersChanged));
 
         public bool ShowRowNumbers
         {
@@ -153,6 +158,10 @@
 
         #endregion
 
+        private void AdvancedListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateRowNumberColumn();
+        }
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {
             base.OnSelectionChanged(e);
@@ -203,6 +212,62 @@
             }
 
             this._sortingManager.Sort(header);
+        }
+
+        private static void OnShowRowNumbersChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((AdvancedListView)d).UpdateRowNumberColumn();
+        }
+
+        private void UpdateRowNumberColumn()
+        {
+            if (View is not GridView gridView)
+                return;
+
+            if (ShowRowNumbers)
+            {
+                if (_rowNumberInitialized)
+                    return;
+
+                _rowNumberColumn = new RowNumberGridViewColumn();
+
+                _rowNumberColumn.CellTemplate = CreateRowNumberTemplate();
+
+                gridView.Columns.Insert(0, _rowNumberColumn);
+
+                _rowNumberInitialized = true;
+            }
+            else
+            {
+                if (!_rowNumberInitialized)
+                    return;
+
+                gridView.Columns.Remove(_rowNumberColumn);
+
+                _rowNumberInitialized = false;
+            }
+        }
+
+        private DataTemplate CreateRowNumberTemplate()
+        {
+            var factory = new FrameworkElementFactory(typeof(TextBlock));
+
+            factory.SetBinding(
+                TextBlock.TextProperty,
+                new Binding()
+                {
+                    RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor,
+                        typeof(ListViewItem), 1),
+                    Converter = new RowNumberConverter()
+                });
+
+            factory.SetValue(TextBlock.HorizontalAlignmentProperty,
+                HorizontalAlignment.Right);
+
+            return new DataTemplate()
+            {
+                VisualTree = factory
+            };
         }
     }
 }

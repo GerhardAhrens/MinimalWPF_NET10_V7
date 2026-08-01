@@ -9,6 +9,11 @@
     /// </summary>
     public partial class App : Application
     {
-    }
+        public static void ApplicationExit()
+        {
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            Application.Current.Shutdown(0);
+        }
 
+    }
 }

@@ -1,12 +1,46 @@
-﻿<Window x:Class="MinimalWPF.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MinimalWPF"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+﻿<base:WindowBase
+    x:Class="MinimalWPF.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:UI="clr-namespace:System.Windows.Controls"
+    xmlns:base="clr-namespace:System.Windows"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MinimalWPF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
     <Grid>
+        <UI:AdvancedListView
+            x:Name="lvwMain"
+            Margin="10"
+            Background="WhiteSmoke"
+            ItemsSource="{Binding Path=DataSource}"
+            SelectedItem="{Binding Path=SelectedDataRow, UpdateSourceTrigger=PropertyChanged}"
+            SelectionMode="Single"
+            ShowRowNumbers="True">
+            <ListView.View>
+                <GridView>
+                    <UI:AdvancedGridViewColumn
+                        Width="60"
+                        DisplayMemberBinding="{Binding Path=[A]}"
+                        Header="Art-Nr"
+                        SortMemberPath="A" />
 
+                    <UI:AdvancedGridViewColumn
+                        Width="200"
+                        DisplayMemberBinding="{Binding Path=[B]}"
+                        Header="Name"
+                        SortMemberPath="B" />
+
+                    <UI:AdvancedGridViewColumn
+                        Width="80"
+                        DisplayMemberBinding="{Binding Path=[C]}"
+                        Header="Preis"
+                        SortMemberPath="C" />
+                </GridView>
+            </ListView.View>
+        </UI:AdvancedListView>
     </Grid>
-</Window>
+</base:WindowBase>
