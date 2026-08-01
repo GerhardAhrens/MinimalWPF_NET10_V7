@@ -14,6 +14,7 @@
         private readonly SortingManager _sortingManager;
         private RowNumberGridViewColumn _rowNumberColumn;
         private bool _rowNumberInitialized;
+        private DataTemplate _rowNumberTemplate;
 
         static AdvancedListView()
         {
@@ -177,6 +178,36 @@
         }
         #endregion RowNumberTextStyle
 
+        #region RowNumberHeader
+        public static readonly DependencyProperty RowNumberHeaderProperty =
+            DependencyProperty.Register(
+                nameof(RowNumberHeader),
+                typeof(string),
+                typeof(AdvancedListView),
+                new PropertyMetadata("#", OnRowNumberPropertyChanged));
+
+        public string RowNumberHeader
+        {
+            get => (string)GetValue(RowNumberHeaderProperty);
+            set => SetValue(RowNumberHeaderProperty, value);
+        }
+        #endregion RowNumberHeader
+
+        #region RowNumberWidth
+        public static readonly DependencyProperty RowNumberWidthProperty =
+            DependencyProperty.Register(
+                nameof(RowNumberWidth),
+                typeof(double),
+                typeof(AdvancedListView),
+                new PropertyMetadata(45.0, OnRowNumberPropertyChanged));
+
+        public double RowNumberWidth
+        {
+            get => (double)GetValue(RowNumberWidthProperty);
+            set => SetValue(RowNumberWidthProperty, value);
+        }
+        #endregion RowNumberWidth
+
         private void AdvancedListView_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -247,6 +278,11 @@
             ((AdvancedListView)d).UpdateRowNumberColumn();
         }
 
+        private static void OnRowNumberPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((AdvancedListView)d).UpdateRowNumberColumn();
+        }
+
         private void UpdateRowNumberColumn()
         {
             if (View is not GridView gridView)
@@ -254,18 +290,19 @@
 
             if (ShowRowNumbers)
             {
-                if (_rowNumberInitialized)
+                if (!_rowNumberInitialized)
                 {
-                    return;
+                    _rowNumberColumn = new RowNumberGridViewColumn();
+
+                    _rowNumberColumn.CellTemplate = GetRowNumberTemplate();
+
+                    gridView.Columns.Insert(0, _rowNumberColumn);
+
+                    _rowNumberInitialized = true;
                 }
 
-                _rowNumberColumn = new RowNumberGridViewColumn();
-
-                _rowNumberColumn.CellTemplate = CreateRowNumberTemplate();
-
-                gridView.Columns.Insert(0, _rowNumberColumn);
-
-                _rowNumberInitialized = true;
+                _rowNumberColumn.Header = RowNumberHeader;
+                _rowNumberColumn.Width = RowNumberWidth;
             }
             else
             {
@@ -280,34 +317,45 @@
             }
         }
 
-        private DataTemplate CreateRowNumberTemplate()
+        private DataTemplate GetRowNumberTemplate()
         {
+            if (_rowNumberTemplate != null)
+                return _rowNumberTemplate;
+
             var factory = new FrameworkElementFactory(typeof(TextBlock));
 
-            factory.SetBinding(TextBlock.TextProperty, new Binding()
-            {
-                RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(ListViewItem), 1),
-                Converter = new RowNumberConverter()
-            });
+            factory.SetBinding(TextBlock.TextProperty,
+                new Binding()
+                {
+                    RelativeSource = new RelativeSource(
+                        RelativeSourceMode.FindAncestor,
+                        typeof(ListViewItem),
+                        1),
+                    Converter = new RowNumberConverter()
+                });
 
-            // Standard
-            factory.SetValue(TextBlock.TextAlignmentProperty, TextAlignment.Right);
+            // Standarddarstellung
             factory.SetValue(TextBlock.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
-            factory.SetValue(TextBlock.ForegroundProperty, System.Windows.Media.Brushes.Blue);
             factory.SetValue(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center);
-            factory.SetValue(TextBlock.MarginProperty, new Thickness(4, 0, 4, 0));
+            factory.SetValue(TextBlock.TextAlignmentProperty, TextAlignment.Right);
+            factory.SetValue(TextBlock.MarginProperty, new Thickness(2, 0, 4, 0));
 
-            // Style des Controls verwenden
-            factory.SetBinding(FrameworkElement.StyleProperty, new Binding(nameof(RowNumberTextStyle))
-            {
-                Source = this
-            });
+            // Optionaler benutzerdefinierter Style
+            factory.SetBinding(
+                FrameworkElement.StyleProperty,
+                new Binding(nameof(RowNumberTextStyle))
+                {
+                    Source = this
+                });
 
-            return new DataTemplate()
+            _rowNumberTemplate = new DataTemplate
             {
                 VisualTree = factory
             };
+
+            return _rowNumberTemplate;
         }
+
 
         private void PrepareColumns()
         {
