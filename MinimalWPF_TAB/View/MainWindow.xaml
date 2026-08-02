@@ -22,17 +22,36 @@
         </Style>
     </base:WindowBase.Resources>
 
-    <Grid>
+    <Grid ColumnDefinitions="*,200">
         <UI:AdvancedListView
             x:Name="lvwMain"
             Margin="10"
             Background="WhiteSmoke"
+            ContextMenuCommand="{Binding Path=ContextMenuClickCommand}"
+            DoubleClickCommand="{Binding Path=SelectDataRowClickCommand}"
             ItemsSource="{Binding Path=DataSource}"
+            RowNumberHeader="*"
             RowNumberTextStyle="{StaticResource RowNumberStyle}"
             SelectedItem="{Binding Path=SelectedDataRow, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItemChangedCommand="{Binding Path=SelectDataRowCommand}"
             SelectionMode="Single"
-            RowNumberHeader="*"
             ShowRowNumbers="True">
+            <UI:AdvancedListView.ContextMenu>
+
+                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+
+                    <MenuItem
+                        Command="{Binding Path=EditCommand}"
+                        CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                        Header="Bearbeiten" />
+
+                    <MenuItem
+                        Command="{Binding Path=DeleteCommand}"
+                        CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                        Header="Löschen" />
+                </ContextMenu>
+
+            </UI:AdvancedListView.ContextMenu>
             <ListView.View>
                 <GridView>
                     <UI:AdvancedGridViewColumn
@@ -57,5 +76,12 @@
                 </GridView>
             </ListView.View>
         </UI:AdvancedListView>
+
+        <TextBlock
+            Grid.Column="1"
+            Margin="10"
+            FontSize="20"
+            FontWeight="Bold"
+            Text="{Binding Path=Id}" />
     </Grid>
 </base:WindowBase>

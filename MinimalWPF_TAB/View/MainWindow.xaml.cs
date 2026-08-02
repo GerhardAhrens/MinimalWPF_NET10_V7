@@ -3,6 +3,7 @@
     using System.ComponentModel;
     using System.Data;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Data;
 
     using MinimalWPF.Core;
@@ -17,10 +18,23 @@
             this.InitializeComponent();
             WeakEventManager<WindowBase, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
             WeakEventManager<WindowBase, CancelEventArgs>.AddHandler(this, "Closing", this.OnWindowClosing);
+
+            this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
+            this.SelectDataRowClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
+            this.ContextMenuClickCommand = new CommandBase(commandParam => this.OnContextMenuClick(commandParam), () => true);
+            this.DeleteCommand = new CommandBase(commandParam => this.OnDeleteCommand(commandParam), () => true);
+            this.EditCommand = new CommandBase(commandParam => this.OnEditCommand(commandParam), () => true);
+
             this.DataContext = this;
         }
 
         #region Properties
+        public CommandBase SelectDataRowCommand { get; private set; }
+        public CommandBase SelectDataRowClickCommand { get; private set; }
+        public CommandBase ContextMenuClickCommand { get; private set; }
+        public CommandBase DeleteCommand { get; private set; }
+        public CommandBase EditCommand { get; private set; }
+
         public string WindowTitel
         {
             get => base.GetValue<string>();
@@ -36,6 +50,12 @@
         public DataRowView SelectedDataRow
         {
             get => base.GetValue<DataRowView>();
+            set => base.SetValue(value);
+        }
+
+        public string Id
+        {
+            get => base.GetValue<string>();
             set => base.SetValue(value);
         }
 
@@ -101,6 +121,51 @@
         }
 
         #endregion Windows Events
+
+        private void OnSelectDataRow(object commandParam)
+        {
+            if (commandParam is DataRowView rowView)
+            {
+                this.Id = rowView["A"].ToString();
+            }
+        }
+
+        private void OnSelectDataRowClick(object commandParam)
+        {
+            if (commandParam is DataRowView rowView)
+            {
+                string id = rowView["A"].ToString();
+                this.Message.Hinweis("Information",$"Artikelnummer: {id}" );
+            }
+        }
+
+        private void OnContextMenuClick(object commandParam)
+        {
+            if (commandParam is ContextMenuCommandArgs contextMenu)
+            {
+                DataRowView rowView = (DataRowView)contextMenu.SelectedItem;
+                string id = rowView["A"].ToString();
+            }
+        }
+        
+        private void OnDeleteCommand(object commandParam)
+        {
+            if (commandParam is DataRowView rowView)
+            {
+                string id = rowView["A"].ToString();
+                this.Message.Hinweis("Löschen", $"Artikelnummer: {id}");
+            }
+        }
+
+        private void OnEditCommand(object commandParam)
+        {
+            if (commandParam is DataRowView rowView)
+            {
+                string id = rowView["A"].ToString();
+                this.Message.Hinweis("Bearbeiten", $"Artikelnummer: {id}");
+            }
+        }
+
         private static DataTable LadeArtikel()
         {
             DataTable table = new("Artikel");

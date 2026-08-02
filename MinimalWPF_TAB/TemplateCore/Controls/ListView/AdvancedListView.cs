@@ -242,7 +242,21 @@
         {
             base.OnContextMenuOpening(e);
 
-            ExecuteCommand(ContextMenuCommand);
+            if (ContextMenuCommand == null)
+                return;
+
+            var args = new ContextMenuCommandArgs
+            {
+                SelectedItem = SelectedItem,
+                EventArgs = e,
+                OriginalElement = e.OriginalSource as FrameworkElement,
+                MousePosition = Mouse.GetPosition(this)
+            };
+
+            if (ContextMenuCommand.CanExecute(args))
+            {
+                ContextMenuCommand.Execute(args);
+            }
         }
 
         private void ExecuteCommand(ICommand command)
@@ -431,5 +445,16 @@
 
             dc.Pop();
         }
+    }
+
+    public class ContextMenuCommandArgs
+    {
+        public object SelectedItem { get; init; }
+
+        public Point MousePosition { get; init; }
+
+        public FrameworkElement OriginalElement { get; init; }
+
+        public ContextMenuEventArgs EventArgs { get; init; }
     }
 }
