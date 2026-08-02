@@ -210,6 +210,13 @@
             set => SetValue(FilterPlaceholderProperty, value);
         }
         #endregion FilterPlaceholder
+
+        internal string BindingPath
+        {
+            get;
+            private set;
+        }
+
         internal string EffectiveSortMemberPath
         {
             get
@@ -227,11 +234,17 @@
         internal void CreateDefaultCellTemplate()
         {
             if (DisplayMemberBinding is not Binding binding)
+            {
                 return;
+            }
 
-            var gridFactory = new FrameworkElementFactory(typeof(Grid));
+            BindingPath = binding.Path?.Path;
 
-            var textFactory = new FrameworkElementFactory(typeof(TextBlock));
+            FrameworkElementFactory gridFactory = new FrameworkElementFactory(typeof(Grid));
+            FrameworkElementFactory textFactory = new FrameworkElementFactory(typeof(TextBlock));
+
+            textFactory.SetValue(CellAppearanceManager.ColumnProperty, this);
+            textFactory.AddHandler(FrameworkElement.LoadedEvent, new RoutedEventHandler(CellAppearanceManager.OnCellLoaded));
 
             var newBinding = new Binding
             {
@@ -247,9 +260,7 @@
             };
 
             textFactory.SetBinding(TextBlock.TextProperty, newBinding);
-
             textFactory.SetValue(FrameworkElement.WidthProperty, Math.Max(0, Width - 15));
-            //textFactory.SetValue(TextBlock.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
             textFactory.SetValue(TextBlock.TextAlignmentProperty, TextAlignment);
             textFactory.SetValue(TextBlock.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
             textFactory.SetValue(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center);

@@ -81,6 +81,73 @@
                     throw;
                 }
 
+                /*
+                 * Alle Zellen einfärben, unabhängig von der Spalte
+                lvwMain.CellStyleProvider = request =>
+                {
+                    return new CellStyleInfo
+                    {
+                        Background = Brushes.Yellow,
+                        Foreground = Brushes.Red
+                    };
+                };
+                */
+
+                /*
+                 * Nur die Spalte "C" "Preis"
+                lvwMain.CellStyleProvider = request =>
+                {
+                    if (request.Column.SortMemberPath == "C")
+                    {
+                        return new CellStyleInfo
+                        {
+                            Background = Brushes.Yellow,
+                            Foreground = Brushes.Red
+                        };
+                    }
+
+                    return null;
+                };
+                */
+
+                /*
+                 * Nur eine Zeile
+                lvwMain.CellStyleProvider = request =>
+                {
+                    if (request.Item is DataRowView row)
+                    {
+                        if ((string)row["B"] == "Bleistift")
+                        {
+                            return new CellStyleInfo
+                            {
+                                Background = Brushes.LightBlue
+                            };
+                        }
+                    }
+
+                    return null;
+                };
+                */
+
+                /*
+                 * Nur eine Zelle
+                lvwMain.CellStyleProvider = request =>
+                {
+                    if (request.Column.SortMemberPath == "C")
+                    {
+                        if (request.Value is decimal preis && preis > 2)
+                        {
+                            return new CellStyleInfo
+                            {
+                                Foreground = Brushes.Red,
+                                FontWeight = FontWeights.Bold
+                            };
+                        }
+                    }
+
+                    return null;
+                };
+                */
             }
 
         }
