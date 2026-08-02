@@ -22,9 +22,17 @@
         </Style>
     </base:WindowBase.Resources>
 
-    <Grid ColumnDefinitions="*,200">
+    <Grid ColumnDefinitions="*,200" RowDefinitions="35,*">
+        <UI:FilterRow
+            Grid.Row="0"
+            Height="30"
+            Margin="60,0,0,0"
+            VerticalAlignment="Bottom"
+            ListView="{Binding ElementName=lvwMain}" />
+
         <UI:AdvancedListView
             x:Name="lvwMain"
+            Grid.Row="1"
             Margin="10"
             Background="WhiteSmoke"
             ContextMenuCommand="{Binding Path=ContextMenuClickCommand}"
@@ -66,8 +74,8 @@
                     <UI:AdvancedGridViewColumn
                         Width="200"
                         DisplayMemberBinding="{Binding Path=[B]}"
-                        Header="Name"
                         FilterMemberPath="B"
+                        Header="Name"
                         SortMemberPath="B" />
 
                     <UI:AdvancedGridViewColumn

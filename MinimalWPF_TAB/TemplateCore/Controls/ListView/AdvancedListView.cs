@@ -1,5 +1,6 @@
 ﻿namespace System.Windows.Controls
 {
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Globalization;
     using System.Windows.Data;
@@ -12,10 +13,11 @@
     public class AdvancedListView : ListView
     {
         private readonly SortingManager _sortingManager;
+        private readonly FilterManager _filterManager;
         private RowNumberGridViewColumn _rowNumberColumn;
         private bool _rowNumberInitialized;
         private DataTemplate _rowNumberTemplate;
-        private readonly FilterManager _filterManager;
+        //private Grid _layoutRoot;
 
         static AdvancedListView()
         {
@@ -98,7 +100,6 @@
             get => (bool)GetValue(ShowFilterRowProperty);
             set => SetValue(ShowFilterRowProperty, value);
         }
-
         #endregion
 
         #region FilterTemplate
@@ -210,14 +211,11 @@
         }
         #endregion RowNumberWidth
 
+
         private void AdvancedListView_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                this.PrepareColumns();
-                this.UpdateRowNumberColumn();
-                this.RegisterColumns();
-
                 if (ContextMenu != null)
                 {
                     ContextMenu.Opened -= ContextMenu_Opened;
@@ -229,6 +227,20 @@
                 string errorText = ex.Message;
                 throw;
             }
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            this.InitializeColumns();
+        }
+
+        private void InitializeColumns()
+        {
+            this.PrepareColumns();
+            this.UpdateRowNumberColumn();
+            this.RegisterColumns();
         }
 
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)
@@ -399,6 +411,8 @@
 
         private void RegisterColumns()
         {
+            _filterManager.Clear();
+
             if (View is not GridView gridView)
                 return;
 
@@ -413,29 +427,39 @@
             }
         }
 
-        public class RowNumberConverter : IValueConverter
+        internal void SetFilter(AdvancedGridViewColumn column, string value)
         {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            _filterManager.SetFilter(column, value);
+        }
+
+        internal void UpdateFilter(AdvancedGridViewColumn column, string value)
+        {
+            _filterManager.SetFilter(column, value);
+        }
+    }
+
+    public class RowNumberConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not ListViewItem item)
             {
-                if (value is not ListViewItem item)
-                {
-                    return string.Empty;
-                }
-
-                ListView listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
-
-                if (listView == null)
-                {
-                    return string.Empty;
-                }
-
-                return listView.ItemContainerGenerator.IndexFromContainer(item) + 1;
+                return string.Empty;
             }
 
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            ListView listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
+
+            if (listView == null)
             {
-                throw new NotSupportedException();
+                return string.Empty;
             }
+
+            return listView.ItemContainerGenerator.IndexFromContainer(item) + 1;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
         }
     }
 

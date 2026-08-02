@@ -4,6 +4,20 @@
              xmlns:local="clr-namespace:MinimalWPF"
              StartupUri="View\MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--  Alle Styles sammeln und mergen  -->
+
+                <!--  Lokale Styles  -->
+                <ResourceDictionary Source="Resources\Style\Pictures.xaml" />
+                <ResourceDictionary Source="Resources\Style\XamlIcon.xaml" />
+                <ResourceDictionary Source="Resources\Style\ApplicationResources.xaml" />
+                <ResourceDictionary Source="Resources\Localization\Localization.xaml" />
+                <ResourceDictionary Source="TemplateCore\Controls\ListView\Themes\Generic.xaml" />
+                <ResourceDictionary Source="TemplateCore\Themes\Generic.xaml" />
+
+                <!--  Externe Styles aus Bibliotheken  -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
