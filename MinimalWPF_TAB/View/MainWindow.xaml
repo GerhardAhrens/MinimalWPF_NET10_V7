@@ -68,19 +68,21 @@
                     <UI:AdvancedGridViewColumn
                         Width="60"
                         DisplayMemberBinding="{Binding Path=[A]}"
+                        FilterType="Number"
                         Header="Art-Nr"
                         SortMemberPath="A" />
 
                     <UI:AdvancedGridViewColumn
                         Width="200"
                         DisplayMemberBinding="{Binding Path=[B]}"
-                        FilterMemberPath="B"
+                        FilterType="Text"
                         Header="Name"
                         SortMemberPath="B" />
 
                     <UI:AdvancedGridViewColumn
                         Width="70"
                         DisplayMemberBinding="{Binding Path=[C]}"
+                        FilterType="Number"
                         Header="Preis"
                         SortMemberPath="C"
                         StringFormat="{}{0:N2} €"

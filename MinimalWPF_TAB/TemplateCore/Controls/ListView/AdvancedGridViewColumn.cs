@@ -181,6 +181,35 @@
         }
         #endregion FilterMemberPath
 
+        #region FilterType
+        public static readonly DependencyProperty FilterTypeProperty =
+            DependencyProperty.Register(
+                nameof(FilterType),
+                typeof(FilterType),
+                typeof(AdvancedGridViewColumn),
+                new PropertyMetadata(FilterType.Auto));
+
+        public FilterType FilterType
+        {
+            get => (FilterType)GetValue(FilterTypeProperty);
+            set => SetValue(FilterTypeProperty, value);
+        }
+        #endregion
+
+        #region FilterPlaceholder
+        public static readonly DependencyProperty FilterPlaceholderProperty =
+            DependencyProperty.Register(
+                nameof(FilterPlaceholder),
+                typeof(string),
+                typeof(AdvancedGridViewColumn),
+                new PropertyMetadata(null));
+
+        public string FilterPlaceholder
+        {
+            get => (string)GetValue(FilterPlaceholderProperty);
+            set => SetValue(FilterPlaceholderProperty, value);
+        }
+        #endregion FilterPlaceholder
         internal string EffectiveSortMemberPath
         {
             get
@@ -239,5 +268,14 @@
 
             DisplayMemberBinding = null;
         }
+    }
+
+    public enum FilterType
+    {
+        Auto,
+        Text,
+        Number,
+        Date,
+        Boolean
     }
 }

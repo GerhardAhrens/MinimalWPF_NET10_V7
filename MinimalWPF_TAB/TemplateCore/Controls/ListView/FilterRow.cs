@@ -1,7 +1,7 @@
 ﻿namespace System.Windows.Controls
 {
-    using System.Globalization;
     using System.Windows.Data;
+    using System.Windows.Input;
 
     public class FilterRow : Grid
     {
@@ -27,40 +27,44 @@
 
         private void Build()
         {
-            Children.Clear();
-            ColumnDefinitions.Clear();
+            this.Children.Clear();
+            this.ColumnDefinitions.Clear();
 
-            if (ListView == null)
+            if (this.ListView == null)
+            {
                 return;
+            }
 
-            if (ListView.View is not GridView gridView)
+            if (this.ListView.View is not GridView gridView)
+            {
                 return;
+            }
 
             int columnIndex = 0;
 
             foreach (AdvancedGridViewColumn column in gridView.Columns.OfType<AdvancedGridViewColumn>())
             {
-                if (!column.ShowFilter)
+                if (column.ShowFilter == false)
+                {
                     continue;
+                }
 
                 ColumnDefinition columnDefinition = new();
 
-                BindingOperations.SetBinding(
-                    columnDefinition,
-                    ColumnDefinition.WidthProperty,
+                BindingOperations.SetBinding(columnDefinition, ColumnDefinition.WidthProperty,
                     new Binding(nameof(GridViewColumn.Width))
                     {
                         Source = column,
                         Converter = new DoubleToGridLengthConverter()
                     });
 
-                ColumnDefinitions.Add(columnDefinition);
+                this.ColumnDefinitions.Add(columnDefinition);
 
                 TextBox tb = CreateFilterBox(column);
 
                 SetColumn(tb, columnIndex);
 
-                Children.Add(tb);
+                this.Children.Add(tb);
 
                 columnIndex++;
             }
@@ -77,41 +81,87 @@
             tb.Tag = column;
 
             tb.TextChanged += FilterBox_TextChanged;
+            tb.PreviewKeyDown += FilterBox_PreviewKeyDown;
+            tb.ToolTip = GetPlaceholder(column);
 
             return tb;
         }
 
         private void FilterBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (ListView == null)
+            if (this.ListView == null)
+            {
                 return;
+            }
 
             if (sender is not TextBox tb)
+            {
                 return;
+            }
 
             if (tb.Tag is not AdvancedGridViewColumn column)
+            {
                 return;
+            }
 
-            ListView?.UpdateFilter(column, tb.Text);
-        }
-    }
-
-    internal sealed class DoubleToGridLengthConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is double d)
-                return new GridLength(d);
-
-            return GridLength.Auto;
+            this.ListView?.UpdateFilter(column, tb.Text);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        private void FilterBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (value is GridLength g)
-                return g.Value;
+            if (sender is not TextBox tb)
+            {
+                return;
+            }
 
-            return 0.0;
+            if (e.Key != Key.Escape)
+            {
+                return;
+            }
+
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                this.ClearAllFilters();
+            }
+            else
+            {
+                tb.Clear();
+                tb.Focus();
+            }
+
+            e.Handled = true;
+        }
+
+        private void ClearAllFilters()
+        {
+            TextBox first = null;
+            foreach (UIElement element in Children)
+            {
+                if (element is TextBox tb)
+                {
+                    tb.Clear();
+                    first ??= tb;
+                }
+            }
+
+            first?.Focus();
+        }
+
+        private static string GetPlaceholder(AdvancedGridViewColumn column)
+        {
+            if (string.IsNullOrWhiteSpace(column.FilterPlaceholder) == false)
+            {
+                return column.FilterPlaceholder;
+            }
+
+            return column.FilterType switch
+            {
+                FilterType.Text => "enthält...",
+                FilterType.Number => "=  >  <",
+                FilterType.Date => "TT.MM.JJJJ",
+                FilterType.Boolean => "Ja / Nein",
+                _ => "Filter..."
+            };
         }
     }
 }
