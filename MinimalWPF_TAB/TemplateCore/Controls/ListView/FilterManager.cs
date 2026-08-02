@@ -2,7 +2,6 @@
 {
     using System.ComponentModel;
     using System.Data;
-    using System.Diagnostics;
     using System.Text;
     using System.Windows.Data;
 
@@ -80,19 +79,79 @@
                 if (filter.IsEmpty)
                     continue;
 
+                string expression = BuildExpression(filter);
+
+                if (string.IsNullOrWhiteSpace(expression))
+                    continue;
+
                 if (sb.Length > 0)
                     sb.Append(" AND ");
 
-                string value = filter.FilterText
-                    .Replace("'", "''");
-
-                sb.AppendFormat(
-                    "Convert([{0}], 'System.String') LIKE '%{1}%'",
-                    filter.PropertyName,
-                    value);
+                sb.Append(expression);
             }
 
             return sb.ToString();
+        }
+
+        private static string BuildExpression(FilterInfo filter)
+        {
+            string field = $"[{filter.PropertyName}]";
+            string value = filter.FilterText.Trim();
+
+            string Escape(string s) => s.Replace("'", "''");
+
+            if (value.StartsWith(">="))
+            {
+                string operand = value[2..].Trim();
+                if (string.IsNullOrEmpty(operand))
+                    return null;
+
+                return $"{field} >= {operand}";
+            }
+
+            if (value.StartsWith("<="))
+            {
+                string operand = value[2..].Trim();
+                if (string.IsNullOrEmpty(operand))
+                    return null;
+
+                return $"{field} <= {operand}";
+            }
+
+            if (value.StartsWith(">"))
+            {
+                string operand = value[1..].Trim();
+                if (string.IsNullOrEmpty(operand))
+                    return null;
+
+                return $"{field} > {operand}";
+            }
+
+            if (value.StartsWith(">="))
+                return $"{field} >= {Escape(value.Substring(2).Trim())}";
+
+            if (value.StartsWith("<="))
+                return $"{field} <= {Escape(value.Substring(2).Trim())}";
+
+            if (value.StartsWith("<>"))
+                return $"{field} <> '{Escape(value.Substring(2).Trim())}'";
+
+            if (value.StartsWith(">"))
+                return $"{field} > {Escape(value.Substring(1).Trim())}";
+
+            if (value.StartsWith("<"))
+                return $"{field} < {Escape(value.Substring(1).Trim())}";
+
+            if (value.StartsWith("="))
+                return $"Convert({field}, 'System.String') = '{Escape(value.Substring(1).Trim())}'";
+
+            if (value.StartsWith("*"))
+                return $"Convert({field}, 'System.String') LIKE '%{Escape(value.Substring(1))}'";
+
+            if (value.EndsWith("*"))
+                return $"Convert({field}, 'System.String') LIKE '{Escape(value[..^1])}%'";
+
+            return $"Convert({field}, 'System.String') LIKE '%{Escape(value)}%'";
         }
     }
 }

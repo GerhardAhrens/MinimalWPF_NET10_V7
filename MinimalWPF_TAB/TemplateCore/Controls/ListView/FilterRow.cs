@@ -38,8 +38,7 @@
 
             int columnIndex = 0;
 
-            foreach (AdvancedGridViewColumn column in
-                     gridView.Columns.OfType<AdvancedGridViewColumn>())
+            foreach (AdvancedGridViewColumn column in gridView.Columns.OfType<AdvancedGridViewColumn>())
             {
                 if (!column.ShowFilter)
                     continue;
