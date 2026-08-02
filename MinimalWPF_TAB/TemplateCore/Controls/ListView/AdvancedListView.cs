@@ -1,5 +1,6 @@
 ﻿namespace System.Windows.Controls
 {
+    using System.Collections;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Globalization;
@@ -17,7 +18,9 @@
         private RowNumberGridViewColumn _rowNumberColumn;
         private bool _rowNumberInitialized;
         private DataTemplate _rowNumberTemplate;
-        //private Grid _layoutRoot;
+
+        public event EventHandler FilterChanged;
+        public event EventHandler StatusChanged;
 
         static AdvancedListView()
         {
@@ -34,6 +37,14 @@
             MouseDoubleClick += AdvancedListView_MouseDoubleClick;
             Loaded += AdvancedListView_Loaded;
         }
+
+        public bool IsFilterActive => _filterManager.IsFilterActive;
+
+        public int VisibleRowCount => _filterManager.VisibleRowCount;
+
+        public int TotalRowCount => _filterManager.TotalRowCount;
+
+        internal double EffectiveRowNumberWidth => ShowRowNumbers ? _rowNumberColumn.Width : 0.0;
 
         #region EnableSorting
 
@@ -211,6 +222,20 @@
         }
         #endregion RowNumberWidth
 
+        #region StatusRow
+
+        internal void RaiseStatusChanged()
+        {
+            StatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal void RaiseFilterChanged()
+        {
+            FilterChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+
+        #endregion StatusRow
 
         private void AdvancedListView_Loaded(object sender, RoutedEventArgs e)
         {
@@ -227,6 +252,13 @@
                 string errorText = ex.Message;
                 throw;
             }
+        }
+
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+            base.OnItemsSourceChanged(oldValue, newValue);
+
+            RaiseStatusChanged();
         }
 
         public override void OnApplyTemplate()

@@ -18,9 +18,7 @@
             set => SetValue(ListViewProperty, value);
         }
 
-        private static void OnListViewChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnListViewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((FilterRow)d).Build();
         }
@@ -41,6 +39,26 @@
             }
 
             int columnIndex = 0;
+
+            if (this.ListView.ShowRowNumbers)
+            {
+                ColumnDefinitions.Add(
+                    new ColumnDefinition
+                    {
+                        Width = new GridLength(ListView.EffectiveRowNumberWidth)
+                    });
+
+                Border spacer = new()
+                {
+                    Background = System.Windows.Media.Brushes.Transparent
+                };
+
+                SetColumn(spacer, 0);
+
+                Children.Add(spacer);
+
+                columnIndex = 1;
+            }
 
             foreach (AdvancedGridViewColumn column in gridView.Columns.OfType<AdvancedGridViewColumn>())
             {

@@ -17,6 +17,48 @@
             this._listView = listView;
         }
 
+        public bool IsFilterActive => this._filters.Values.Any(f => !string.IsNullOrWhiteSpace(f.FilterText));
+
+        public int VisibleRowCount
+        {
+            get
+            {
+                if (_listView.ItemsSource == null)
+                    return 0;
+
+                ICollectionView view =
+                    CollectionViewSource.GetDefaultView(_listView.ItemsSource);
+
+                if (view is BindingListCollectionView blcv &&
+                    blcv.SourceCollection is DataView dv)
+                {
+                    return dv.Count;
+                }
+
+                return 0;
+            }
+        }
+
+        public int TotalRowCount
+        {
+            get
+            {
+                if (_listView.ItemsSource == null)
+                    return 0;
+
+                ICollectionView view =
+                    CollectionViewSource.GetDefaultView(_listView.ItemsSource);
+
+                if (view is BindingListCollectionView blcv &&
+                    blcv.SourceCollection is DataView dv)
+                {
+                    return dv.Table.Rows.Count;
+                }
+
+                return 0;
+            }
+        }
+
         public IEnumerable<FilterInfo> Filters
         {
             get => this._filters.Values;
@@ -129,6 +171,9 @@
             {
                 // Ebenfalls ignorieren.
             }
+
+            _listView.RaiseFilterChanged();
+            _listView.RaiseStatusChanged();
         }
         private string BuildRowFilter()
         {

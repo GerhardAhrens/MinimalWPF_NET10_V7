@@ -22,11 +22,12 @@
         </Style>
     </base:WindowBase.Resources>
 
-    <Grid ColumnDefinitions="*,200" RowDefinitions="35,*">
+    <Grid ColumnDefinitions="*,200" RowDefinitions="35,*,35">
         <UI:FilterRow
             Grid.Row="0"
+            Width="{Binding Path=ActualWidth, ElementName=lvwMain}"
             Height="30"
-            Margin="60,0,0,0"
+            Margin="0,0,0,-10"
             VerticalAlignment="Bottom"
             ListView="{Binding ElementName=lvwMain}" />
 
@@ -43,7 +44,6 @@
             SelectedItem="{Binding Path=SelectedDataRow, UpdateSourceTrigger=PropertyChanged}"
             SelectedItemChangedCommand="{Binding Path=SelectDataRowCommand}"
             SelectionMode="Single"
-            ShowFilterRow="True"
             ShowRowNumbers="True">
             <UI:AdvancedListView.ContextMenu>
 
@@ -91,7 +91,14 @@
             </ListView.View>
         </UI:AdvancedListView>
 
+        <UI:StatusRow
+            Grid.Row="2"
+            Height="20"
+            Margin="0,-25,0,0"
+            ListView="{Binding ElementName=lvwMain}" />
+
         <TextBlock
+            Grid.Row="1"
             Grid.Column="1"
             Margin="10"
             FontSize="20"
