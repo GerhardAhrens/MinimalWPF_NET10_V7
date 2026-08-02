@@ -156,6 +156,45 @@
         }
         #endregion StringFormat
 
+        #region FilterMemberPath
+        public static readonly DependencyProperty FilterMemberPathProperty =
+            DependencyProperty.Register(
+                nameof(FilterMemberPath),
+                typeof(string),
+                typeof(AdvancedGridViewColumn));
+
+        public string FilterMemberPath
+        {
+            get => (string)GetValue(FilterMemberPathProperty);
+            set => SetValue(FilterMemberPathProperty, value);
+        }
+
+        internal string EffectiveFilterMemberPath
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(FilterMemberPath))
+                    return FilterMemberPath;
+
+                return EffectiveSortMemberPath;
+            }
+        }
+        #endregion FilterMemberPath
+
+        internal string EffectiveSortMemberPath
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(SortMemberPath))
+                    return SortMemberPath;
+
+                if (DisplayMemberBinding is Binding binding)
+                    return binding.Path?.Path;
+
+                return null;
+            }
+        }
+
         internal void CreateDefaultCellTemplate()
         {
             if (DisplayMemberBinding is not Binding binding)

@@ -35,17 +35,20 @@
             SelectedItem="{Binding Path=SelectedDataRow, UpdateSourceTrigger=PropertyChanged}"
             SelectedItemChangedCommand="{Binding Path=SelectDataRowCommand}"
             SelectionMode="Single"
+            ShowFilterRow="True"
             ShowRowNumbers="True">
             <UI:AdvancedListView.ContextMenu>
 
                 <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
 
                     <MenuItem
+                        x:Name="ctxEdit"
                         Command="{Binding Path=EditCommand}"
                         CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                         Header="Bearbeiten" />
 
                     <MenuItem
+                        x:Name="ctxDelete"
                         Command="{Binding Path=DeleteCommand}"
                         CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                         Header="Löschen" />
@@ -64,6 +67,7 @@
                         Width="200"
                         DisplayMemberBinding="{Binding Path=[B]}"
                         Header="Name"
+                        FilterMemberPath="B"
                         SortMemberPath="B" />
 
                     <UI:AdvancedGridViewColumn

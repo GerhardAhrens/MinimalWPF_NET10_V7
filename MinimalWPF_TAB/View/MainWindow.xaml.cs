@@ -21,7 +21,7 @@
 
             this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
             this.SelectDataRowClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
-            this.ContextMenuClickCommand = new CommandBase(commandParam => this.OnContextMenuClick(commandParam), () => true);
+            this.ContextMenuClickCommand = new CommandBase(commandParam => this.OnContextMenuOpening(commandParam), () => true);
             this.DeleteCommand = new CommandBase(commandParam => this.OnDeleteCommand(commandParam), () => true);
             this.EditCommand = new CommandBase(commandParam => this.OnEditCommand(commandParam), () => true);
 
@@ -139,12 +139,20 @@
             }
         }
 
-        private void OnContextMenuClick(object commandParam)
+        private void OnContextMenuOpening(object commandParam)
         {
-            if (commandParam is ContextMenuCommandArgs contextMenu)
+            if (commandParam is ContextMenuCommandArgs args)
             {
-                DataRowView rowView = (DataRowView)contextMenu.SelectedItem;
+                DataRowView rowView = (DataRowView)args.SelectedItem;
                 string id = rowView["A"].ToString();
+
+                foreach (MenuItem item in args.ContextMenu.Items)
+                {
+                    if (item.Name == "ctxDelete")
+                    {
+                        item.IsEnabled = true;
+                    }
+                }
             }
         }
         

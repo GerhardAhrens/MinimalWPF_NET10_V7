@@ -15,6 +15,7 @@
         private RowNumberGridViewColumn _rowNumberColumn;
         private bool _rowNumberInitialized;
         private DataTemplate _rowNumberTemplate;
+        private readonly FilterManager _filterManager;
 
         static AdvancedListView()
         {
@@ -24,6 +25,7 @@
         public AdvancedListView()
         {
             this._sortingManager = new SortingManager(this);
+            this._filterManager = new FilterManager(this);
 
             AddHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(OnColumnHeaderClick));
 
@@ -214,6 +216,13 @@
             {
                 this.PrepareColumns();
                 this.UpdateRowNumberColumn();
+                this.RegisterColumns();
+
+                if (ContextMenu != null)
+                {
+                    ContextMenu.Opened -= ContextMenu_Opened;
+                    ContextMenu.Opened += ContextMenu_Opened;
+                }
             }
             catch (Exception ex)
             {
@@ -221,6 +230,33 @@
                 throw;
             }
         }
+
+        private void ContextMenu_Opened(object sender, RoutedEventArgs e)
+        {
+            if (ContextMenuCommand == null)
+                return;
+
+            if (sender is not ContextMenu menu)
+            {
+                return;
+            }
+
+            var args = new ContextMenuCommandArgs
+            {
+                ListView = this,
+                ContextMenu = menu,
+                SelectedItem = SelectedItem,
+                SelectedIndex = SelectedIndex,
+                MousePosition = Mouse.GetPosition(this),
+                ClickedElement = menu.PlacementTarget as FrameworkElement
+            };
+
+            if (ContextMenuCommand.CanExecute(args))
+            {
+                ContextMenuCommand.Execute(args);
+            }
+        }
+
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {
             base.OnSelectionChanged(e);
@@ -236,27 +272,6 @@
         private void AdvancedListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ExecuteCommand(DoubleClickCommand);
-        }
-
-        protected override void OnContextMenuOpening(ContextMenuEventArgs e)
-        {
-            base.OnContextMenuOpening(e);
-
-            if (ContextMenuCommand == null)
-                return;
-
-            var args = new ContextMenuCommandArgs
-            {
-                SelectedItem = SelectedItem,
-                EventArgs = e,
-                OriginalElement = e.OriginalSource as FrameworkElement,
-                MousePosition = Mouse.GetPosition(this)
-            };
-
-            if (ContextMenuCommand.CanExecute(args))
-            {
-                ContextMenuCommand.Execute(args);
-            }
         }
 
         private void ExecuteCommand(ICommand command)
@@ -381,30 +396,46 @@
                 column.CreateDefaultCellTemplate();
             }
         }
-    }
 
-    public class RowNumberConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        private void RegisterColumns()
         {
-            if (value is not ListViewItem item)
+            if (View is not GridView gridView)
+                return;
+
+            foreach (var column in gridView.Columns.OfType<AdvancedGridViewColumn>())
             {
-                return string.Empty;
+                string property = column.EffectiveFilterMemberPath;
+
+                if (string.IsNullOrWhiteSpace(property))
+                    continue;
+
+                _filterManager.RegisterColumn(column, property);
             }
-
-            ListView listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
-
-            if (listView == null)
-            {
-                return string.Empty;
-            }
-
-            return listView.ItemContainerGenerator.IndexFromContainer(item) + 1;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public class RowNumberConverter : IValueConverter
         {
-            throw new NotSupportedException();
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                if (value is not ListViewItem item)
+                {
+                    return string.Empty;
+                }
+
+                ListView listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
+
+                if (listView == null)
+                {
+                    return string.Empty;
+                }
+
+                return listView.ItemContainerGenerator.IndexFromContainer(item) + 1;
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 
@@ -447,14 +478,18 @@
         }
     }
 
-    public class ContextMenuCommandArgs
+    public sealed class ContextMenuCommandArgs
     {
+        public AdvancedListView ListView { get; init; } = null!;
+
+        public ContextMenu ContextMenu { get; init; } = null!;
+
         public object SelectedItem { get; init; }
 
+        public int SelectedIndex { get; init; }
+
+        public FrameworkElement ClickedElement { get; init; }
+
         public Point MousePosition { get; init; }
-
-        public FrameworkElement OriginalElement { get; init; }
-
-        public ContextMenuEventArgs EventArgs { get; init; }
     }
 }
