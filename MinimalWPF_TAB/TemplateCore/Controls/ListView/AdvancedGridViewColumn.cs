@@ -2,7 +2,6 @@
 {
 
     using System.Windows.Data;
-    using System.Windows.Media;
 
     /// <summary>
     /// Erweiterte GridViewColumn für das AdvancedListView.
