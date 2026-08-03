@@ -26,10 +26,11 @@
         <UI:MenuBar
             Grid.Row="0"
             Grid.ColumnSpan="2"
-            ButtonSpacing="6"
+            ButtonSpacing="5"
             Header="Hauptmenü"
             ItemMinWidth="90"
-            ItemPadding="8,2">
+            ItemPadding="8,2"
+            ShowBorder="True">
             <Button
                 Command="{Binding Path=MenuNeuCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
@@ -39,7 +40,6 @@
 
             <Button Content="Speichern" />
 
-            <UI:MenuBarSeparator />
 
             <Button Content="Drucken" />
 
@@ -47,7 +47,7 @@
 
             <Button UI:MenuBar.Dock="Right" Content="Einstellungen" />
 
-            <Button UI:MenuBar.Dock="Right" Content="Beenden" />
+            <Button UI:MenuBar.Dock="Right" Content="Programm Info" />
         </UI:MenuBar>
 
         <UI:FilterRow

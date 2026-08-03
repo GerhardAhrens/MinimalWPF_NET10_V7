@@ -20,7 +20,9 @@
             foreach (UIElement child in InternalChildren)
             {
                 if (child is not FrameworkElement element)
+                {
                     continue;
+                }
 
                 ApplyDefaults(element, menuBar);
 
@@ -28,33 +30,30 @@
 
                 Thickness margin = element.Margin;
 
-                double itemWidth =
-                    Math.Max(minWidth, element.DesiredSize.Width) +
-                    margin.Left +
-                    margin.Right;
+                double itemWidth = Math.Max(minWidth, element.DesiredSize.Width) +  margin.Left + margin.Right;
 
                 if (MenuBar.GetDock(element) == MenuBarDock.Left)
                 {
-                    if (!firstLeft)
+                    if (firstLeft == false)
+                    {
                         width += spacing;
+                    }
 
                     firstLeft = false;
                 }
                 else
                 {
-                    if (!firstRight)
+                    if (firstRight == false)
+                    {
                         width += spacing;
+                    }
 
                     firstRight = false;
                 }
 
                 width += itemWidth;
 
-                height = Math.Max(
-                    height,
-                    element.DesiredSize.Height +
-                    margin.Top +
-                    margin.Bottom);
+                height = Math.Max(height, element.DesiredSize.Height + margin.Top + margin.Bottom);
             }
 
             return new Size(width, height);
@@ -79,16 +78,18 @@
             foreach (UIElement child in InternalChildren)
             {
                 if (child is not FrameworkElement element)
+                {
                     continue;
+                }
 
                 if (MenuBar.GetDock(element) != MenuBarDock.Left)
+                {
                     continue;
+                }
 
                 Thickness margin = element.Margin;
 
-                double width =
-                    Math.Max(minWidth,
-                             element.DesiredSize.Width);
+                double width = Math.Max(minWidth, element.DesiredSize.Width);
 
                 if (!first)
                     left += spacing;
