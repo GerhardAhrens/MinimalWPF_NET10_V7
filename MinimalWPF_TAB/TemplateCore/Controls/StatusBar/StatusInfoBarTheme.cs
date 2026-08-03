@@ -33,6 +33,8 @@ namespace System.Windows.Controls
 
         public static Thickness ItemPadding { get; } = new Thickness(3, 1, 3, 1);
 
-        public const double IconSize = 22;
+        public static Thickness ItemBorderPadding => new Thickness(4, 2, 4, 2);
+
+        public const double IconSize = 16;
     }
 }

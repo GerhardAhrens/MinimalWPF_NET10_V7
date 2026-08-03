@@ -22,7 +22,7 @@
         </Style>
     </base:WindowBase.Resources>
 
-    <Grid ColumnDefinitions="*,200" RowDefinitions="35,*,35">
+    <Grid ColumnDefinitions="*,200" RowDefinitions="35,*,35,Auto">
         <UI:FilterRow
             Grid.Row="0"
             Width="{Binding Path=ActualWidth, ElementName=lvwMain}"
@@ -104,5 +104,12 @@
             FontSize="20"
             FontWeight="Bold"
             Text="{Binding Path=Id}" />
+
+        <!--  StatusBar  -->
+        <UI:StatusInfoBar 
+            x:Name="StatusBar"
+            Grid.Row="3"
+            Grid.ColumnSpan="2">
+        </UI:StatusInfoBar>
     </Grid>
 </base:WindowBase>

@@ -26,22 +26,8 @@ namespace System.Windows.Controls
     /// <summary>
     /// Statusleiste mit fünf fest definierten Bereichen.
     /// </summary>
-    public class StatusInfoBar : StatusBar
+    public class StatusInfoBar : UserControl
     {
-        #region Properties
-
-        public StatusInfoBarItem Account { get; }
-
-        public StatusInfoBarItem Datasource { get; }
-
-        public StatusInfoBarItem Rights { get; }
-
-        public StatusInfoBarItem Notification { get; }
-
-        public StatusInfoBarItem Date { get; }
-
-        #endregion
-
         #region Constructor
 
         public StatusInfoBar()
@@ -79,14 +65,80 @@ namespace System.Windows.Controls
                 "Datum",
                 StatusInfoBarImages.Calendar);
 
-            Items.Add(Account);
-            Items.Add(Datasource);
-            Items.Add(Rights);
-            Items.Add(Notification);
-            Items.Add(Date);
+            Content = CreateLayout();
         }
 
         #endregion
+
+        #region Properties
+
+        public StatusInfoBarItem Account { get; }
+
+        public StatusInfoBarItem Datasource { get; }
+
+        public StatusInfoBarItem Rights { get; }
+
+        public StatusInfoBarItem Notification { get; }
+
+        public StatusInfoBarItem Date { get; }
+
+        #endregion
+
+        #region Layout
+        private UIElement CreateLayout()
+        {
+            Grid grid = new();
+
+            grid.Background = Background;
+
+            grid.ColumnDefinitions.Add(
+                new ColumnDefinition()
+                {
+                    Width = GridLength.Auto
+                });
+
+            grid.ColumnDefinitions.Add(
+                new ColumnDefinition()
+                {
+                    Width = GridLength.Auto
+                });
+
+            grid.ColumnDefinitions.Add(
+                new ColumnDefinition()
+                {
+                    Width = GridLength.Auto
+                });
+
+            grid.ColumnDefinitions.Add(
+                new ColumnDefinition()
+                {
+                    Width = new GridLength(
+                        1,
+                        GridUnitType.Star)
+                });
+
+            grid.ColumnDefinitions.Add(
+                new ColumnDefinition()
+                {
+                    Width = GridLength.Auto
+                });
+
+            AddItem(grid, Account, 0);
+            AddItem(grid, Datasource, 1);
+            AddItem(grid, Rights, 2);
+            AddItem(grid, Notification, 3);
+            AddItem(grid, Date, 4);
+
+            return grid;
+        }
+
+        private void AddItem(Grid grid, StatusInfoBarItem item, int column)
+        {
+            Grid.SetColumn(item, column);
+
+            grid.Children.Add(item);
+        }
+        #endregion Layout
 
         #region CreateStatusItem
 
@@ -99,14 +151,7 @@ namespace System.Windows.Controls
                 Image = image
             };
 
-            item.Content = CreateContent(item);
-            item.MinHeight = 22;
-            item.BorderBrush = StatusInfoBarTheme.SeparatorBrush;
-
-            item.BorderThickness =
-                type == StatusItemType.Account
-                ? new Thickness(0)
-                : StatusInfoBarTheme.SeparatorThickness;
+            item.Content = CreateBorder(item);
 
             if (type == StatusItemType.Notification)
             {
@@ -118,6 +163,19 @@ namespace System.Windows.Controls
             return item;
         }
 
+        private UIElement CreateBorder(StatusInfoBarItem item)
+        {
+            Border border = new()
+            {
+                Padding = StatusInfoBarTheme.ItemBorderPadding,
+                BorderBrush = StatusInfoBarTheme.SeparatorBrush,
+                BorderThickness = item.ItemType == StatusItemType.Account ? new Thickness(0) : StatusInfoBarTheme.SeparatorThickness
+            };
+
+            border.Child = CreateContent(item);
+
+            return border;
+        }
         #endregion
 
         #region CreateContent
@@ -180,6 +238,15 @@ namespace System.Windows.Controls
                 });
 
             Grid.SetColumn(img, 0);
+
+            if (item.ItemType == StatusItemType.Notification)
+            {
+                item.HorizontalAlignment =  HorizontalAlignment.Stretch;
+            }
+            else
+            {
+                item.HorizontalAlignment = HorizontalAlignment.Left;
+            }
 
             TextBlock tb = new()
             {
