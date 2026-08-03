@@ -27,11 +27,13 @@
             this.DeleteCommand = new CommandBase(commandParam => this.OnDeleteCommand(commandParam), () => true);
             this.EditCommand = new CommandBase(commandParam => this.OnEditCommand(commandParam), () => true);
             this.StatusBarCommand = new CommandBase(commandParam => this.OnStatusBarCommand(commandParam), () => true);
+            this.MenuNeuCommand = new CommandBase(commandParam => this.OnMenuNeuCommand(commandParam), () => true);
 
             this.DataContext = this;
         }
 
         #region Properties
+        public CommandBase MenuNeuCommand { get; private set; }
         public CommandBase SelectDataRowCommand { get; private set; }
         public CommandBase SelectDataRowClickCommand { get; private set; }
         public CommandBase ContextMenuClickCommand { get; private set; }
@@ -68,8 +70,10 @@
 
 
         #region Windows Events
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            App.EventAgg.Subscribe<StatusEvent>(async (evt, ct) => this.OnUpdateStatusBar(evt));
+
             this.ConfigurationStatusInfoBar();
 
             DataTable dt = LadeArtikel();
@@ -85,6 +89,11 @@
                 {
                     string errorText = ex.Message;
                     throw;
+                }
+
+                if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+                {
+                    await App.EventAgg.PublishAsync(new StatusEvent("Bereit; Aktikeldaten geladen"));
                 }
 
                 /*
@@ -158,12 +167,17 @@
 
         }
 
+        private void OnUpdateStatusBar(StatusEvent evt)
+        {
+            StatusBar.SetNotification(evt.Notification);
+        }
+
         private void ConfigurationStatusInfoBar()
         {
             #region Test Visibility
-            //StatusBar.Rights.Show(false);
+            StatusBar.Rights.Show(false);
             //StatusBar.Date.Show(true);
-            //StatusBar.Datasource.Show(false);
+            StatusBar.Datasource.Show(false);
             #endregion Test Visibility
 
             #region Lange Text in Notification
@@ -286,6 +300,15 @@
                 this.Message.Hinweis("StatusBar", $"Klick auf StatusBar Account => {accountText}");
             }
         }
+
+        private void OnMenuNeuCommand(object commandParam)
+        {
+            if (commandParam is Button button)
+            {
+                this.Message.Hinweis("Menu", $"Klick auf Menu Neu => {button.Content}");
+            }
+        }
+
 
         private static DataTable LadeArtikel()
         {

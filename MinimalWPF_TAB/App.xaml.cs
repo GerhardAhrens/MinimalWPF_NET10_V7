@@ -1,7 +1,5 @@
 ﻿namespace MinimalWPF
 {
-    using System.Configuration;
-    using System.Data;
     using System.Windows;
 
     /// <summary>
@@ -9,6 +7,8 @@
     /// </summary>
     public partial class App : Application
     {
+        public static EventAggregator EventAgg { get; } = new();
+
         public static void ApplicationExit()
         {
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
