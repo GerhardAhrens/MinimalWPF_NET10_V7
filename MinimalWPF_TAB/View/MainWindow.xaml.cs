@@ -4,7 +4,9 @@
     using System.Data;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using System.Windows.Media;
 
     using MinimalWPF.Core;
 
@@ -24,6 +26,7 @@
             this.ContextMenuClickCommand = new CommandBase(commandParam => this.OnContextMenuOpening(commandParam), () => true);
             this.DeleteCommand = new CommandBase(commandParam => this.OnDeleteCommand(commandParam), () => true);
             this.EditCommand = new CommandBase(commandParam => this.OnEditCommand(commandParam), () => true);
+            this.StatusBarCommand = new CommandBase(commandParam => this.OnStatusBarCommand(commandParam), () => true);
 
             this.DataContext = this;
         }
@@ -34,6 +37,7 @@
         public CommandBase ContextMenuClickCommand { get; private set; }
         public CommandBase DeleteCommand { get; private set; }
         public CommandBase EditCommand { get; private set; }
+        public CommandBase StatusBarCommand { get; private set; }
 
         public string WindowTitel
         {
@@ -66,6 +70,8 @@
         #region Windows Events
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            this.ConfigurationStatusInfoBar();
+
             DataTable dt = LadeArtikel();
             this.DataSource = CollectionViewSource.GetDefaultView(dt);
             if (this.DataSource != null)
@@ -150,6 +156,37 @@
                 */
             }
 
+        }
+
+        private void ConfigurationStatusInfoBar()
+        {
+            #region Test Visibility
+            //StatusBar.Rights.Show(false);
+            //StatusBar.Date.Show(true);
+            //StatusBar.Datasource.Show(false);
+            #endregion Test Visibility
+
+            #region Lange Text in Notification
+            //StatusBar.SetNotification("Dies ist eine sehr lange Meldung welche den gesamten freien Platz innerhalb der StatusInfoBar ausfüllen sollte. Danach muss der Text automatisch mit Ellipsis abgeschnitten werden.");
+            #endregion Lange Text in Notification
+
+            #region Test Text
+            //StatusBar.Rights.Text = "Benutzerrechte";
+            //StatusBar.Date.Text = System.DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+            //StatusBar.Datasource.Text = "Datenquelle";
+            #endregion Test Text
+
+            #region Test Farben
+            //StatusBar.Account.SetColors(Brushes.Green, Brushes.AliceBlue);
+            #endregion Test Farben
+
+            #region Command
+            StatusBar.Account.Command = StatusBarCommand;
+            #endregion Command
+
+            #region Auto Timer
+            //StatusBar.AutoUpdateDateTime = true;
+            #endregion Auto Timer
         }
 
         private void OnCloseApplication(object sender, RoutedEventArgs e)
@@ -238,6 +275,15 @@
             {
                 string id = rowView["A"].ToString();
                 this.Message.Hinweis("Bearbeiten", $"Artikelnummer: {id}");
+            }
+        }
+
+        private void OnStatusBarCommand(object commandParam)
+        {
+            if (commandParam is StatusInfoBarItem item)
+            {
+                string accountText = item.Text;
+                this.Message.Hinweis("StatusBar", $"Klick auf StatusBar Account => {accountText}");
             }
         }
 

@@ -42,20 +42,33 @@ namespace System.Windows.Controls
 
         private static DrawingImage CreateAccount()
         {
-            GeometryGroup geometry = new();
+            DrawingGroup group = new DrawingGroup();
 
-            // Kopf
-            geometry.Children.Add(
-                new EllipseGeometry(
-                    new Point(8, 5),
-                    2.5,
-                    2.5));
+            group.Transform = new ScaleTransform(0.25, 0.25);
 
-            // Schultern
-            geometry.Children.Add(
-                Geometry.Parse("M3,14 C3,10.5 13,10.5 13,14"));
+            group.Children.Add(
+                new GeometryDrawing(
+                    new SolidColorBrush(
+                        (Color)ColorConverter.ConvertFromString("#FF1388B1")),
+                    null,
+                    Geometry.Parse(
+                        "F1M120.578,100.353C120.578,100.353 100.573,144.788 86.587,144.788 72.601,144.788 52.595,100.353 52.595,100.353 21.672,107.24 0,124.458 0,152.792L0,216.682 173.172,216.682 173.172,152.792C173.172,124.458,151.502,107.241,120.578,100.353z")));
 
-            return CreateImage(geometry);
+            group.Children.Add(
+                new GeometryDrawing(
+                    new SolidColorBrush(
+                        (Color)ColorConverter.ConvertFromString("#FFF0BF7C")),
+                    null,
+                    Geometry.Parse(
+                        "F1M123.225,44.475C123.225,69.038 106.82,88.949 86.585,88.949 66.352,88.949 49.948,69.038 49.948,44.475 49.948,19.912 66.352,0 86.585,0 106.82,0 123.225,19.912 123.225,44.475z")));
+
+            group.Freeze();
+
+            DrawingImage image = new DrawingImage(group);
+
+            image.Freeze();
+
+            return image;
         }
 
         #endregion

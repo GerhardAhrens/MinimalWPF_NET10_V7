@@ -16,9 +16,9 @@
 namespace System.Windows.Controls
 {
     using System.Windows;
-    using System.Windows.Controls.Primitives;
     using System.Windows.Data;
     using System.Windows.Media;
+    using System.Windows.Threading;
 
     /// <summary>
     /// Statusleiste mit fünf festen Bereichen.
@@ -28,6 +28,10 @@ namespace System.Windows.Controls
     /// </summary>
     public class StatusInfoBar : UserControl
     {
+        private DispatcherTimer _dateTimer;
+
+        private bool _autoUpdateDateTime;
+
         #region Constructor
 
         public StatusInfoBar()
@@ -37,7 +41,7 @@ namespace System.Windows.Controls
 
             Account = CreateStatusItem(
                 StatusItemType.Account,
-                "Gast",
+                $"{Environment.UserName}",
                 "Nicht angemeldet",
                 StatusInfoBarImages.Account);
 
@@ -83,6 +87,31 @@ namespace System.Windows.Controls
         public StatusInfoBarItem Date { get; }
 
         #endregion
+
+        #region Auto Timer Update
+
+        /// <summary>
+        /// Aktualisiert den Datumsbereich automatisch.
+        /// </summary>
+        public bool AutoUpdateDateTime
+        {
+            get => _autoUpdateDateTime;
+
+            set
+            {
+                if (_autoUpdateDateTime == value)
+                    return;
+
+                _autoUpdateDateTime = value;
+
+                if (value)
+                    StartDateTimer();
+                else
+                    StopDateTimer();
+            }
+        }
+
+        #endregion Auto Timer Update
 
         #region Layout
         private UIElement CreateLayout()
@@ -387,6 +416,34 @@ namespace System.Windows.Controls
         }
 
         #endregion
+
+        #region Timer
+        private void StartDateTimer()
+        {
+            _dateTimer ??= new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+
+            _dateTimer.Tick -= DateTimer_Tick;
+            _dateTimer.Tick += DateTimer_Tick;
+
+            _dateTimer.Start();
+        }
+
+        private void StopDateTimer()
+        {
+            if (_dateTimer == null)
+                return;
+
+            _dateTimer.Stop();
+        }
+
+        private void DateTimer_Tick(object sender, EventArgs e)
+        {
+            SetDate(DateTime.Now);
+        }
+        #endregion Timer
 
     }
 }
