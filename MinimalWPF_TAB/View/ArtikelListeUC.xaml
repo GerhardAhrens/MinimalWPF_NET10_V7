@@ -31,21 +31,12 @@
             Header="Artikelmenü"
             ItemPadding="8,2"
             ShowBorder="True">
-            <Button
-                Width="{StaticResource ResourceKey=ButtonSize}"
-                Height="{StaticResource ResourceKey=ButtonSize}"
-                Background="Transparent"
+
+            <UI:MenuButton
                 Command="{Binding Path=GoBackCommand}"
                 CommandParameter="{x:Static core:CommandButtons.GoBack}"
-                ToolTip="Zurüke zum Hauptmenü">
-                <StackPanel Orientation="Horizontal">
-                    <Image
-                        Width="40"
-                        Height="40"
-                        Source="{StaticResource ResourceKey=IconGoBack}"
-                        Stretch="Uniform" />
-                </StackPanel>
-            </Button>
+                Image="{StaticResource ResourceKey=IconGoBack}"
+                ToolTipText="Zurück zum Hauptmenü" />
 
         </UI:MenuBar>
         <!--#endregion Hauptmenübar-->
