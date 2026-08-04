@@ -4,9 +4,8 @@
     using System.Data;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Controls.Primitives;
     using System.Windows.Data;
-    using System.Windows.Media;
+    using System.Windows.Input;
 
     using MinimalWPF.Core;
 
@@ -21,6 +20,9 @@
             WeakEventManager<WindowBase, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
             WeakEventManager<WindowBase, CancelEventArgs>.AddHandler(this, "Closing", this.OnWindowClosing);
 
+            this.SetVectorIcon("IconApplicationLogo", 64);
+            this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
+
             this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
             this.SelectDataRowClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
             this.ContextMenuClickCommand = new CommandBase(commandParam => this.OnContextMenuOpening(commandParam), () => true);
@@ -28,6 +30,8 @@
             this.EditCommand = new CommandBase(commandParam => this.OnEditCommand(commandParam), () => true);
             this.StatusBarCommand = new CommandBase(commandParam => this.OnStatusBarCommand(commandParam), () => true);
             this.MenuNeuCommand = new CommandBase(commandParam => this.OnMenuNeuCommand(commandParam), () => true);
+
+            this.RegisterFactory();
 
             this.DataContext = this;
         }
@@ -45,6 +49,12 @@
         {
             get => base.GetValue<string>();
             set => base.SetValue(value);
+        }
+
+        public System.Windows.Controls.UserControl WorkContent
+        {
+            get { return base.GetValue<System.Windows.Controls.UserControl>(); }
+            set { base.SetValue(value); }
         }
 
         public ICollectionView DataSource
@@ -292,6 +302,15 @@
             }
         }
 
+        private void OnMenuNeuCommand(object commandParam)
+        {
+            if (commandParam is Button button)
+            {
+                this.Message.Hinweis("Menu", $"Klick auf Menu Neu => {button.Content}");
+            }
+        }
+
+        #region Event Aggregator Handler
         private void OnStatusBarCommand(object commandParam)
         {
             if (commandParam is StatusInfoBarItem item)
@@ -301,12 +320,47 @@
             }
         }
 
-        private void OnMenuNeuCommand(object commandParam)
+        private async void ChangeControl(ChangeViewEventArgs commandParam)
         {
-            if (commandParam is Button button)
+            try
             {
-                this.Message.Hinweis("Menu", $"Klick auf Menu Neu => {button.Content}");
+                this.Dispatcher.Invoke(() => Mouse.OverrideCursor = Cursors.Wait);
+
+                if (commandParam != null && commandParam.MenuButton is CommandButtons button)
+                {
+                    if (button == CommandButtons.AppQuit)
+                    {
+                        this.OnQuit();
+                    }
+                    else if (button.In(CommandButtons.Home, CommandButtons.GoBack))
+                    {
+
+                        if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
+                        {
+                            await App.EventAgg.PublishAsync(new WindowsTitelEvent(button.ToDescription()));
+                        }
+
+                        this.WorkContent = null;
+                        this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
+                    }
+                }
+
+                this.Dispatcher.Invoke(() => Mouse.OverrideCursor = null);
             }
+            catch (Exception ex)
+            {
+                string errorText = ex.Message;
+                App.ErrorMessage(ex, $"Fehler in {this.GetType().Name}");
+            }
+        }
+
+        #endregion Event Aggregator Handler
+
+        /// <summary>
+        /// Dialog aus UserControls werden hier für die Factory registriert 😊
+        /// </summary>
+        private void RegisterFactory()
+        {
         }
 
 

@@ -7,9 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MinimalWPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
-    Width="800"
-    Height="450"
+    Title="{Binding Path=WindowTitel, FallbackValue=~WindowTitel}"
+    Width="950"
+    Height="600"
     mc:Ignorable="d">
 
     <base:WindowBase.Resources>
