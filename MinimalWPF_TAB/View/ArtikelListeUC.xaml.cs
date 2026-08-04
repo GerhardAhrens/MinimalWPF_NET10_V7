@@ -17,6 +17,7 @@ namespace MinimalWPF.View
 {
     using System.ComponentModel;
     using System.Data;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -74,25 +75,28 @@ namespace MinimalWPF.View
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            DataTable dt = LadeArtikel();
-            this.DataSource = CollectionViewSource.GetDefaultView(dt);
-            if (this.DataSource != null)
+            TimeSpan t = Performance.Measure(() =>
             {
-                try
+                DataTable dt = LadeArtikel();
+                this.DataSource = CollectionViewSource.GetDefaultView(dt);
+                if (this.DataSource != null)
                 {
-                    this.DataSource.MoveCurrentToFirst();
-                    int maxCount = this.DataSource.Cast<DataRowView>().Count();
+                    try
+                    {
+                        this.DataSource.MoveCurrentToFirst();
+                        int maxCount = this.DataSource.Cast<DataRowView>().Count();
+                    }
+                    catch (Exception ex)
+                    {
+                        string errorText = ex.Message;
+                        throw;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    string errorText = ex.Message;
-                    throw;
-                }
-            }
+            });
 
             if (App.EventAgg.IsSubscription<StatusEvent>() == true)
             {
-                await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
+                await App.EventAgg.PublishAsync(new StatusEvent($"Bereit; {t.TotalMilliseconds} ms"));
             }
         }
         #endregion Windows Events
@@ -155,6 +159,62 @@ namespace MinimalWPF.View
             table.Rows.Add(2010, "Marker", 2.99m);
 
             return table;
+        }
+    }
+
+    public static class Performance
+    {
+        /// <summary>
+        /// Zeit der ausführung einer Aktion messen
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        /// <example>
+        /// TimeSpan t = Performance.Measure(() =>
+        /// {
+        ///     Thread.Sleep(500);
+        /// });
+        /// 
+        /// Console.WriteLine(t.TotalMilliseconds);
+        /// </example>
+        public static TimeSpan Measure(Action action)
+        {
+            var sw = Stopwatch.StartNew();
+
+            action();
+
+            sw.Stop();
+
+            return sw.Elapsed;
+        }
+
+        /// <summary>
+        /// Zeit der ausführung einer Funktion messen und das Ergebnis zurückgeben
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="func"></param>
+        /// <param name="duration"></param>
+        /// <returns></returns>
+        /// <example>
+        /// int sum = Performance.Measure(() =>
+        /// {
+        ///      return Enumerable.Range(1, 1000000).Sum();
+        /// }, out TimeSpan duration);
+        /// 
+        /// Console.WriteLine(sum);
+        /// Console.WriteLine(duration.TotalMilliseconds);
+        /// </example>
+        public static T Measure<T>(Func<T> func, out TimeSpan duration)
+        {
+            var sw = Stopwatch.StartNew();
+
+            T result = func();
+
+            sw.Stop();
+
+            duration = sw.Elapsed;
+
+            return result;
         }
     }
 }
