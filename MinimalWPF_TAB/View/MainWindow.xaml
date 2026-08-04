@@ -12,130 +12,32 @@
     Height="600"
     mc:Ignorable="d">
 
-    <base:WindowBase.Resources>
-        <Style x:Key="RowNumberStyle" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Right" />
-            <Setter Property="TextAlignment" Value="Right" />
-            <Setter Property="Foreground" Value="Green" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Padding" Value="0,0,6,0" />
-        </Style>
-    </base:WindowBase.Resources>
+    <Grid
+        x:Name="gridMain"
+        ColumnDefinitions="*"
+        RowDefinitions="*,Auto">
 
-    <Grid ColumnDefinitions="*,200" RowDefinitions="Auto,35,*,35,Auto">
-        <UI:MenuBar
+        <!--#region Contentbereich-->
+        <Border
             Grid.Row="0"
-            Grid.ColumnSpan="2"
-            ButtonSpacing="5"
-            Header="Hauptmenü"
-            ItemMinWidth="90"
-            ItemPadding="8,2"
-            ShowBorder="True">
-            <Button
-                Command="{Binding Path=MenuNeuCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
-                Content="Neu" />
-
-            <Button Content="Öffnen" />
-
-            <Button Content="Speichern" />
-
-
-            <Button Content="Drucken" />
-
-            <Button UI:MenuBar.Dock="Right" Content="Hilfe" />
-
-            <Button UI:MenuBar.Dock="Right" Content="Einstellungen" />
-
-            <Button UI:MenuBar.Dock="Right" Content="Programm Info" />
-        </UI:MenuBar>
-
-        <UI:FilterRow
-            Grid.Row="1"
-            Width="{Binding Path=ActualWidth, ElementName=lvwMain}"
-            Height="30"
-            Margin="0,0,0,-10"
-            VerticalAlignment="Bottom"
-            ListView="{Binding ElementName=lvwMain}" />
-
-        <UI:AdvancedListView
-            x:Name="lvwMain"
-            Grid.Row="2"
-            Margin="10"
-            Background="WhiteSmoke"
-            ContextMenuCommand="{Binding Path=ContextMenuClickCommand}"
-            DoubleClickCommand="{Binding Path=SelectDataRowClickCommand}"
-            ItemsSource="{Binding Path=DataSource}"
-            RowNumberHeader="*"
-            RowNumberTextStyle="{StaticResource RowNumberStyle}"
-            SelectedItem="{Binding Path=SelectedDataRow, UpdateSourceTrigger=PropertyChanged}"
-            SelectedItemChangedCommand="{Binding Path=SelectDataRowCommand}"
-            SelectionMode="Single"
-            ShowRowNumbers="True">
-            <UI:AdvancedListView.ContextMenu>
-
-                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-
-                    <MenuItem
-                        x:Name="ctxEdit"
-                        Command="{Binding Path=EditCommand}"
-                        CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                        Header="Bearbeiten" />
-
-                    <MenuItem
-                        x:Name="ctxDelete"
-                        Command="{Binding Path=DeleteCommand}"
-                        CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                        Header="Löschen" />
-                </ContextMenu>
-
-            </UI:AdvancedListView.ContextMenu>
-            <ListView.View>
-                <GridView>
-                    <UI:AdvancedGridViewColumn
-                        Width="60"
-                        DisplayMemberBinding="{Binding Path=[A]}"
-                        FilterType="Number"
-                        Header="Art-Nr"
-                        SortMemberPath="A" />
-
-                    <UI:AdvancedGridViewColumn
-                        Width="200"
-                        DisplayMemberBinding="{Binding Path=[B]}"
-                        FilterType="Text"
-                        Header="Name"
-                        SortMemberPath="B" />
-
-                    <UI:AdvancedGridViewColumn
-                        Width="70"
-                        DisplayMemberBinding="{Binding Path=[C]}"
-                        FilterType="Number"
-                        Header="Preis"
-                        SortMemberPath="C"
-                        StringFormat="{}{0:N2} €"
-                        TextAlignment="Right" />
-                </GridView>
-            </ListView.View>
-        </UI:AdvancedListView>
-
-        <UI:StatusRow
-            Grid.Row="3"
-            Height="20"
-            Margin="0,-25,0,0"
-            ListView="{Binding ElementName=lvwMain}" />
-
-        <TextBlock
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="10"
-            FontSize="20"
-            FontWeight="Bold"
-            Text="{Binding Path=Id}" />
+            Grid.Column="0"
+            Background="White"
+            BorderBrush="Black"
+            BorderThickness="0,1,0,1">
+            <ContentControl
+                x:Name="mainContent"
+                Margin="3"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="LightGray"
+                Content="{Binding Path=WorkContent, UpdateSourceTrigger=PropertyChanged}"
+                ScrollViewer.CanContentScroll="True"
+                VirtualizingPanel.IsVirtualizing="True"
+                Visibility="Visible" />
+        </Border>
+        <!--#endregion Contentbereich-->
 
         <!--  StatusBar  -->
-        <UI:StatusInfoBar
-            x:Name="StatusBar"
-            Grid.Row="4"
-            Grid.ColumnSpan="2" />
+        <UI:StatusInfoBar x:Name="StatusBar" Grid.Row="4" Height="25" />
     </Grid>
 </base:WindowBase>

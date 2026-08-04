@@ -1,0 +1,81 @@
+<base:UserControlBase
+    x:Class="MinimalWPF.View.HomeUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:UI="clr-namespace:System.Windows.Controls"
+    xmlns:base="clr-namespace:System.Windows"
+    xmlns:core="clr-namespace:MinimalWPF.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MinimalWPF.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <system:Double x:Key="ButtonSize">40</system:Double>
+
+        <PathGeometry x:Key="IconClose" Figures="M754.782 212.596 512 455.368 269.218 212.596c-13.081-13.081-34.29-13.081-47.369 0-13.081 13.081-13.081 34.288 0 47.367l242.782 242.771L221.849 745.507c-13.081 13.081-13.081 34.288 0 47.367 13.081 13.081 34.29 13.081 47.369 0L512 550.103l242.782 242.771c13.081 13.081 34.289 13.081 47.37 0 13.081-13.081 13.081-34.288 0-47.367L559.37 502.735l242.782-242.771c13.081-13.081 13.081-34.288 0-47.367C789.07 199.517 767.862 199.517 754.782 212.596z" />
+    </UserControl.Resources>
+
+    <Grid
+        x:Name="gridMain"
+        Background="WhiteSmoke"
+        ColumnDefinitions="*"
+        RowDefinitions="Auto,*">
+
+        <!--#region Hauptmenübar-->
+        <UI:MenuBar
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            ButtonSpacing="5"
+            Header="Hauptmenü"
+            ItemMinWidth="90"
+            ItemPadding="8,2"
+            ShowBorder="True">
+            <Button
+                Grid.Column="0"
+                Width="{StaticResource ResourceKey=ButtonSize}"
+                Height="{StaticResource ResourceKey=ButtonSize}"
+                Margin="5,0,0,0"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                Command="{Binding Path=QuitCommand}"
+                CommandParameter="{x:Static core:CommandButtons.AppQuit}"
+                ToolTip="Demo beenden">
+                <StackPanel Orientation="Horizontal">
+                    <Image
+                        Width="40"
+                        Height="40"
+                        Source="{StaticResource ResourceKey=IconApplicationEnd}"
+                        Stretch="Uniform" />
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="Beenden" />
+                </StackPanel>
+            </Button>
+
+            <Button
+                Command="{Binding Path=MenuNeuCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
+                Content="Neu" />
+
+            <Button Content="Öffnen" />
+
+            <Button Content="Speichern" />
+
+
+            <Button Content="Drucken" />
+
+            <Button UI:MenuBar.Dock="Right" Content="Hilfe" />
+
+            <Button UI:MenuBar.Dock="Right" Content="Einstellungen" />
+
+            <Button UI:MenuBar.Dock="Right" Content="Programm Info" />
+        </UI:MenuBar>
+
+        <!--#endregion Hauptmenübar-->
+    </Grid>
+</base:UserControlBase>
