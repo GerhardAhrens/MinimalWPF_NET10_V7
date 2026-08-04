@@ -91,23 +91,18 @@
 
                 double width = Math.Max(minWidth, element.DesiredSize.Width);
 
-                if (!first)
+                if (first == false)
+                {
                     left += spacing;
+                }
 
                 first = false;
 
                 left += margin.Left;
 
-                double y =
-                    (finalSize.Height -
-                     element.DesiredSize.Height) / 2;
+                double y = (finalSize.Height - element.DesiredSize.Height) / 2;
 
-                element.Arrange(
-                    new Rect(
-                        left,
-                        y,
-                        width,
-                        element.DesiredSize.Height));
+                element.Arrange(new Rect(left, y, width, element.DesiredSize.Height));
 
                 left += width + margin.Right;
             }
@@ -121,35 +116,32 @@
             for (int i = InternalChildren.Count - 1; i >= 0; i--)
             {
                 if (InternalChildren[i] is not FrameworkElement element)
+                {
                     continue;
+                }
 
                 if (MenuBar.GetDock(element) != MenuBarDock.Right)
+                {
                     continue;
+                }
 
                 Thickness margin = element.Margin;
 
-                double width =
-                    Math.Max(minWidth,
-                             element.DesiredSize.Width);
+                double width = Math.Max(minWidth, element.DesiredSize.Width);
 
-                if (!first)
+                if (first == false)
+                {
                     right -= spacing;
+                }
 
                 first = false;
 
                 right -= margin.Right;
                 right -= width;
 
-                double y =
-                    (finalSize.Height -
-                     element.DesiredSize.Height) / 2;
+                double y = (finalSize.Height - element.DesiredSize.Height) / 2;
 
-                element.Arrange(
-                    new Rect(
-                        right,
-                        y,
-                        width,
-                        element.DesiredSize.Height));
+                element.Arrange(new Rect(right, y, width, element.DesiredSize.Height));
 
                 right -= margin.Left;
             }
@@ -160,7 +152,9 @@
         private static void ApplyDefaults(FrameworkElement element, MenuBar menuBar)
         {
             if (menuBar == null)
+            {
                 return;
+            }
 
             //--------------------------------------------------
             // MinWidth
@@ -187,7 +181,9 @@
             //--------------------------------------------------
 
             if (element.VerticalAlignment == VerticalAlignment.Stretch)
+            {
                 element.VerticalAlignment = VerticalAlignment.Center;
+            }
         }
     }
 }

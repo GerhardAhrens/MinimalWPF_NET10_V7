@@ -9,6 +9,7 @@
     xmlns:local="clr-namespace:MinimalWPF.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:views="clr-namespace:MinimalWPF.View"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -25,6 +26,83 @@
         ColumnDefinitions="*"
         RowDefinitions="Auto,*">
 
+        <!--#region Popup im MainWindow Dialog-->
+        <base:DialogPopup
+            x:Name="InformationPopup"
+            base:MaskLayerBehavior.Owner="{Binding Path=., RelativeSource={RelativeSource AncestorType=Window}}"
+            PopupAnimation="Fade"
+            Topmost="False">
+
+            <Grid
+                Width="700"
+                Height="400"
+                Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Grid.Row="0"
+                    Background="#FAFAFB"
+                    CornerRadius="5">
+                    <views:InformationUC IsParentOpen="{Binding Path=IsOpen, UpdateSourceTrigger=PropertyChanged, ElementName=InformationPopup}" />
+                </Border>
+
+                <base:IconButton
+                    x:Name="btnClose"
+                    Grid.Column="1"
+                    Width="30"
+                    Margin="10,4,0,0"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    Command="{Binding Path=CloseInformationPopupCommand}"
+                    CommandParameter="{x:Static core:CommandButtons.InformationPopup}"
+                    MouseOverBackground="Transparent"
+                    NormalPathColor="White"
+                    PathData="{StaticResource ResourceKey=IconClose}"
+                    PathWidth="18"
+                    PressedBackground="Transparent" />
+            </Grid>
+        </base:DialogPopup>
+
+        <base:DialogPopup
+            x:Name="SettingsPopup"
+            base:MaskLayerBehavior.Owner="{Binding Path=., RelativeSource={RelativeSource AncestorType=Window}}"
+            PopupAnimation="Fade"
+            Topmost="False">
+            <Grid
+                Width="700"
+                Height="400"
+                Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Grid.Row="0"
+                    Background="#FAFAFB"
+                    CornerRadius="5">
+                    <views:SettingsUC />
+                </Border>
+
+                <base:IconButton
+                    Grid.Column="1"
+                    Width="30"
+                    Margin="10,4,0,0"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    Command="{Binding Path=CloseSettingsPopupCommand}"
+                    CommandParameter="{x:Static core:CommandButtons.SettingsPopup}"
+                    MouseOverBackground="Transparent"
+                    NormalPathColor="White"
+                    PathData="{StaticResource ResourceKey=IconClose}"
+                    PathWidth="18"
+                    PressedBackground="Transparent" />
+            </Grid>
+        </base:DialogPopup>
+        <!--#endregion Popup im MainWindow Dialog-->
+
+
         <!--#region Hauptmenübar-->
         <UI:MenuBar
             Grid.Row="0"
@@ -35,11 +113,8 @@
             ItemPadding="8,2"
             ShowBorder="True">
             <Button
-                Grid.Column="0"
                 Width="{StaticResource ResourceKey=ButtonSize}"
                 Height="{StaticResource ResourceKey=ButtonSize}"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Left"
                 Background="Transparent"
                 Command="{Binding Path=QuitCommand}"
                 CommandParameter="{x:Static core:CommandButtons.AppQuit}"
@@ -71,9 +146,28 @@
 
             <Button UI:MenuBar.Dock="Right" Content="Hilfe" />
 
-            <Button UI:MenuBar.Dock="Right" Content="Einstellungen" />
+            <Button
+                Width="{StaticResource ResourceKey=ButtonSize}"
+                Height="{StaticResource ResourceKey=ButtonSize}"
+                UI:MenuBar.Dock="Right"
+                Background="Transparent"
+                Command="{Binding Path=SettingsCommand}"
+                CommandParameter="{x:Static core:CommandButtons.SettingsPopup}"
+                ToolTip="Einstellungen bearbeiten">
+                <Image Source="{StaticResource ResourceKey=ApplicationSettingsIcon}" Stretch="Uniform" />
+            </Button>
 
-            <Button UI:MenuBar.Dock="Right" Content="Programm Info" />
+            <Button
+                Width="{StaticResource ResourceKey=ButtonSize}"
+                Height="{StaticResource ResourceKey=ButtonSize}"
+                UI:MenuBar.Dock="Right"
+                Background="Transparent"
+                Command="{Binding Path=InformationCommand}"
+                CommandParameter="{x:Static core:CommandButtons.InformationPopup}"
+                ToolTip="Info anzeigen">
+                <Image Source="{StaticResource ResourceKey=IconApplicationInformation}" Stretch="Uniform" />
+            </Button>
+
         </UI:MenuBar>
 
         <!--#endregion Hauptmenübar-->
