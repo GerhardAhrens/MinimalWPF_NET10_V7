@@ -32,7 +32,8 @@ namespace MinimalWPF.View
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
 
 
-            this.QuitCommand = new CommandBase(commandParam => this.OnQuit(commandParam), () => true);
+            this.QuitCommand = new CommandBase(commandParam => this.OnMenuArtikelliste(commandParam), () => true);
+            this.MenuArtikellisteCommand = new CommandBase(commandParam => this.OnMenuArtikelliste(commandParam), () => true);
             this.InformationCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.CloseInformationPopupCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
@@ -43,7 +44,7 @@ namespace MinimalWPF.View
 
         #region Properties
         public CommandBase QuitCommand { get; private set; }
-
+        public CommandBase MenuArtikellisteCommand { get; private set; }
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
         public CommandBase CloseInformationPopupCommand { get; private set; }
@@ -64,13 +65,14 @@ namespace MinimalWPF.View
         #endregion Windows Events
 
         #region Command Events
-        private async void OnQuit(object commandParam)
+        private async void OnMenuArtikelliste(object commandParam)
         {
             if (commandParam != null && commandParam is CommandButtons button)
             {
-                if (button == CommandButtons.AppQuit)
+                if (button == CommandButtons.Artikelliste)
                 {
                     ChangeViewEventArgs args = new();
+                    args.FromPage = CommandButtons.Home;
                     args.MenuButton = button;
 
                     if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)

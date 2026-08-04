@@ -55,6 +55,8 @@
         {
             App.EventAgg.Subscribe<ChangeViewEventArgs>(async (evt, ct) => this.ChangeControl(evt));
             App.EventAgg.Subscribe<StatusEvent>(async (evt, ct) => this.OnUpdateStatusBar(evt));
+            App.EventAgg.Subscribe<WindowsTitelEvent>(async (evt, ct) => this.OnUpdateWindowTitel(evt));
+
 
             this.ConfigurationStatusInfoBar();
 
@@ -67,6 +69,19 @@
         private void OnUpdateStatusBar(StatusEvent evt)
         {
             StatusBar.SetNotification(evt.Notification);
+        }
+
+        private void OnUpdateWindowTitel(WindowsTitelEvent evt)
+        {
+            if (string.IsNullOrEmpty(evt.DialogTitel) == true)
+            {
+                this.WindowTitel = $"{LocalizationValue.Get("WindowsTitelZeile")} ({base.ApplicationVersion})";
+                return;
+            }
+            else
+            {
+                this.WindowTitel = $"{LocalizationValue.Get("WindowsTitelZeile")} ({base.ApplicationVersion}) [{evt.DialogTitel}]";
+            }
         }
 
         private void ConfigurationStatusInfoBar()
@@ -161,6 +176,16 @@
                     {
                         this.OnQuit();
                     }
+                    else if (button.In(CommandButtons.Home, CommandButtons.Artikelliste))
+                    {
+                        if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
+                        {
+                            await App.EventAgg.PublishAsync(new WindowsTitelEvent(button.ToDescription()));
+                        }
+
+                        this.WorkContent = null;
+                        this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
+                    }
                     else if (button.In(CommandButtons.Home, CommandButtons.GoBack))
                     {
 
@@ -191,6 +216,7 @@
         private void RegisterFactory()
         {
             Factory.RegisterSingleton<CommandButtons>(CommandButtons.Home, () => new HomeUC());
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.Artikelliste, (param) => new ArtikellisteUC((ChangeViewEventArgs)param!));
         }
     }
 }

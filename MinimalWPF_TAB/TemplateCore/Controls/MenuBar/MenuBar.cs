@@ -134,7 +134,7 @@ namespace System.Windows.Controls
                 nameof(ItemMinWidth),
                 typeof(double),
                 typeof(MenuBar),
-                new PropertyMetadata(80.0));
+                new PropertyMetadata(50.0));
 
         public double ItemMinWidth
         {

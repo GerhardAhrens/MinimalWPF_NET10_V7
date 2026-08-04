@@ -133,18 +133,9 @@
             </Button>
 
             <Button
-                Command="{Binding Path=MenuNeuCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
-                Content="Neu" />
-
-            <Button Content="Öffnen" />
-
-            <Button Content="Speichern" />
-
-
-            <Button Content="Drucken" />
-
-            <Button UI:MenuBar.Dock="Right" Content="Hilfe" />
+                Command="{Binding Path=MenuArtikellisteCommand}"
+                CommandParameter="{x:Static core:CommandButtons.Artikelliste}"
+                Content="Artikelliste" />
 
             <Button
                 Width="{StaticResource ResourceKey=ButtonSize}"

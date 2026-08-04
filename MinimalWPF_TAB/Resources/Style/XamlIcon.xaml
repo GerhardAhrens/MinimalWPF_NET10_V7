@@ -107,6 +107,20 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
+    <DrawingImage x:Key="IconGoBack">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Transform>
+                    <ScaleTransform ScaleX="0.25" ScaleY="0.25" />
+                </DrawingGroup.Transform>
+
+                <GeometryDrawing Brush="#FF986532" Geometry="F1M81.366,0L81.366,45.586 103.523,45.586 103.523,22.159 206.533,22.159 206.533,189.646 103.523,189.646 103.523,166.248 81.366,166.248 81.366,211.805 228.691,211.805 228.691,0 81.366,0z" />
+                <GeometryDrawing Brush="#FF3EA8F4" Geometry="F1M85.829,160.762L0,105.9 85.829,51.043 85.829,82.924 151.456,82.924 151.456,129.645 85.829,129.645 85.829,160.762z" />
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <!--#endregion Farbige Icon Symbole auf Basis von DrawingImage-->
 
 </ResourceDictionary>
