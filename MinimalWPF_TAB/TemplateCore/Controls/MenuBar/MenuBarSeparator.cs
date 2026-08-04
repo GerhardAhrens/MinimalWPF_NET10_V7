@@ -1,4 +1,18 @@
-﻿namespace System.Windows.Controls
+﻿//-----------------------------------------------------------------------
+// <copyright file="MenuBarSeparator.cs" company="Lifeprojects.de">
+//     Class: MenuBarSeparator
+//     Copyright © Lifeprojects.de 2026
+// </copyright>
+//
+// <author>2026 - Lifeprojects.de</author>
+// <email>developer@lifeprojects.de</email>
+// <date>04.08.2026</date>
+//
+// <summary>
+// Die Klasse MenuBarSeparator ist ein Steuerelement, das als Trennzeichen in einer Menüleiste verwendet wird.
+// </summary>
+//-----------------------------------------------------------------------
+namespace System.Windows.Controls
 {
     public class MenuBarSeparator : Control
     {

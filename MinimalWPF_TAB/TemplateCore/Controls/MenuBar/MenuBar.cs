@@ -1,4 +1,21 @@
-﻿namespace System.Windows.Controls
+﻿//-----------------------------------------------------------------------
+// <copyright file="MenuBar.cs" company="Lifeprojects.de">
+//     Class: MenuBar
+//     Copyright © Lifeprojects.de 2026
+// </copyright>
+//
+// <author>2026 - Lifeprojects.de</author>
+// <email>developer@lifeprojects.de</email>
+// <date>04.08.2026</date>
+//
+// <summary>
+// Die Klasse stellt einen Container für Menüs dar, der in einer WPF-Anwendung verwendet werden kann. Sie erbt von ItemsControl
+// und bietet zusätzliche Eigenschaften wie ShowHeader, Header, CornerRadius, ShowBorder, ButtonSpacing, ItemPadding und ItemMinWidth.
+// Außerdem definiert sie eine angehängte Eigenschaft Dock, die die Ausrichtung der Menüs innerhalb des Containers steuert.
+// </summary>
+//-----------------------------------------------------------------------
+
+namespace System.Windows.Controls
 {
     public class MenuBar : ItemsControl
     {

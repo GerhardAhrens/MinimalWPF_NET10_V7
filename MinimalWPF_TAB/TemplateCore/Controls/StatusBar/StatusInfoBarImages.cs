@@ -9,7 +9,7 @@
 // <date>03.08.2026</date>
 //
 // <summary>
-// Template für eine neue C# Standard-Klasse
+// Die Klasse StatusInfoBarImages enthält alle Standardbilder der StatusInfoBar. Alle DrawingImages werden einmalig erzeugt und eingefroren.
 // </summary>
 //-----------------------------------------------------------------------
 

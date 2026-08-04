@@ -9,7 +9,10 @@
 // <date>03.08.2026</date>
 //
 // <summary>
-// Template für eine neue C# Standard-Klasse
+// Die Klasse <c>StatusInfoBarItem</c> repräsentiert einen Bereich innerhalb der <see cref="StatusInfoBar"/>.
+// Sie erbt von <see cref="StatusBarItem"/> und bietet zusätzliche Eigenschaften wie Text, Bild,
+// Command und CommandParameter. Außerdem enthält sie Methoden zum Zurücksetzen des Items auf die Standarddarstellung,
+// zum Setzen von Text, Bild und Tooltip sowie zum Anpassen von Vorder- und Hintergrundfarbe und Sichtbarkeit.
 // </summary>
 //-----------------------------------------------------------------------
 

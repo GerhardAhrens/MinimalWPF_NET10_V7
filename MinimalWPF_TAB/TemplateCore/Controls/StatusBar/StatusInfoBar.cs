@@ -9,7 +9,10 @@
 // <date>03.08.2026</date>
 //
 // <summary>
-// Template für eine neue C# Standard-Klasse
+// Die Klasse StatusInfoBar stellt eine Statusleiste mit fünf festen Bereichen dar:
+// Account, Datasource, Rights, Notification und Date. Sie ermöglicht die Anzeige von Informationen in diesen Bereichen
+// und bietet Methoden zur Aktualisierung der Inhalte. Die Statusleiste kann auch automatisch das aktuelle Datum
+// und die Uhrzeit aktualisieren, wenn die Eigenschaft AutoUpdateDateTime auf true gesetzt ist.
 // </summary>
 //-----------------------------------------------------------------------
 

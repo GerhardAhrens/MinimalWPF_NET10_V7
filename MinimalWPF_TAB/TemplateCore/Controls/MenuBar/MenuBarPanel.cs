@@ -1,4 +1,19 @@
-﻿namespace System.Windows.Controls
+﻿//-----------------------------------------------------------------------
+// <copyright file="MenuBarPanel.cs" company="Lifeprojects.de">
+//     Class: MenuBarPanel
+//     Copyright © Lifeprojects.de 2026
+// </copyright>
+//
+// <author>2026 - Lifeprojects.de</author>
+// <email>developer@lifeprojects.de</email>
+// <date>04.08.2026</date>
+//
+// <summary>
+// Die Klasse MenuBarPanel ist ein Panel, das für die Anzeige von Menüs in einer WPF-Anwendung verwendet wird.
+// Sie erbt von Panel und bietet spezifische Maßnahmen für die Anordnung der Menüelemente.
+// </summary>
+//-----------------------------------------------------------------------
+namespace System.Windows.Controls
 {
     using System;
 

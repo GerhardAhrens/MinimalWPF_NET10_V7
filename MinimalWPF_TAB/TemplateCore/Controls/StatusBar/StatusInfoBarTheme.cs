@@ -9,7 +9,9 @@
 // <date>03.08.2026</date>
 //
 // <summary>
-// Template für eine neue C# Standard-Klasse
+// Die Klasse StatusInfoBarTheme definiert die Standardwerte für das Erscheinungsbild der StatusInfoBar-Komponente
+// in einer WPF-Anwendung. Sie enthält Eigenschaften für Hintergrundfarbe, Vordergrundfarbe, Rahmenfarbe, Trennlinienfarbe,
+// Abstände und Größenangaben, die das Layout und die Darstellung der StatusInfoBar steuern.
 // </summary>
 //-----------------------------------------------------------------------
 
