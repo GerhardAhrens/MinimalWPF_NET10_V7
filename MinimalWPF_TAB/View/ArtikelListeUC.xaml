@@ -15,6 +15,14 @@
 
     <UserControl.Resources>
         <system:Double x:Key="ButtonSize">40</system:Double>
+
+        <Style x:Key="RowNumberStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="Foreground" Value="Green" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="0,0,6,0" />
+        </Style>
     </UserControl.Resources>
 
     <Grid
@@ -40,5 +48,67 @@
 
         </UI:MenuBar>
         <!--#endregion Hauptmenübar-->
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="Artikelübersicht">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto,*,25">
+                    <UI:FilterRow
+                        Grid.Row="0"
+                        Width="{Binding Path=ActualWidth, ElementName=lvwMain}"
+                        Height="30"
+                        Margin="0,0,0,-10"
+                        VerticalAlignment="Bottom"
+                        ListView="{Binding ElementName=lvwMain}" />
+
+                    <UI:AdvancedListView
+                        x:Name="lvwMain"
+                        Grid.Row="1"
+                        Margin="0,10,0,10"
+                        Background="WhiteSmoke"
+                        ItemsSource="{Binding Path=DataSource}"
+                        RowNumberHeader="*"
+                        RowNumberTextStyle="{StaticResource RowNumberStyle}"
+                        DoubleClickCommand="{Binding Path=SelectDataRowClickCommand}"
+                        SelectedItem="{Binding Path=SelectedDataRow, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItemChangedCommand="{Binding Path=SelectDataRowCommand}"
+                        SelectionMode="Single"
+                        ShowRowNumbers="True">
+                        <ListView.View>
+                            <GridView>
+                                <UI:AdvancedGridViewColumn
+                                    Width="60"
+                                    DisplayMemberBinding="{Binding Path=[A]}"
+                                    FilterType="Number"
+                                    Header="Art-Nr"
+                                    SortMemberPath="A" />
+
+                                <UI:AdvancedGridViewColumn
+                                    Width="200"
+                                    DisplayMemberBinding="{Binding Path=[B]}"
+                                    FilterType="Text"
+                                    Header="Name"
+                                    SortMemberPath="B" />
+
+                                <UI:AdvancedGridViewColumn
+                                    Width="70"
+                                    DisplayMemberBinding="{Binding Path=[C]}"
+                                    FilterType="Number"
+                                    Header="Preis"
+                                    SortMemberPath="C"
+                                    StringFormat="{}{0:N2} €"
+                                    TextAlignment="Right" />
+                            </GridView>
+                        </ListView.View>
+                    </UI:AdvancedListView>
+
+                    <UI:StatusRow
+                        Grid.Row="2"
+                        Height="20"
+                        Margin="0,-25,0,0"
+                        ListView="{Binding ElementName=lvwMain}" />
+
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </base:UserControlBase>

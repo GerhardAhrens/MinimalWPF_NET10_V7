@@ -15,8 +15,11 @@
 
 namespace MinimalWPF.View
 {
+    using System.ComponentModel;
+    using System.Data;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Data;
 
     using MinimalWPF.Core;
 
@@ -33,13 +36,37 @@ namespace MinimalWPF.View
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
-
+            this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
+            this.SelectDataRowClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
             this.DataContext = this;
         }
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase SelectDataRowCommand { get; private set; }
+        public CommandBase SelectDataRowClickCommand { get; private set; }
+
+
+        public ICollectionView DataSource
+        {
+            get => base.GetValue<ICollectionView>();
+            set => base.SetValue(value);
+        }
+
+        public DataRowView SelectedDataRow
+        {
+            get => base.GetValue<DataRowView>();
+            set => base.SetValue(value);
+        }
+
+        public ID Id
+        {
+            get => base.GetValue<ID>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
+        private MessageBase Message { get; } = new MessageBase();
 
         #endregion Properties
 
@@ -47,6 +74,22 @@ namespace MinimalWPF.View
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            DataTable dt = LadeArtikel();
+            this.DataSource = CollectionViewSource.GetDefaultView(dt);
+            if (this.DataSource != null)
+            {
+                try
+                {
+                    this.DataSource.MoveCurrentToFirst();
+                    int maxCount = this.DataSource.Cast<DataRowView>().Count();
+                }
+                catch (Exception ex)
+                {
+                    string errorText = ex.Message;
+                    throw;
+                }
+            }
+
             if (App.EventAgg.IsSubscription<StatusEvent>() == true)
             {
                 await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
@@ -71,7 +114,47 @@ namespace MinimalWPF.View
                 }
             }
         }
+
+        private void OnSelectDataRow(object commandParam)
+        {
+            if (commandParam is DataRowView rowView)
+            {
+                this.Id = Convert.ToInt32(rowView["A"]);
+            }
+        }
+
+        private void OnSelectDataRowClick(object commandParam)
+        {
+            if (commandParam is DataRowView rowView)
+            {
+                this.Message.Hinweis("Information", $"Artikelnummer: {this.Id}");
+            }
+        }
+
         #endregion Command Events
 
+        private static DataTable LadeArtikel()
+        {
+            DataTable table = new("Artikel");
+
+            table.Columns.Add("A", typeof(int));         // Key
+            table.Columns.Add("B", typeof(string));      // Artikelname
+            table.Columns.Add("C", typeof(decimal));     // Preis
+
+            table.PrimaryKey = new[] { table.Columns["A"] };
+
+            table.Rows.Add(2001, "Kugelschreiber", 1.99m);
+            table.Rows.Add(2002, "Bleistift", 0.79m);
+            table.Rows.Add(2003, "Radiergummi", 1.29m);
+            table.Rows.Add(2004, "Notizblock", 3.49m);
+            table.Rows.Add(2005, "Ordner", 4.99m);
+            table.Rows.Add(2006, "Locher", 8.95m);
+            table.Rows.Add(2007, "Tacker", 12.50m);
+            table.Rows.Add(2008, "Lineal", 2.19m);
+            table.Rows.Add(2009, "Schere", 6.75m);
+            table.Rows.Add(2010, "Marker", 2.99m);
+
+            return table;
+        }
     }
 }

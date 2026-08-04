@@ -43,7 +43,7 @@
 
         public int TotalRowCount => _filterManager.TotalRowCount;
 
-        internal double EffectiveRowNumberWidth => ShowRowNumbers ? _rowNumberColumn.Width : 0.0;
+        internal double EffectiveRowNumberWidth => ShowRowNumbers == true ? _rowNumberColumn == null ? 40.0 :_rowNumberColumn.Width : 0.0;
 
         public Func<CellStyleRequest, CellStyleInfo> CellStyleProvider
         {
