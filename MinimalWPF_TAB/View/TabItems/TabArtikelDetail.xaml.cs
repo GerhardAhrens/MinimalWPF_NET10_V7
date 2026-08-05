@@ -30,6 +30,7 @@ namespace MinimalWPF.View
             this.InitializeComponent();
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
             this.CurrentRow = rowView;
+            this.Background = System.Windows.Media.Brushes.LightBlue;
             this.DataContext = this;
         }
 

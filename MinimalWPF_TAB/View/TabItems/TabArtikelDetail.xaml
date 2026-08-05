@@ -12,7 +12,7 @@
     mc:Ignorable="d">
     <Grid
         x:Name="gridMain"
-        Background="WhiteSmoke"
+        Background="Transparent"
         ColumnDefinitions="120,*"
         RowDefinitions="25,25,25,*">
 
