@@ -49,7 +49,7 @@
         </UI:MenuBar>
         <!--#endregion Hauptmenübar-->
 
-        <TabControl Grid.Row="1">
+        <TabControl x:Name="ArtikelTabControl" Grid.Row="1">
             <TabItem Header="Artikelübersicht">
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto,*,25">
                     <UI:FilterRow
@@ -65,10 +65,10 @@
                         Grid.Row="1"
                         Margin="0,10,0,10"
                         Background="WhiteSmoke"
+                        DoubleClickCommand="{Binding Path=SelectDataRowClickCommand}"
                         ItemsSource="{Binding Path=DataSource}"
                         RowNumberHeader="*"
                         RowNumberTextStyle="{StaticResource RowNumberStyle}"
-                        DoubleClickCommand="{Binding Path=SelectDataRowClickCommand}"
                         SelectedItem="{Binding Path=SelectedDataRow, UpdateSourceTrigger=PropertyChanged}"
                         SelectedItemChangedCommand="{Binding Path=SelectDataRowCommand}"
                         SelectionMode="Single"

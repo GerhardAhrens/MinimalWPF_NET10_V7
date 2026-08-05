@@ -131,7 +131,16 @@ namespace MinimalWPF.View
         {
             if (commandParam is DataRowView rowView)
             {
-                this.Message.Hinweis("Information", $"Artikelnummer: {this.Id}");
+
+                TabItem artikelTab = new TabItem() { Header = $"Artikel {this.Id}" };
+
+                bool isTabFound = ArtikelTabControl.Items.OfType<TabItem>().Any(tab => tab.Header?.ToString() == artikelTab.Header.ToString());
+                if (isTabFound == false)
+                {
+                    this.ArtikelTabControl.Items.Add(artikelTab);
+                }
+
+                this.ArtikelTabControl.SelectedItem = artikelTab;
             }
         }
 
