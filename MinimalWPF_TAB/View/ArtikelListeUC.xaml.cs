@@ -134,13 +134,30 @@ namespace MinimalWPF.View
 
                 TabItem artikelTab = new TabItem() { Header = $"Artikel {this.Id}" };
 
+                if (this.ArtikelTabControl.Items.Count == 1)
+                {
+                    WeakEventManager<TabControl, SelectionChangedEventArgs>.AddHandler(this.ArtikelTabControl, "SelectionChanged", this.OnTabSelectionChanged);
+                }
+
                 bool isTabFound = ArtikelTabControl.Items.OfType<TabItem>().Any(tab => tab.Header?.ToString() == artikelTab.Header.ToString());
                 if (isTabFound == false)
                 {
+                    artikelTab.Tag = this.SelectedDataRow;
                     this.ArtikelTabControl.Items.Add(artikelTab);
                 }
 
                 this.ArtikelTabControl.SelectedItem = artikelTab;
+            }
+        }
+
+        private void OnTabSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.Source is TabControl tabControl)
+            {
+                if (tabControl.SelectedItem is TabItem selectedTab && selectedTab.Tag is DataRowView rowView)
+                {
+                    selectedTab.Content = new TabArtikelDetail(rowView);
+                }
             }
         }
 
