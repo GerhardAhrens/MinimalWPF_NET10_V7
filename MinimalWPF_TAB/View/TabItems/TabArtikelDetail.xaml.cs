@@ -35,35 +35,20 @@ namespace MinimalWPF.View
 
         #region Properties
 
-        public ID ArtikelId
+        public DataRowView CurrentRow
         {
-            get => base.GetValue<ID>();
+            get => base.GetValue<DataRowView>();
             set => base.SetValue(value);
         }
 
-        public string ArtikelBezeichnung
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public decimal ArtikelPreis
-        {
-            get => base.GetValue<decimal>();
-            set => base.SetValue(value);
-        }
-
-        public DataRowView CurrentRow { get; set; }
         #endregion Properties
 
         #region Windows Events
 
-        private async void OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.ArtikelId = this.CurrentRow.Row.Field<int>("A");
-            this.ArtikelBezeichnung = this.CurrentRow.Row.Field<string>("B");
-            this.ArtikelPreis = this.CurrentRow.Row.Field<decimal>("C");
         }
+
         #endregion Windows Events
 
         #region Command Events

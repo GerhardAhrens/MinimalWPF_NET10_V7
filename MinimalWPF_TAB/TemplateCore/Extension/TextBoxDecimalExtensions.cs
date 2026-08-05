@@ -27,11 +27,17 @@
 
                 if (isEnabled)
                 {
+                    // Text nach rechts ausrichten
                     textBox.TextAlignment = TextAlignment.Right;
 
+                    // Events für Eingabebeschränkung und Formatierung
                     textBox.PreviewTextInput += TextBox_PreviewTextInput;
-                    textBox.LostFocus += TextBox_LostFocus; // Neu: Event für Fokusverlust registrieren
+                    textBox.LostFocus += TextBox_LostFocus;
                     DataObject.AddPastingHandler(textBox, TextBox_Pasting);
+
+                    // Neu: Events für automatische Markierung bei Fokus
+                    textBox.GotKeyboardFocus += TextBox_GotKeyboardFocus;
+                    textBox.PreviewMouseLeftButtonDown += TextBox_PreviewMouseLeftButtonDown;
                 }
                 else
                 {
@@ -40,27 +46,49 @@
                     textBox.PreviewTextInput -= TextBox_PreviewTextInput;
                     textBox.LostFocus -= TextBox_LostFocus;
                     DataObject.RemovePastingHandler(textBox, TextBox_Pasting);
+
+                    textBox.GotKeyboardFocus -= TextBox_GotKeyboardFocus;
+                    textBox.PreviewMouseLeftButtonDown -= TextBox_PreviewMouseLeftButtonDown;
                 }
             }
         }
 
-        // Neu: Wenn das Feld leer oder unvollständig ist, weise eine "0" oder "0,00" zu
+        // Neu: Markiert den Text, wenn der Fokus per Tastatur (z. B. Tab-Taste) kommt
+        private static void TextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                textBox.SelectAll();
+            }
+        }
+
+        // Neu: Markiert den Text bei einem Mausklick und verhindert das Aufheben durch das Standard-Click-Verhalten
+        private static void TextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                if (!textBox.IsKeyboardFocusWithin)
+                {
+                    textBox.Focus();
+                    e.Handled = true; // Verhindert, dass der Cursor an die Klick-Position springt
+                }
+            }
+        }
+
+        // Wenn das Feld leer ist, weise "0" zu und formatiere gültige Zahlen auf 2 Nachkommastellen
         private static void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (sender is TextBox textBox)
             {
                 string text = textBox.Text.Trim();
 
-                // Wenn das Feld komplett leer ist oder nur ein Minus/Komma enthält
                 if (string.IsNullOrEmpty(text) || text == "-" || text == ",")
                 {
-                    textBox.Text = "0";
+                    textBox.Text = "0,00"; // Direkt als schönes Standardformat
 
-                    // Erzwingt das Update der Datenbindung (Binding) an das ViewModel/die DataRow
                     var binding = textBox.GetBindingExpression(TextBox.TextProperty);
                     binding?.UpdateSource();
                 }
-                // Optional: Formatiert eine gültige Zahl direkt schön auf zwei Nachkommastellen (z.B. "5" wird zu "5,00")
                 else if (decimal.TryParse(text, NumberStyles.Any, GermanCulture, out decimal value))
                 {
                     textBox.Text = value.ToString("F2", GermanCulture);

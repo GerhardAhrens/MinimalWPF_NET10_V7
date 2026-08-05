@@ -26,7 +26,7 @@
             Grid.Row="0"
             Grid.Column="1"
             VerticalAlignment="Center"
-            Text="{Binding Path=ArtikelId, FallbackValue=~ArtikelId}" />
+            Text="{Binding Path=CurrentRow.Row[A], FallbackValue=~ArtikelId}" />
 
         <TextBlock
             Grid.Row="1"
@@ -40,7 +40,7 @@
             Width="200"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Text="{Binding Path=ArtikelBezeichnung, FallbackValue=~ArtikelBezeichnung}" />
+            Text="{Binding Path=CurrentRow.Row[B], FallbackValue=~ArtikelBezeichnung}" />
 
         <TextBlock
             Grid.Row="2"
@@ -55,7 +55,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             UI:TextBoxDecimalExtensions.IsDecimalOnly="True"
-            Text="{Binding Path=ArtikelPreis, FallbackValue=~ArtikelPreis}" />
+            Text="{Binding Path=CurrentRow.Row[C], FallbackValue=~ArtikelPreis}" />
 
     </Grid>
 </base:UserControlBase>

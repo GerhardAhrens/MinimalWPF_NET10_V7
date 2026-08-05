@@ -39,11 +39,13 @@ namespace MinimalWPF.View
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
             this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
             this.SelectDataRowClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
+            this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
             this.DataContext = this;
         }
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase CloseTabCommand { get; private set; }
         public CommandBase SelectDataRowCommand { get; private set; }
         public CommandBase SelectDataRowClickCommand { get; private set; }
 
@@ -75,6 +77,11 @@ namespace MinimalWPF.View
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            await this.RefeshDataSourceAsync();
+        }
+
+        private async Task RefeshDataSourceAsync()
+        {
             TimeSpan t = Performance.Measure(() =>
             {
                 DataTable dt = LadeArtikel();
@@ -99,6 +106,7 @@ namespace MinimalWPF.View
                 await App.EventAgg.PublishAsync(new StatusEvent($"Bereit; {t.TotalMilliseconds} ms"));
             }
         }
+
         #endregion Windows Events
 
         #region Command Events
@@ -142,6 +150,7 @@ namespace MinimalWPF.View
                 bool isTabFound = ArtikelTabControl.Items.OfType<TabItem>().Any(tab => tab.Header?.ToString() == artikelTab.Header.ToString());
                 if (isTabFound == false)
                 {
+                    this.SelectedDataRow.Row.AcceptChanges();
                     artikelTab.Tag = this.SelectedDataRow;
                     this.ArtikelTabControl.Items.Add(artikelTab);
                 }
@@ -160,6 +169,46 @@ namespace MinimalWPF.View
                 }
             }
         }
+
+        private async void OnCloseTab(object commandParam)
+        {
+            if (((FrameworkElement)commandParam).Tag.ToString() == string.Empty)
+            {
+                return;
+            }
+
+            if (commandParam is TabItem tabItem)
+            {
+                DataRow rowView = ((TabArtikelDetail)tabItem.Content).CurrentRow.Row;
+
+                if (this.HasChanges(rowView) == true)
+                {
+                    // Es existieren Änderungen
+                    MessageBoxResult quesion = this.Message.CancelQuestion("Änderungen speichern", "Es existieren Änderungen an den Daten. Möchten Sie die Änderungen speichern?");
+                    if (quesion == MessageBoxResult.Yes)
+                    {
+                        rowView.AcceptChanges();
+                        this.ArtikelTabControl.Items.Remove(tabItem);
+                        await this.RefeshDataSourceAsync();
+                    }
+                    else if (quesion == MessageBoxResult.No)
+                    {
+                        rowView.RejectChanges();
+                        this.ArtikelTabControl.Items.Remove(tabItem);
+                        await this.RefeshDataSourceAsync();
+                    }
+                    else if (quesion == MessageBoxResult.Cancel)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    this.ArtikelTabControl.Items.Remove(tabItem);
+                }
+            }
+        }
+
 
         #endregion Command Events
 
@@ -185,6 +234,24 @@ namespace MinimalWPF.View
             table.Rows.Add(2010, "Marker", 2.99m);
 
             return table;
+        }
+
+        public bool HasChanges(DataRow row)
+        {
+            if (row.RowState != DataRowState.Modified)
+            {
+                return false;
+            }
+
+            foreach (DataColumn column in row.Table.Columns)
+            {
+                if (!Equals(row[column, DataRowVersion.Original], row[column, DataRowVersion.Current]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
