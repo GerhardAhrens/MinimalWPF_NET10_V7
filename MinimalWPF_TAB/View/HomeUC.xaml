@@ -100,7 +100,6 @@
         </base:DialogPopup>
         <!--#endregion Popup im MainWindow Dialog-->
 
-
         <!--#region Hauptmenübar-->
         <UI:MenuBar
             Grid.Row="0"
@@ -141,5 +140,9 @@
         </UI:MenuBar>
 
         <!--#endregion Hauptmenübar-->
+
+        <UI:AdvancedTabControl Grid.Row="1">
+            <UI:AdvancedTabItem Header="Neue Registerkarte" />
+        </UI:AdvancedTabControl>
     </Grid>
 </base:UserControlBase>

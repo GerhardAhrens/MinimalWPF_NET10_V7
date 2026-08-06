@@ -7,9 +7,11 @@
     {
         static AdvancedTabControl()
         {
+            /*
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(AdvancedTabControl),
                 new FrameworkPropertyMetadata(typeof(AdvancedTabControl)));
+            */
         }
 
         #region SelectionChangedCommand
