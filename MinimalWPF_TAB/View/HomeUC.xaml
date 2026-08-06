@@ -143,10 +143,16 @@
 
         <UI:AdvancedTabControl Grid.Row="1" SelectionChangedCommand="{Binding Path=SelectionChangedCommand}">
             <UI:AdvancedTabItem
+                DropDownCommand="{Binding Path=DropDownCommand}"
+                DropDownCommandParameter="{Binding}"
+                CloseCommand="{Binding Path=CloseTabCommand}"
                 Header="Neue Registerkarte"
                 HeaderBackground="Yellow"
                 HeaderImage="{StaticResource ResourceKey=IconGoBack}" />
             <UI:AdvancedTabItem
+                DropDownCommand="{Binding Path=DropDownCommand}"
+                DropDownCommandParameter="{Binding}"
+                CloseCommand="{Binding Path=CloseTabCommand}"
                 Header="Neue Registerkarte"
                 HeaderBackground="LightBlue"
                 HeaderImage="{StaticResource ResourceKey=IconApplicationEnd}" />

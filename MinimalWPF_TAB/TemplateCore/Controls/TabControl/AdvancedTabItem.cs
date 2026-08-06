@@ -26,9 +26,7 @@ namespace System.Windows.Controls
     {
         static AdvancedTabItem()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(AdvancedTabItem),
-                new FrameworkPropertyMetadata(typeof(AdvancedTabItem)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(AdvancedTabItem), new FrameworkPropertyMetadata(typeof(AdvancedTabItem)));
         }
 
         #region HeaderBackground
@@ -114,6 +112,41 @@ namespace System.Windows.Controls
             set => SetValue(CloseCommandParameterProperty, value);
         }
 
-        #endregion
+        #endregion CloseCommandParameter
+
+        #region DropDownCommand
+
+        public static readonly DependencyProperty DropDownCommandProperty =
+            DependencyProperty.Register(
+                nameof(DropDownCommand),
+                typeof(ICommand),
+                typeof(AdvancedTabItem),
+                new PropertyMetadata(null));
+
+        public ICommand DropDownCommand
+        {
+            get => (ICommand)GetValue(DropDownCommandProperty);
+            set => SetValue(DropDownCommandProperty, value);
+        }
+
+        #endregion DropDownCommand
+
+        #region DropDownCommandParameter
+
+        public static readonly DependencyProperty DropDownCommandParameterProperty =
+            DependencyProperty.Register(
+                nameof(DropDownCommandParameter),
+                typeof(object),
+                typeof(AdvancedTabItem),
+                new PropertyMetadata(null));
+
+        public object DropDownCommandParameter
+        {
+            get => GetValue(DropDownCommandParameterProperty);
+            set => SetValue(DropDownCommandParameterProperty, value);
+        }
+
+        #endregion DropDownCommandParameter
+
     }
 }

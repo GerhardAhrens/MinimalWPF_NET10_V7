@@ -40,12 +40,27 @@ namespace MinimalWPF.View
             this.CloseSettingsPopupCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.SelectionChangedCommand = new CommandBase(commandParam => this.OnSelectionChanged(commandParam), () => true);
             this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
+            this.DropDownCommand = new CommandBase(commandParam => this.OnDropDown(commandParam), () => true);
 
             this.DataContext = this;
         }
 
         private void OnCloseTab(object commandParam)
         {
+            AdvancedTabItem tabItem = (AdvancedTabItem)commandParam;
+        }
+
+        private void OnDropDown(object commandParam)
+        {
+            Button button = (Button)commandParam;
+            if (button != null && button.ContextMenu != null)
+            {
+                // Setzt den Button als Bezugspunkt, damit das Menü bündig darunter erscheint
+                button.ContextMenu.PlacementTarget = button;
+
+                // Öffnet das Menü
+                button.ContextMenu.IsOpen = true;
+            }
         }
 
         private void OnSelectionChanged(object commandParam)
@@ -61,6 +76,7 @@ namespace MinimalWPF.View
         public CommandBase CloseSettingsPopupCommand { get; private set; }
         public CommandBase SelectionChangedCommand { get; private set; }
         public CommandBase CloseTabCommand { get; private set; }
+        public CommandBase DropDownCommand { get; private set; }
 
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         #endregion Properties
