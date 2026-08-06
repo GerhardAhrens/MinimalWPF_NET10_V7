@@ -38,8 +38,18 @@ namespace MinimalWPF.View
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.CloseInformationPopupCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.CloseSettingsPopupCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
+            this.SelectionChangedCommand = new CommandBase(commandParam => this.OnSelectionChanged(commandParam), () => true);
+            this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
 
             this.DataContext = this;
+        }
+
+        private void OnCloseTab(object commandParam)
+        {
+        }
+
+        private void OnSelectionChanged(object commandParam)
+        {
         }
 
         #region Properties
@@ -49,6 +59,8 @@ namespace MinimalWPF.View
         public CommandBase SettingsCommand { get; private set; }
         public CommandBase CloseInformationPopupCommand { get; private set; }
         public CommandBase CloseSettingsPopupCommand { get; private set; }
+        public CommandBase SelectionChangedCommand { get; private set; }
+        public CommandBase CloseTabCommand { get; private set; }
 
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         #endregion Properties

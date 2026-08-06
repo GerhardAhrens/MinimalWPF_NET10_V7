@@ -141,8 +141,15 @@
 
         <!--#endregion Hauptmenübar-->
 
-        <UI:AdvancedTabControl Grid.Row="1">
-            <UI:AdvancedTabItem Header="Neue Registerkarte" />
+        <UI:AdvancedTabControl Grid.Row="1" SelectionChangedCommand="{Binding Path=SelectionChangedCommand}">
+            <UI:AdvancedTabItem
+                Header="Neue Registerkarte"
+                HeaderBackground="Yellow"
+                HeaderImage="{StaticResource ResourceKey=IconGoBack}" />
+            <UI:AdvancedTabItem
+                Header="Neue Registerkarte"
+                HeaderBackground="LightBlue"
+                HeaderImage="{StaticResource ResourceKey=IconApplicationEnd}" />
         </UI:AdvancedTabControl>
     </Grid>
 </base:UserControlBase>

@@ -15,33 +15,41 @@
             <Setter.Value>
                 <DataTemplate>
                     <!--  Grid ist jetzt sauber innerhalb des DataTemplates gekapselt  -->
-                    <Grid Margin="2,0,2,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                    <Grid
+                        Margin="2,0,2,0"
+                        Background="{Binding Path=HeaderBackground, RelativeSource={RelativeSource AncestorType=UI:AdvancedTabItem}}"
+                        ColumnDefinitions="Auto,*,Auto">
 
                         <!--  Register-Beschriftung  -->
+                        <Image
+                            Grid.Column="0"
+                            Width="16"
+                            Height="16"
+                            Margin="2"
+                            Source="{Binding RelativeSource={RelativeSource AncestorType=UI:AdvancedTabItem}, Path=HeaderImage}" />
+
                         <TextBlock
-                                        Grid.Column="0"
-                                        Margin="0,0,10,0"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding}" />
+                            Grid.Column="1"
+                            Margin="4,0"
+                            VerticalAlignment="Center"
+                            Background="{Binding Path=HeaderBackground, RelativeSource={RelativeSource AncestorType=UI:AdvancedTabItem}}"
+                            Foreground="{Binding Path=HeaderForeground, RelativeSource={RelativeSource AncestorType=UI:AdvancedTabItem}}"
+                            Text="{Binding}" />
 
                         <!--  Schließen-Button  -->
                         <Button
-                                        Grid.Column="1"
-                                        Width="16"
-                                        Height="16"
-                                        Padding="0"
-                                        HorizontalContentAlignment="Center"
-                                        VerticalContentAlignment="Center"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Content="×"
-                                        Cursor="Hand"
-                                        FontSize="14"
-                                        FontWeight="Bold">
+                            Grid.Column="2"
+                            Width="16"
+                            Height="16"
+                            Padding="0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Content="×"
+                            Cursor="Hand"
+                            FontSize="14"
+                            FontWeight="Bold">
 
                             <Button.Command>
                                 <Binding Path="CloseTabCommand" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" />
