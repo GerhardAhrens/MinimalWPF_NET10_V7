@@ -49,8 +49,11 @@
         </UI:MenuBar>
         <!--#endregion Hauptmenübar-->
 
-        <TabControl x:Name="ArtikelTabControl" Grid.Row="1">
-            <TabControl.Resources>
+        <UI:AdvancedTabControl
+            x:Name="ArtikelTabControl"
+            Grid.Row="1"
+            SelectionChangedCommand="{Binding Path=SelectionChangedCommand}">
+            <UI:AdvancedTabControl.Resources>
 
                 <Style TargetType="{x:Type TabItem}">
                     <!--  Fehler 1 Behebung: Das Tag-Property sauber initialisieren  -->
@@ -113,9 +116,9 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </TabControl.Resources>
+            </UI:AdvancedTabControl.Resources>
 
-            <TabItem Header="Artikelübersicht">
+            <UI:AdvancedTabItem Header="Artikelübersicht">
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto,*,25">
                     <UI:FilterRow
                         Grid.Row="0"
@@ -173,7 +176,7 @@
                         ListView="{Binding ElementName=lvwMain}" />
 
                 </Grid>
-            </TabItem>
-        </TabControl>
+            </UI:AdvancedTabItem>
+        </UI:AdvancedTabControl>
     </Grid>
 </base:UserControlBase>

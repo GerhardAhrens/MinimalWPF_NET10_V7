@@ -21,6 +21,9 @@ namespace MinimalWPF.View
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
+    using System.Windows.Documents;
+    using System.Windows.Input;
+    using System.Windows.Media;
 
     using MinimalWPF.Core;
 
@@ -40,6 +43,8 @@ namespace MinimalWPF.View
             this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
             this.SelectDataRowClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
             this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
+            this.SelectionChangedCommand = new CommandBase(commandParam => this.OnSelectionChanged(commandParam), () => true);
+
             this.DataContext = this;
         }
 
@@ -48,7 +53,7 @@ namespace MinimalWPF.View
         public CommandBase CloseTabCommand { get; private set; }
         public CommandBase SelectDataRowCommand { get; private set; }
         public CommandBase SelectDataRowClickCommand { get; private set; }
-
+        public CommandBase SelectionChangedCommand { get; private set; }
 
         public ICollectionView DataSource
         {
@@ -70,6 +75,7 @@ namespace MinimalWPF.View
 
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
+        private bool IsModified { get; set; } = false;
 
         #endregion Properties
 
@@ -99,6 +105,18 @@ namespace MinimalWPF.View
                         throw;
                     }
                 }
+
+                dt.ColumnChanged += (s, e) =>
+                {
+                    this.IsModified = true;
+                    if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+                    {
+                        if (this.IsModified == true)
+                        {
+                            _ = App.EventAgg.PublishAsync(new StatusEvent("Geändert"));
+                        }
+                    }
+                };
             });
 
             if (App.EventAgg.IsSubscription<StatusEvent>() == true)
@@ -135,27 +153,45 @@ namespace MinimalWPF.View
             }
         }
 
-        private void OnSelectDataRowClick(object commandParam)
+        private async void OnSelectDataRowClick(object commandParam)
         {
             if (commandParam is DataRowView rowView)
             {
 
-                TabItem artikelTab = new TabItem() { Header = $"Artikel {this.Id}" };
+                AdvancedTabItem artikelTab = new AdvancedTabItem() 
+                { 
+                    Header = $"Artikel {this.Id}", 
+                    HeaderImage = (ImageSource)Application.Current.FindResource("IconApplicationEnd"),
+                };
 
-                if (this.ArtikelTabControl.Items.Count == 1)
-                {
-                    WeakEventManager<TabControl, SelectionChangedEventArgs>.AddHandler(this.ArtikelTabControl, "SelectionChanged", this.OnTabSelectionChanged);
-                }
-
-                bool isTabFound = ArtikelTabControl.Items.OfType<TabItem>().Any(tab => tab.Header?.ToString() == artikelTab.Header.ToString());
+                bool isTabFound = ArtikelTabControl.Items.OfType<AdvancedTabItem>().Any(tab => tab.Header?.ToString() == artikelTab.Header.ToString());
                 if (isTabFound == false)
                 {
                     this.SelectedDataRow.Row.AcceptChanges();
                     artikelTab.Tag = this.SelectedDataRow;
                     this.ArtikelTabControl.Items.Add(artikelTab);
+
+                    if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(new StatusEvent($"Bereit"));
+                    }
                 }
 
                 this.ArtikelTabControl.SelectedItem = artikelTab;
+            }
+        }
+
+        private void OnSelectionChanged(object commandParam)
+        {
+            if (commandParam is SelectionChangedEventArgs tabControl)
+            {
+                AdvancedTabControl tab = (AdvancedTabControl)tabControl.Source;
+                AdvancedTabItem selectedTab = tab.SelectedItem as AdvancedTabItem;
+
+                if (selectedTab != null && selectedTab.Tag is DataRowView rowView)
+                {
+                    selectedTab.Content = new TabArtikelDetail(rowView);
+                }
             }
         }
 
@@ -208,7 +244,6 @@ namespace MinimalWPF.View
                 }
             }
         }
-
 
         #endregion Command Events
 

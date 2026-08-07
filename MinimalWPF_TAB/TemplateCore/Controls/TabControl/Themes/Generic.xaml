@@ -71,28 +71,6 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-
-                        <Button
-                            Grid.Column="3"
-                            Width="22"
-                            Height="22"
-                            Margin="2"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            BorderThickness="0"
-                            Content="▼"
-                            Cursor="Hand"
-                            FontSize="14">
-                            <Button.Command>
-                                <Binding Path="DropDownCommand" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" />
-                            </Button.Command>
-
-                            <Button.CommandParameter>
-                                <Binding RelativeSource="{RelativeSource Self}" />
-                            </Button.CommandParameter>
-                        </Button>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
