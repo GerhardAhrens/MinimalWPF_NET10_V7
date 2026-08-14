@@ -14,7 +14,7 @@
         x:Name="gridMain"
         Background="Transparent"
         ColumnDefinitions="120,*"
-        RowDefinitions="25,25,25,*">
+        RowDefinitions="25,25,25,Auto,25,*">
 
         <TextBlock
             Grid.Row="0"
@@ -56,6 +56,33 @@
             VerticalAlignment="Center"
             UI:TextBoxDecimalExtensions.IsDecimalOnly="True"
             Text="{Binding Path=CurrentRow.Row[C], FallbackValue=~ArtikelPreis}" />
+
+        <UI:ListBoxImage
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Height="Auto"
+            ImageHeight="32"
+            ImageStretch="UniformToFill"
+            ImageWidth="32"
+            ItemsSource="{Binding Path=ImageSource}"
+            Orientation="Horizontal"
+            SelectedValue="{Binding Path=SelectedImage}"
+            SymbolColor="Green" />
+
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="SelectedIndex" />
+
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="1"
+            Width="100"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Text="{Binding Path=SelectedImage}" />
 
     </Grid>
 </base:UserControlBase>
