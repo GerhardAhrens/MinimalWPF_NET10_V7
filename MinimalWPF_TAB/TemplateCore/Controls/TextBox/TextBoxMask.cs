@@ -1,4 +1,42 @@
-﻿namespace System.Windows.Controls
+﻿//-----------------------------------------------------------------------
+// <copyright file="TextBoxMask.cs" company="Lifeprojects.de">
+//     Class: TextBoxMask
+//     Copyright © Lifeprojects.de 2026
+// </copyright>
+//
+// <author>2026 - Lifeprojects.de</author>
+// <email>developer@lifeprojects.de</email>
+// <date>15.08.2026</date>
+//
+// <summary>
+// Die Klasse stellt einen TextBox zur Verfügung, bei der Eingabe über eine Maske erfolgt.
+// </summary>
+// <example>
+// <local:TextBoxMask x: Name = "PhoneTextBox" Width = "250" Mask = "(000) 000 000 000" />
+// Zeichen	Bedeutung
+// 0		Ziffer, erforderlich
+// 9		Ziffer oder Leerzeichen, optional
+// #		Ziffer oder Leerzeichen, erforderlich
+// L		Buchstabe, erforderlich
+// ?		Buchstabe, optional
+// &		beliebiges Zeichen, erforderlich
+// C		beliebiges Zeichen, optional
+// A		alphanumerisch, erforderlich
+// a		alphanumerisch, optional
+// _ 		beliebiges Zeichen, erforderlich
+// 			Leerzeichen
+// .		Dezimaltrenner
+// , 		Tausendertrenner
+// :		Zeittrenner
+// / 		Datentrenner
+// $		Währungssymbol
+// < 		nachfolgend Kleinbuchstaben
+// > 		nachfolgend Großbuchstaben
+// \		nächstes Zeichen als Literal
+//</example>
+//-----------------------------------------------------------------------
+
+namespace System.Windows.Controls
 {
     using System.Text;
     using System.Windows.Input;
@@ -51,17 +89,17 @@
             set => RawText = value;
         }
 
-        #endregion
+        #endregion Dependency Properties
 
         #region Fields
 
-        private readonly List<MaskPart> _parts = new();
+        private readonly List<TextBoxMaskPart> _parts = new();
 
         private bool _internalUpdate;
         private bool _isUndoRedo;
 
-        private readonly Stack<EditState> _undoStack = new();
-        private readonly Stack<EditState> _redoStack = new();
+        private readonly Stack<TextBoxEditState> _undoStack = new();
+        private readonly Stack<TextBoxEditState> _redoStack = new();
 
         private const int MaxUndoSteps = 100;
 
@@ -69,26 +107,17 @@
 
         #region Constructor
 
-        /*
-        static TextBoxMask()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(TextBoxMask),
-                new FrameworkPropertyMetadata(typeof(TextBoxMask)));
-        }
-        */
-
         public TextBoxMask()
         {
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, OnNewPaste));
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, OnNewCopy));
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, OnNewCut));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, this.OnNewPaste));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.OnNewCopy));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, this.OnNewCut));
 
             Loaded += (_, _) =>
             {
-                ParseMask();
-                NormalizeRawText();
-                RefreshText();
+                this.ParseMask();
+                this.NormalizeRawText();
+                this.RefreshText();
             };
         }
 
@@ -111,7 +140,7 @@
             {
                 if (escape)
                 {
-                    _parts.Add(MaskPart.Literal(c));
+                    _parts.Add(TextBoxMaskPart.Literal(c));
                     escape = false;
                     continue;
                 }
@@ -146,14 +175,14 @@
                 if (IsPlaceholder(c))
                 {
                     _parts.Add(
-                        MaskPart.Placeholder(
+                        TextBoxMaskPart.Placeholder(
                             c,
                             lowerCase,
                             upperCase));
                 }
                 else
                 {
-                    _parts.Add(MaskPart.Literal(c));
+                    _parts.Add(TextBoxMaskPart.Literal(c));
                 }
             }
         }
@@ -235,16 +264,17 @@
             };
         }
 
-        private static char ConvertCharacter(
-            char value,
-            bool lowerCase,
-            bool upperCase)
+        private static char ConvertCharacter(char value, bool lowerCase, bool upperCase)
         {
             if (lowerCase)
+            {
                 return char.ToLowerInvariant(value);
+            }
 
             if (upperCase)
+            {
                 return char.ToUpperInvariant(value);
+            }
 
             return value;
         }
@@ -255,40 +285,43 @@
 
         private void RefreshText()
         {
-            if (_internalUpdate)
+            if (this._internalUpdate)
+            {
                 return;
+            }
 
-            ParseMask();
+            this.ParseMask();
 
             string oldText = Text;
 
-            int rawCaret =
-                CaretIndexToRawIndex(CaretIndex);
+            int rawCaret = this.CaretIndexToRawIndex(this.CaretIndex);
 
-            string formatted = FormatRawText(RawText);
+            string formatted = this.FormatRawText(this.RawText);
 
-            _internalUpdate = true;
+            this._internalUpdate = true;
 
             try
             {
-                Text = formatted;
+                this.Text = formatted;
 
-                int newCaret = RawIndexToCaretIndex(Math.Min(rawCaret, RawText == null ? 0 :RawText.Length));
+                int newCaret = this.RawIndexToCaretIndex(Math.Min(rawCaret, this.RawText == null ? 0 : this.RawText.Length));
 
-                CaretIndex = Math.Min( newCaret, Text.Length);
+                this.CaretIndex = Math.Min( newCaret, this.Text.Length);
 
-                SelectionLength = 0;
+                this.SelectionLength = 0;
             }
             finally
             {
-                _internalUpdate = false;
+                this._internalUpdate = false;
             }
         }
 
         private string FormatRawText(string raw)
         {
             if (_parts.Count == 0)
+            {
                 return raw ?? string.Empty;
+            }
 
             raw ??= string.Empty;
 
@@ -296,7 +329,7 @@
 
             int rawIndex = 0;
 
-            foreach (MaskPart part in _parts)
+            foreach (TextBoxMaskPart part in _parts)
             {
                 if (part.IsLiteral)
                 {
@@ -308,10 +341,7 @@
                 {
                     char value = raw[rawIndex];
 
-                    value = ConvertCharacter(
-                        value,
-                        part.LowerCase,
-                        part.UpperCase);
+                    value = ConvertCharacter(value, part.LowerCase, part.UpperCase);
 
                     result.Append(value);
 
@@ -331,10 +361,9 @@
 
         #region Keyboard Input
 
-        protected override void OnPreviewTextInput(
-            TextCompositionEventArgs e)
+        protected override void OnPreviewTextInput(TextCompositionEventArgs e)
         {
-            if (_internalUpdate)
+            if (this._internalUpdate)
             {
                 base.OnPreviewTextInput(e);
                 return;
@@ -342,31 +371,32 @@
 
             e.Handled = true;
 
-            ReplaceSelectionWith(e.Text);
+            this.ReplaceSelectionWith(e.Text);
         }
 
-        protected override void OnPreviewKeyDown(
-            KeyEventArgs e)
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            if (_internalUpdate)
+            if (this._internalUpdate)
             {
                 base.OnPreviewKeyDown(e);
                 return;
             }
 
-            bool ctrl =
-                (Keyboard.Modifiers & ModifierKeys.Control) != 0;
+            bool ctrl = (Keyboard.Modifiers & ModifierKeys.Control) != 0;
 
-            bool shift =
-                (Keyboard.Modifiers & ModifierKeys.Shift) != 0;
+            bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != 0;
 
             // Undo
             if (ctrl && e.Key == Key.Z)
             {
-                if (shift)
-                    Redo();
+                if (shift == true)
+                {
+                    this.Redo();
+                }
                 else
-                    Undo();
+                {
+                    this.Undo();
+                }
 
                 e.Handled = true;
                 return;
@@ -375,7 +405,7 @@
             // Redo
             if (ctrl && e.Key == Key.Y)
             {
-                Redo();
+                this.Redo();
 
                 e.Handled = true;
                 return;
@@ -385,50 +415,58 @@
             {
                 case Key.Back:
 
-                    if (SelectionLength > 0)
-                        DeleteSelection();
+                    if (this.SelectionLength > 0)
+                    {
+                        this.DeleteSelection();
+                    }
                     else
-                        Backspace();
+                    {
+                        this.Backspace();
+                    }
 
                     e.Handled = true;
                     return;
 
                 case Key.Delete:
 
-                    if (SelectionLength > 0)
-                        DeleteSelection();
+                    if (this.SelectionLength > 0)
+                    {
+                        this.DeleteSelection();
+                    }
                     else
-                        Delete();
+                    {
+                        this.Delete();
+                    }
 
                     e.Handled = true;
                     return;
 
                 case Key.Left:
 
-                    MoveCaretLeft(shift);
+                    this.MoveCaretLeft(shift);
 
                     e.Handled = true;
                     return;
 
                 case Key.Right:
 
-                    MoveCaretRight(shift);
+                    this.MoveCaretRight(shift);
 
                     e.Handled = true;
                     return;
 
                 case Key.Home:
 
-                    if (shift)
+                    if (shift == true)
                     {
                         int old = CaretIndex;
-                        CaretIndex = 0;
-                        SelectFrom(old);
+                        this.CaretIndex = 0;
+                        this.SelectFrom(old);
                     }
                     else
                     {
-                        CaretIndex = 0;
-                        SelectionLength = 0;
+                        this.CaretIndex = 0;
+                        this.SelectionLength = 0;
                     }
 
                     e.Handled = true;
@@ -436,16 +474,16 @@
 
                 case Key.End:
 
-                    if (shift)
+                    if (shift == true)
                     {
-                        int old = CaretIndex;
-                        CaretIndex = Text.Length;
-                        SelectFrom(old);
+                        int old = this.CaretIndex;
+                        this.CaretIndex = Text.Length;
+                        this.SelectFrom(old);
                     }
                     else
                     {
-                        CaretIndex = Text.Length;
-                        SelectionLength = 0;
+                        this.CaretIndex = this.Text.Length;
+                        this.SelectionLength = 0;
                     }
 
                     e.Handled = true;
@@ -474,27 +512,35 @@
         private void OnNewCopy(object sender, ExecutedRoutedEventArgs e)
         {
             if (SelectionLength <= 0)
+            {
                 return;
+            }
 
-            string rawText = GetRawTextFromSelection();
+            string rawText = this.GetRawTextFromSelection();
 
-            if (!string.IsNullOrEmpty(rawText))
+            if (string.IsNullOrEmpty(rawText) == false)
+            {
                 Clipboard.SetText(rawText);
+            }
 
             e.Handled = true;
         }
 
         private void OnNewCut(object sender, ExecutedRoutedEventArgs e)
         {
-            if (SelectionLength <= 0)
+            if (this.SelectionLength <= 0)
+            {
                 return;
+            }
 
-            string rawText = GetRawTextFromSelection();
+            string rawText = this.GetRawTextFromSelection();
 
-            if (!string.IsNullOrEmpty(rawText))
+            if (string.IsNullOrEmpty(rawText) == false)
+            {
                 Clipboard.SetText(rawText);
+            }
 
-            DeleteSelection();
+            this.DeleteSelection();
 
             e.Handled = true;
         }
@@ -506,33 +552,25 @@
         private void ReplaceSelectionWith(string input)
         {
             if (string.IsNullOrEmpty(input))
+            {
                 return;
+            }
 
-            SaveUndoState();
+            this.SaveUndoState();
 
-            int startRaw =
-                CaretIndexToRawIndex(SelectionStart);
+            int startRaw = this.CaretIndexToRawIndex(this.SelectionStart);
 
-            int endRaw =
-                CaretIndexToRawIndex(
-                    SelectionStart + SelectionLength);
+            int endRaw = this.CaretIndexToRawIndex(this.SelectionStart + this.SelectionLength);
 
-            string current =
-                RawText ?? string.Empty;
+            string current = this.RawText ?? string.Empty;
 
             if (endRaw > startRaw)
             {
-                int removeLength =
-                    Math.Min(
-                        endRaw - startRaw,
-                        current.Length - startRaw);
+                int removeLength = Math.Min(endRaw - startRaw, current.Length - startRaw);
 
                 if (removeLength > 0)
                 {
-                    current =
-                        current.Remove(
-                            startRaw,
-                            removeLength);
+                    current = current.Remove(startRaw, removeLength);
                 }
             }
 
@@ -540,39 +578,26 @@
 
             foreach (char inputCharacter in input)
             {
-                int maskIndex =
-                    GetNextEditableMaskIndex(rawIndex);
+                int maskIndex = this.GetNextEditableMaskIndex(rawIndex);
 
                 if (maskIndex < 0)
+                {
                     break;
+                }
 
-                MaskPart part =
-                    _parts[maskIndex];
+                TextBoxMaskPart part = this._parts[maskIndex];
 
-                if (!Accepts(
-                        part.Character,
-                        inputCharacter))
+                if (Accepts(part.Character, inputCharacter) == false)
                 {
                     continue;
                 }
 
-                char value =
-                    ConvertCharacter(
-                        inputCharacter,
-                        part.LowerCase,
-                        part.UpperCase);
+                char value = ConvertCharacter(inputCharacter, part.LowerCase, part.UpperCase);
 
                 if (rawIndex < current.Length)
                 {
-                    current =
-                        current.Remove(
-                            rawIndex,
-                            1);
-
-                    current =
-                        current.Insert(
-                            rawIndex,
-                            value.ToString());
+                    current = current.Remove(rawIndex, 1);
+                    current = current.Insert(rawIndex, value.ToString());
                 }
                 else
                 {
@@ -582,9 +607,8 @@
                 rawIndex++;
             }
 
-            SetRawTextInternal(current);
-
-            RefreshText();
+            this.SetRawTextInternal(current);
+            this.RefreshText();
 
             CaretIndex =
                 RawIndexToCaretIndex(rawIndex);
@@ -598,88 +622,75 @@
 
         private void Backspace()
         {
-            int rawIndex =
-                CaretIndexToRawIndex(CaretIndex);
+            int rawIndex = this.CaretIndexToRawIndex(CaretIndex);
 
             if (rawIndex <= 0)
+            {
                 return;
+            }
 
-            SaveUndoState();
+            this.SaveUndoState();
 
             rawIndex--;
 
-            string value = RawText;
+            string value = this.RawText;
 
             if (rawIndex < value.Length)
             {
-                value =
-                    value.Remove(
-                        rawIndex,
-                        1);
+                value = value.Remove(rawIndex, 1);
             }
 
-            SetRawTextInternal(value);
+            this.SetRawTextInternal(value);
 
-            RefreshText();
+            this.RefreshText();
 
-            CaretIndex =
-                RawIndexToCaretIndex(rawIndex);
+            this.CaretIndex = this.RawIndexToCaretIndex(rawIndex);
         }
 
         private void Delete()
         {
-            int rawIndex =
-                CaretIndexToRawIndex(CaretIndex);
+            int rawIndex = this.CaretIndexToRawIndex(this.CaretIndex);
 
-            if (rawIndex >= RawText.Length)
+            if (rawIndex >= this.RawText.Length)
+            {
                 return;
+            }
 
-            SaveUndoState();
+            this.SaveUndoState();
 
-            string value = RawText;
+            string value = this.RawText;
 
-            value =
-                value.Remove(
-                    rawIndex,
-                    1);
+            value = value.Remove(rawIndex, 1);
 
-            SetRawTextInternal(value);
+            this.SetRawTextInternal(value);
 
-            RefreshText();
+            this.RefreshText();
 
-            CaretIndex =
-                RawIndexToCaretIndex(rawIndex);
+            this.CaretIndex = this.RawIndexToCaretIndex(rawIndex);
         }
 
         private void DeleteSelection()
         {
-            int startRaw =
-                CaretIndexToRawIndex(
-                    SelectionStart);
+            int startRaw = this.CaretIndexToRawIndex(this.SelectionStart);
 
-            int endRaw =
-                CaretIndexToRawIndex(
-                    SelectionStart +
-                    SelectionLength);
+            int endRaw = this.CaretIndexToRawIndex(this.SelectionStart + this.SelectionLength);
 
             if (endRaw <= startRaw)
+            {
                 return;
+            }
 
-            SaveUndoState();
+            this.SaveUndoState();
 
-            string value =
-                RawText.Remove(
-                    startRaw,
-                    endRaw - startRaw);
+            string value = this.RawText.Remove(startRaw, endRaw - startRaw);
 
-            SetRawTextInternal(value);
+            this.SetRawTextInternal(value);
 
-            RefreshText();
+            this.RefreshText();
 
-            CaretIndex =
-                RawIndexToCaretIndex(startRaw);
+            this.CaretIndex =  this.RawIndexToCaretIndex(startRaw);
 
-            SelectionLength = 0;
+            this.SelectionLength = 0;
         }
 
         #endregion
@@ -691,46 +702,49 @@
             int oldCaret = CaretIndex;
 
             if (CaretIndex <= 0)
+            {
                 return;
+            }
 
-            int raw =
-                CaretIndexToRawIndex(
-                    CaretIndex);
+            int raw = this.CaretIndexToRawIndex(this.CaretIndex);
 
-            raw =
-                Math.Max(
-                    0,
-                    raw - 1);
+            raw = Math.Max(0, raw - 1);
 
-            CaretIndex =
-                RawIndexToCaretIndex(raw);
+            CaretIndex = this.RawIndexToCaretIndex(raw);
 
-            if (shift)
-                SelectFrom(oldCaret);
+            if (shift == true)
+            {
+                this.SelectFrom(oldCaret);
+            }
             else
-                SelectionLength = 0;
+            {
+                this.SelectionLength = 0;
+            }
         }
 
         private void MoveCaretRight(bool shift)
         {
             int oldCaret = CaretIndex;
 
-            int raw =
-                CaretIndexToRawIndex(
-                    CaretIndex);
+            int raw = this.CaretIndexToRawIndex(this.CaretIndex);
 
             if (raw >= RawText.Length)
+            {
                 return;
+            }
 
             raw++;
 
-            CaretIndex =
-                RawIndexToCaretIndex(raw);
+            this.CaretIndex = this.RawIndexToCaretIndex(raw);
 
-            if (shift)
-                SelectFrom(oldCaret);
+            if (shift == true)
+            {
+                this.SelectFrom(oldCaret);
+            }
             else
-                SelectionLength = 0;
+            {
+                this.SelectionLength = 0;
+            }
         }
 
         private void SelectFrom(int anchor)
@@ -739,15 +753,13 @@
 
             if (current >= anchor)
             {
-                SelectionStart = anchor;
-                SelectionLength =
-                    current - anchor;
+                this.SelectionStart = anchor;
+                this.SelectionLength = current - anchor;
             }
             else
             {
-                SelectionStart = current;
-                SelectionLength =
-                    anchor - current;
+                this.SelectionStart = current;
+                this.SelectionLength = anchor - current;
             }
         }
 
@@ -758,24 +770,28 @@
         private int CaretIndexToRawIndex(int caret)
         {
             if (_parts.Count == 0)
-                return Math.Min(
-                    caret,
-                    RawText.Length);
+            {
+                return Math.Min(caret, RawText.Length);
+            }
 
             int visual = 0;
             int raw = 0;
 
-            foreach (MaskPart part in _parts)
+            foreach (TextBoxMaskPart part in _parts)
             {
                 if (visual >= caret)
+                {
                     break;
+                }
 
                 visual++;
 
                 if (!part.IsLiteral)
                 {
                     if (raw < RawText.Length)
+                    {
                         raw++;
+                    }
                 }
             }
 
@@ -785,14 +801,12 @@
         private int RawIndexToCaretIndex(int rawIndex)
         {
             if (_parts.Count == 0)
-                return Math.Min(
-                    rawIndex,
-                    RawText.Length);
+                return Math.Min(rawIndex, RawText.Length);
 
             int visual = 0;
             int raw = 0;
 
-            foreach (MaskPart part in _parts)
+            foreach (TextBoxMaskPart part in _parts)
             {
                 if (part.IsLiteral)
                 {
@@ -802,13 +816,17 @@
                      * folgt.
                      */
                     if (raw < rawIndex)
+                    {
                         visual++;
+                    }
 
                     continue;
                 }
 
                 if (raw >= rawIndex)
+                {
                     break;
+                }
 
                 raw++;
                 visual++;
@@ -817,18 +835,21 @@
             return visual;
         }
 
-        private int GetNextEditableMaskIndex(
-            int rawIndex)
+        private int GetNextEditableMaskIndex(int rawIndex)
         {
             int currentRaw = 0;
 
             for (int i = 0; i < _parts.Count; i++)
             {
-                if (_parts[i].IsLiteral)
+                if (_parts[i].IsLiteral == true)
+                {
                     continue;
+                }
 
                 if (currentRaw == rawIndex)
+                {
                     return i;
+                }
 
                 currentRaw++;
             }
@@ -843,135 +864,124 @@
         private string GetRawTextFromSelection()
         {
             if (SelectionLength <= 0)
+            {
                 return string.Empty;
+            }
 
-            int startRaw =
-                CaretIndexToRawIndex(
-                    SelectionStart);
+            int startRaw = this.CaretIndexToRawIndex(SelectionStart);
 
-            int endRaw =
-                CaretIndexToRawIndex(
-                    SelectionStart +
-                    SelectionLength);
+            int endRaw = this.CaretIndexToRawIndex(SelectionStart + SelectionLength);
 
             if (endRaw <= startRaw)
+            {
                 return string.Empty;
+            }
 
-            return RawText.Substring(
-                startRaw,
-                endRaw - startRaw);
+            return RawText.Substring(startRaw, endRaw - startRaw);
         }
 
-        #endregion
+        #endregion Selection / Copy
 
         #region Undo / Redo
 
         private void SaveUndoState()
         {
-            if (_isUndoRedo)
+            if (this._isUndoRedo == true)
+            {
                 return;
+            }
 
-            _undoStack.Push(
-                new EditState(
+            this._undoStack.Push(
+                new TextBoxEditState(
                     RawText,
                     CaretIndex,
                     SelectionStart,
                     SelectionLength));
 
-            while (_undoStack.Count > MaxUndoSteps)
+            while (this._undoStack.Count > MaxUndoSteps)
             {
-                RemoveOldest(_undoStack);
+                RemoveOldest(this._undoStack);
             }
 
-            _redoStack.Clear();
+            this._redoStack.Clear();
         }
 
         new private void Undo()
         {
-            if (_undoStack.Count == 0)
+            if (this._undoStack.Count == 0)
+            {
                 return;
+            }
 
-            EditState current =
+            TextBoxEditState current =
                 new(
                     RawText,
                     CaretIndex,
                     SelectionStart,
                     SelectionLength);
 
-            EditState previous =
-                _undoStack.Pop();
+            TextBoxEditState previous = this._undoStack.Pop();
 
-            _redoStack.Push(current);
+            this._redoStack.Push(current);
 
-            RestoreState(previous);
+            this.RestoreState(previous);
         }
 
         new private void Redo()
         {
             if (_redoStack.Count == 0)
+            {
                 return;
+            }
 
-            EditState current =
+            TextBoxEditState current =
                 new(
                     RawText,
                     CaretIndex,
                     SelectionStart,
                     SelectionLength);
 
-            EditState next =
-                _redoStack.Pop();
+            TextBoxEditState next = _redoStack.Pop();
 
-            _undoStack.Push(current);
+            this._undoStack.Push(current);
 
-            RestoreState(next);
+            this.RestoreState(next);
         }
 
-        private void RestoreState(EditState state)
+        private void RestoreState(TextBoxEditState state)
         {
-            _isUndoRedo = true;
+            this._isUndoRedo = true;
 
             try
             {
-                SetRawTextInternal(state.RawText);
+                this.SetRawTextInternal(state.RawText);
 
-                RefreshText();
+                this.RefreshText();
 
-                CaretIndex =
-                    Math.Min(
-                        state.CaretIndex,
-                        Text.Length);
+                this.CaretIndex = Math.Min(state.CaretIndex, Text.Length);
 
-                SelectionStart =
-                    Math.Min(
-                        state.SelectionStart,
-                        Text.Length);
+                this.SelectionStart = Math.Min(state.SelectionStart, Text.Length);
 
-                SelectionLength =
-                    Math.Min(
-                        state.SelectionLength,
-                        Text.Length -
-                        SelectionStart);
+                this.SelectionLength = Math.Min(state.SelectionLength, Text.Length - SelectionStart);
             }
             finally
             {
-                _isUndoRedo = false;
+                this._isUndoRedo = false;
             }
         }
 
-        private static void RemoveOldest(
-            Stack<EditState> stack)
+        private static void RemoveOldest(Stack<TextBoxEditState> stack)
         {
             if (stack.Count == 0)
+            {
                 return;
+            }
 
-            EditState[] states =
-                stack.ToArray();
+            TextBoxEditState[] states = stack.ToArray();
 
             stack.Clear();
 
-            for (int i = states.Length - 2;
-                 i >= 0;
-                 i--)
+            for (int i = states.Length - 2; i >= 0; i--)
             {
                 stack.Push(states[i]);
             }
@@ -983,39 +993,39 @@
 
         private void SetRawTextInternal(string value)
         {
-            _internalUpdate = true;
+            this._internalUpdate = true;
 
             try
             {
-                SetCurrentValue(
-                    RawTextProperty,
-                    value ?? string.Empty);
+                this.SetCurrentValue(RawTextProperty, value ?? string.Empty);
             }
             finally
             {
-                _internalUpdate = false;
+                this._internalUpdate = false;
             }
         }
 
-        private static void OnRawTextChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnRawTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not TextBoxMask control)
+            {
                 return;
+            }
 
             if (control._internalUpdate)
+            {
                 return;
+            }
 
             control.RefreshText();
         }
 
-        private static void OnMaskChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnMaskChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not TextBoxMask control)
+            {
                 return;
+            }
 
             control.ParseMask();
 
@@ -1034,8 +1044,10 @@
 
         private void NormalizeRawText()
         {
-            if (string.IsNullOrEmpty(RawText))
+            if (string.IsNullOrEmpty(RawText) == true)
+            {
                 return;
+            }
 
             string source = RawText;
             var result = new StringBuilder();
@@ -1044,34 +1056,26 @@
 
             foreach (char character in source)
             {
-                int maskIndex =
-                    GetNextEditableMaskIndex(
-                        rawIndex);
+                int maskIndex = this.GetNextEditableMaskIndex(rawIndex);
 
                 if (maskIndex < 0)
+                {
                     break;
+                }
 
-                MaskPart part =
-                    _parts[maskIndex];
+                TextBoxMaskPart part = this._parts[maskIndex];
 
-                if (!Accepts(
-                        part.Character,
-                        character))
+                if (Accepts(part.Character, character) == false)
                 {
                     continue;
                 }
 
-                result.Append(
-                    ConvertCharacter(
-                        character,
-                        part.LowerCase,
-                        part.UpperCase));
+                result.Append(ConvertCharacter(character, part.LowerCase, part.UpperCase));
 
                 rawIndex++;
             }
 
-            SetRawTextInternal(
-                result.ToString());
+            this.SetRawTextInternal(result.ToString());
         }
 
         #endregion
@@ -1088,7 +1092,7 @@
             {
                 int rawIndex = 0;
 
-                foreach (MaskPart part in _parts)
+                foreach (TextBoxMaskPart part in _parts)
                 {
                     if (part.IsLiteral)
                         continue;
@@ -1119,7 +1123,7 @@
 
         #region MaskPart
 
-        private sealed class MaskPart
+        private sealed class TextBoxMaskPart
         {
             public bool IsLiteral { get; private init; }
 
@@ -1129,21 +1133,18 @@
 
             public bool UpperCase { get; private init; }
 
-            public static MaskPart Literal(char character)
+            public static TextBoxMaskPart Literal(char character)
             {
-                return new MaskPart
+                return new TextBoxMaskPart
                 {
                     IsLiteral = true,
                     Character = character
                 };
             }
 
-            public static MaskPart Placeholder(
-                char character,
-                bool lowerCase,
-                bool upperCase)
+            public static TextBoxMaskPart Placeholder(char character, bool lowerCase, bool upperCase)
             {
-                return new MaskPart
+                return new TextBoxMaskPart
                 {
                     IsLiteral = false,
                     Character = character,
@@ -1157,7 +1158,7 @@
 
         #region EditState
 
-        private sealed class EditState
+        private sealed class TextBoxEditState
         {
             public string RawText { get; }
 
@@ -1167,7 +1168,7 @@
 
             public int SelectionLength { get; }
 
-            public EditState(
+            public TextBoxEditState(
                 string rawText,
                 int caretIndex,
                 int selectionStart,
