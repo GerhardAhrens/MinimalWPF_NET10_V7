@@ -67,6 +67,18 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
+        public string Kennzeichen
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
+        public string KennzeichenRaw
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
         private MessageBase Message { get; } = new MessageBase();
 
         #endregion Properties

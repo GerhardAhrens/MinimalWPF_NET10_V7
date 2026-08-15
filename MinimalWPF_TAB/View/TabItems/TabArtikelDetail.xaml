@@ -102,6 +102,14 @@
                 RawText="{Binding Path=PhonNumberRaw}"
                 Text="{Binding Path=PhonNumber, UpdateSourceTrigger=PropertyChanged}" />
 
+            <UI:TextBoxMask
+                Width="100"
+                Margin="5,0,0,0"
+                HorizontalAlignment="Left"
+                Mask="&gt;LL LL"
+                RawText="{Binding Path=KennzeichenRaw}"
+                Text="{Binding Path=Kennzeichen, UpdateSourceTrigger=PropertyChanged}" />
+
             <Button
                 Margin="10,0,0,0"
                 Click="OnTestTextBoxMask"
