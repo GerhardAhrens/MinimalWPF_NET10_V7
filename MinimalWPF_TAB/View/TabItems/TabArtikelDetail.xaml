@@ -14,7 +14,7 @@
         x:Name="gridMain"
         Background="Transparent"
         ColumnDefinitions="120,*"
-        RowDefinitions="25,25,25,Auto,25,*">
+        RowDefinitions="25,25,25,Auto,25,25,*">
 
         <TextBlock
             Grid.Row="0"
@@ -58,6 +58,7 @@
             Text="{Binding Path=CurrentRow.Row[C], FallbackValue=~ArtikelPreis}" />
 
         <UI:ListBoxImage
+            x:Name="HorizontalImageList"
             Grid.Row="3"
             Grid.Column="0"
             Grid.ColumnSpan="2"
@@ -83,6 +84,29 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Text="{Binding Path=SelectedImage}" />
+
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="TextBoxMask" />
+
+        <StackPanel
+            Grid.Row="5"
+            Grid.Column="1"
+            Orientation="Horizontal">
+            <UI:TextBoxMask
+                Width="200"
+                HorizontalAlignment="Left"
+                Mask="(00000) 00 00 00 00 00"
+                RawText="{Binding Path=PhonNumberRaw}"
+                Text="{Binding Path=PhonNumber, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button
+                Margin="10,0,0,0"
+                Click="OnTestTextBoxMask"
+                Content="Test Inhalt" />
+        </StackPanel>
 
     </Grid>
 </base:UserControlBase>

@@ -168,7 +168,9 @@
             var border = new FrameworkElementFactory(typeof(Border));
 
             border.SetValue(Border.PaddingProperty, new Thickness(4));
-
+            border.SetValue(Border.BorderBrushProperty, Brushes.LightGray);
+            border.SetValue(Border.BorderThicknessProperty, new Thickness(1));
+            border.SetValue(Border.BackgroundProperty, Brushes.Transparent);
             border.AppendChild(image);
 
             ItemTemplate = new DataTemplate
@@ -183,16 +185,13 @@
 
         private void UpdateItemsPanel()
         {
-            var panelType = Orientation == Orientation.Horizontal ? typeof(StackPanel) : typeof(StackPanel);
             var panel = new FrameworkElementFactory(typeof(VirtualizingStackPanel));
 
-            panel.SetValue(VirtualizingStackPanel.OrientationProperty,Orientation);
+            panel.SetValue(VirtualizingStackPanel.OrientationProperty, this.Orientation);
             panel.SetValue(VirtualizingStackPanel.IsVirtualizingProperty, true);
             panel.SetValue(VirtualizingStackPanel.VirtualizationModeProperty, VirtualizationMode.Recycling);
-            panel.SetValue(StackPanel.OrientationProperty, Orientation);
-
-            var template = new ItemsPanelTemplate(panel);
-
+            panel.SetValue(StackPanel.OrientationProperty, this.Orientation);
+            ItemsPanelTemplate template = new ItemsPanelTemplate(panel);
             ItemsPanel = template;
         }
 
