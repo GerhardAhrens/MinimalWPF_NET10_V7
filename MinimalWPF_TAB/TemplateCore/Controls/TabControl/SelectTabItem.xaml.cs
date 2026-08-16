@@ -1,18 +1,20 @@
 ﻿namespace System.Windows.Controls
 {
+    using System.Windows;
     using System.Runtime.InteropServices;
     using System.Windows.Interop;
 
+
     /// <summary>
-    /// Interaktionslogik für BaustelleDlg.xaml
+    /// Interaktionslogik für SelectTabItem.xaml
     /// </summary>
-    public partial class BaustelleDlg : Window
+    public partial class SelectTabItem : Window
     {
         /* API Importe (GetWindowLong, SetWindowLong) */
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
 
-        public BaustelleDlg(string title, string message)
+        public SelectTabItem(Dictionary<int, string>  tabItems)
         {
             this.InitializeComponent();
 
@@ -22,26 +24,24 @@
                 _ = SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
             };
 
-            this.Dispatcher.Invoke(() => 
-            {
-                this.TB_Titel.Text = title;
-                this.TB_Message.Text = message;
-            });
 
-            this.Result = new DialogValueResult
+            if (tabItems != null)
             {
-                Accepted = false
-            };
+                this.OpenTabItems = tabItems;
+            }
+            else 
+            {
+                this.Result = new DialogValueResult<int> 
+                { 
+                    Accepted = false, 
+                    ResultValue = -1 
+                };
+            }
         }
 
-        public DialogValueResult Result { get; private set; }
+        public DialogValueResult<int> Result { get; private set; }
+        public Dictionary<int, string> OpenTabItems { get; set; }
 
-        private void BtnOk_Click(object sender, RoutedEventArgs e)
-        {
-            this.Result.Accepted = true;
-            this.DialogResult = true;
-            this.Close();
-        }
 
         #region Aufruf WIN 32 API
         [DllImport("user32.dll", SetLastError = true)]

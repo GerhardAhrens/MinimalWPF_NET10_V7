@@ -14,6 +14,12 @@
             */
         }
 
+        public AdvancedTabControl()
+        {
+            WeakEventManager<AdvancedTabControl, KeyEventArgs>.AddHandler(this, "PreviewKeyDown", this.OnPreviewKeyDow);
+        }
+
+
         #region SelectionChangedCommand
 
         public static readonly DependencyProperty SelectionChangedCommandProperty =
@@ -39,6 +45,60 @@
                 SelectionChangedCommand.CanExecute(e))
             {
                 SelectionChangedCommand.Execute(e);
+            }
+        }
+
+        private void OnPreviewKeyDow(object sender, KeyEventArgs e)
+        {
+            // Prüfen, ob die Strg-Taste (Ctrl) gedrückt gehalten wird
+            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            {
+                var tabControl = sender as TabControl;
+                if (tabControl == null)
+                {
+                    return;
+                }
+
+                // Bestimmen der gedrückten Zahl (Zifferntasten oder Nummernblock)
+                int targetIndex = -1;
+
+                if (e.Key >= Key.D1 && e.Key <= Key.D9)
+                {
+                    targetIndex = e.Key - Key.D1; // Berechnet 0 für Key.D1, 1 für Key.D2 etc.
+                }
+                else if (e.Key >= Key.NumPad1 && e.Key <= Key.NumPad9)
+                {
+                    targetIndex = e.Key - Key.NumPad1; // Berechnet 0 für Key.NumPad1 etc.
+                }
+
+                // Wenn eine gültige Zahl gedrückt wurde und der Tab-Index existiert
+                if (targetIndex >= 0 && targetIndex < tabControl.Items.Count)
+                {
+                    tabControl.SelectedIndex = targetIndex;
+                    e.Handled = true; // Verhindert, dass das Event weitergereicht wird
+                }
+
+                if (e.Key == Key.T && tabControl.Items.Count > 1)
+                {
+                    Dictionary<int,string> openTabItems = new Dictionary<int,string>();
+                    int tabIndex = -1;
+                    foreach (TabItem item in tabControl.Items)
+                    {
+                        tabIndex++;
+                        openTabItems.Add(tabIndex, item.Header.ToString());
+                    }
+
+                    if (openTabItems.Count > 0)
+                    {
+                        Window owner = Application.Current.MainWindow;
+                        SelectTabItem dialog = new SelectTabItem(openTabItems);
+                        dialog.ShowInTaskbar = false;
+                        dialog.Owner = owner;
+                        if (dialog.ShowDialog() == true)
+                        {
+                        }
+                    }
+                }
             }
         }
     }
