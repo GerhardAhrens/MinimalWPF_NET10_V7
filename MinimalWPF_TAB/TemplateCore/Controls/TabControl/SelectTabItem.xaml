@@ -9,5 +9,7 @@
     Width="300"
     Height="450"
     mc:Ignorable="d">
-    <Grid />
+    <Grid ColumnDefinitions="*" RowDefinitions="*">
+        <ListBox x:Name="TabItemList" />
+    </Grid>
 </Window>
