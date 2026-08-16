@@ -90,11 +90,21 @@
 
                     if (openTabItems.Count > 0)
                     {
-                        Window owner = Application.Current.MainWindow;
-                        SelectTabItem dialog = new SelectTabItem(openTabItems);
-                        dialog.Owner = owner;
-                        if (dialog.ShowDialog() == true)
+                        Window parentWindow = Window.GetWindow(this);
+                        if (parentWindow != null)
                         {
+                            SelectTabItem dialog = new SelectTabItem(openTabItems);
+                            dialog.Left = parentWindow.ActualWidth - dialog.Width;
+                            dialog.Top = dialog.Height;
+                            dialog.Owner = parentWindow;
+                            if (dialog.ShowDialog() == true)
+                            {
+                                if (dialog.Result.Accepted == true)
+                                {
+                                    tabControl.SelectedIndex = dialog.Result.ResultValue;
+                                    e.Handled = true; // Verhindert, dass das Event weitergereicht wird
+                                }
+                            }
                         }
                     }
                 }

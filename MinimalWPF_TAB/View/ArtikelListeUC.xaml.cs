@@ -27,6 +27,8 @@ namespace MinimalWPF.View
 
     using MinimalWPF.Core;
 
+    using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
     /// <summary>
     /// Interaktionslogik für Artikelliste.xaml
     /// </summary>
@@ -83,7 +85,21 @@ namespace MinimalWPF.View
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            // 1. Daten asynchron laden
             await this.RefeshDataSourceAsync();
+
+            // 2. Warten, bis der Dispatcher das UI-Layout und die Container im Hintergrund gerendert hat
+            await Dispatcher.InvokeAsync(() =>
+            {
+                this.lvwMain.SelectedIndex = 0;
+
+                var firstItem = lvwMain.ItemContainerGenerator.ContainerFromIndex(0) as ListViewItem;
+                if (firstItem != null)
+                {
+                    firstItem.Focus();
+                    Keyboard.Focus(firstItem);
+                }
+            }, System.Windows.Threading.DispatcherPriority.Background);
         }
 
         private async Task RefeshDataSourceAsync()

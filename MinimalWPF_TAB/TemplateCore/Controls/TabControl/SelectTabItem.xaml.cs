@@ -31,8 +31,6 @@
             this.ResizeMode = ResizeMode.NoResize;
 
             WeakEventManager<Window, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
-            WeakEventManager<Window, CancelEventArgs>.AddHandler(this, "Closing", this.OnWindowClosing);
-
 
             if (tabItems != null)
             {
@@ -53,11 +51,16 @@
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            this.Title = "Übersicht Registerkarten";
+            this.TabItemList.SelectedValuePath = "Key";
+            this.TabItemList.DisplayMemberPath = "Value";
+            this.TabItemList.ItemsSource = this.OpenTabItems;
 
-        }
-
-        private void OnWindowClosing(object sender, CancelEventArgs e)
-        {
+            if (this.TabItemList.Items.Count > 0)
+            {
+                this.TabItemList.Focus();
+                this.TabItemList.SelectedIndex = 0;
+            }
 
         }
 
@@ -66,6 +69,13 @@
             if (e.Key == Key.Enter)
             {
                 DialogResult = true;
+                this.Result = new DialogValueResult<int>
+                {
+                    Accepted = true,
+                    ResultValue = (int)this.TabItemList.SelectedValue,
+                };
+
+                this.Close();
                 return;
             }
 
@@ -77,6 +87,8 @@
                     Accepted = false,
                     ResultValue = -1
                 };
+
+                this.Close();
                 return;
             }
 
@@ -85,7 +97,18 @@
 
         private void TabItemList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DialogResult = true;
+            if ((int)this.TabItemList.SelectedValue > -1)
+            {
+                DialogResult = true;
+                this.Result = new DialogValueResult<int>
+                {
+                    Accepted = true,
+                    ResultValue = (int)this.TabItemList.SelectedValue,
+                };
+
+                this.Close();
+                return;
+            }
         }
 
         #region Aufruf WIN 32 API
