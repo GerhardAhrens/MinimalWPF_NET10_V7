@@ -1,7 +1,9 @@
 ﻿namespace System.Windows.Controls
 {
-    using System.Windows;
+    using System.ComponentModel;
     using System.Runtime.InteropServices;
+    using System.Windows;
+    using System.Windows.Input;
     using System.Windows.Interop;
 
 
@@ -18,11 +20,18 @@
         {
             this.InitializeComponent();
 
-            this.SourceInitialized += (s, e) => {
+            this.SourceInitialized += (s, e) => 
+            {
                 IntPtr hwnd = new WindowInteropHelper(this).Handle;
                 // API Aufruf zum Entfernen des Systemmenüs
                 _ = SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
             };
+
+            this.ShowInTaskbar = false;
+            this.ResizeMode = ResizeMode.NoResize;
+
+            WeakEventManager<Window, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
+            WeakEventManager<Window, CancelEventArgs>.AddHandler(this, "Closing", this.OnWindowClosing);
 
 
             if (tabItems != null)
@@ -42,6 +51,42 @@
         public DialogValueResult<int> Result { get; private set; }
         public Dictionary<int, string> OpenTabItems { get; set; }
 
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                DialogResult = true;
+                return;
+            }
+
+            if (e.Key == Key.Escape)
+            {
+                DialogResult = false;
+                this.Result = new DialogValueResult<int>
+                {
+                    Accepted = false,
+                    ResultValue = -1
+                };
+                return;
+            }
+
+            base.OnPreviewKeyDown(e);
+        }
+
+        private void TabItemList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DialogResult = true;
+        }
 
         #region Aufruf WIN 32 API
         [DllImport("user32.dll", SetLastError = true)]

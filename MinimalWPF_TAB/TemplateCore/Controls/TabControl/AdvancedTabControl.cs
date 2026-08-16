@@ -92,7 +92,6 @@
                     {
                         Window owner = Application.Current.MainWindow;
                         SelectTabItem dialog = new SelectTabItem(openTabItems);
-                        dialog.ShowInTaskbar = false;
                         dialog.Owner = owner;
                         if (dialog.ShowDialog() == true)
                         {
