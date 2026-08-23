@@ -3,12 +3,46 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:UI="clr-namespace:System.Windows.Controls">
 
+    <UI:ExpandedImageConverter x:Key="ExpandedImageConverter" />
+
     <!--  Darstellung einer AdvancedTreeNode  -->
     <HierarchicalDataTemplate DataType="{x:Type UI:AdvancedTreeNode}" ItemsSource="{Binding Path=Children}">
 
-        <TextBlock Text="{Binding Path=Text}" />
+        <StackPanel Orientation="Horizontal">
+
+            <Image
+                Width="16"
+                Height="16"
+                Margin="0,0,6,0">
+
+                <Image.Source>
+
+                    <MultiBinding Converter="{StaticResource ExpandedImageConverter}">
+
+                        <Binding Path="Image" />
+
+                        <Binding Path="ExpandedImage" />
+
+                        <Binding Path="IsExpanded" />
+
+                    </MultiBinding>
+
+                </Image.Source>
+
+            </Image>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text}" />
+
+        </StackPanel>
 
     </HierarchicalDataTemplate>
+
+    <Style TargetType="{x:Type TreeViewItem}">
+
+        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+
+        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+
+    </Style>
 
 
     <!--  AdvancedTreeView  -->

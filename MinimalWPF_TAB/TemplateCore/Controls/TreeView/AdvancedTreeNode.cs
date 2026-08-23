@@ -3,12 +3,15 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
+    using System.Windows.Media;
 
     public class AdvancedTreeNode : INotifyPropertyChanged
     {
         private string _text = string.Empty;
         private bool _isExpanded;
         private bool _isSelected;
+        private DrawingImage _image;
+        private DrawingImage _expandedImage;
 
         public AdvancedTreeNode()
         {
@@ -33,6 +36,39 @@
                     return;
 
                 _text = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Symbol für die Node.
+        /// </summary>
+        public DrawingImage Image
+        {
+            get => _image;
+            set
+            {
+                if (ReferenceEquals(_image, value))
+                    return;
+
+                _image = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Symbol für eine geöffnete Node.
+        /// Wenn kein Symbol angegeben ist, wird Image verwendet.
+        /// </summary>
+        public DrawingImage ExpandedImage
+        {
+            get => _expandedImage;
+            set
+            {
+                if (ReferenceEquals(_expandedImage, value))
+                    return;
+
+                _expandedImage = value;
                 OnPropertyChanged();
             }
         }

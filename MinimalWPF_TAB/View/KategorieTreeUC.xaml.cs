@@ -18,6 +18,7 @@ namespace MinimalWPF.View
     using System.Collections.ObjectModel;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Media;
 
     using MinimalWPF.Core;
 
@@ -82,18 +83,28 @@ namespace MinimalWPF.View
 
         private ObservableCollection<AdvancedTreeNode> CreateDemoData()
         {
-            ObservableCollection<AdvancedTreeNode>  nodes = new ObservableCollection<AdvancedTreeNode>
+            DrawingImage _closedFolderImage = CreateSymbol(false); 
+            DrawingImage _openFolderImage = CreateSymbol(true); 
+
+            ObservableCollection<AdvancedTreeNode> nodes = new ObservableCollection<AdvancedTreeNode>
             {
                 new AdvancedTreeNode("Kunden")
                 {
+                    Image = _closedFolderImage,
+                    ExpandedImage = _openFolderImage,
+                    IsExpanded = true,
                     Children =
                     {
                         new AdvancedTreeNode("Müller")
                         {
                             Children =
                             {
-                                new AdvancedTreeNode("Rechnungen"),
+                                new AdvancedTreeNode("Rechnungen")
+                                {
+                                },
                                 new AdvancedTreeNode("Aufträge")
+                                {
+                                }
                             }},
                         new AdvancedTreeNode("Meier"),
                         new AdvancedTreeNode("Schmidt")
@@ -102,6 +113,8 @@ namespace MinimalWPF.View
 
                 new AdvancedTreeNode("Projekte")
                 {
+                    Image = _closedFolderImage,
+                    ExpandedImage = _openFolderImage,
                     Children =
                     {
                         new AdvancedTreeNode("Projekt A"),
@@ -110,9 +123,29 @@ namespace MinimalWPF.View
                 },
 
                 new AdvancedTreeNode("Einstellungen")
+                {
+                    Image = _closedFolderImage,
+                    ExpandedImage = _openFolderImage,
+                }
             };
 
             return nodes;
+        }
+
+        private static DrawingImage CreateSymbol(bool expanded)
+        {
+            var group = new DrawingGroup();
+
+            var geometry = Geometry.Parse(
+                expanded
+                    ? "M 2,4 L 10,4 L 14,8 L 14,14 L 2,14 Z"
+                    : "M 2,3 L 10,3 L 14,7 L 14,14 L 2,14 Z");
+
+            var drawing = new GeometryDrawing(expanded ? Brushes.Gold : Brushes.Silver, new Pen(expanded ? Brushes.DarkGoldenrod : Brushes.Silver, 1), geometry);
+
+            group.Children.Add(drawing);
+
+            return new DrawingImage(group);
         }
     }
 }
