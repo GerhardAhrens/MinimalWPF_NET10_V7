@@ -16,6 +16,8 @@
         GoBack = 4,
         [Description("Artikelliste")]
         Artikelliste = 10,
+        [Description("Kategorien")]
+        Kategorien = 11,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

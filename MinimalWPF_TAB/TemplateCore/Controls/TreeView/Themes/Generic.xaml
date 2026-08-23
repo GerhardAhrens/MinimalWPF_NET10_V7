@@ -1,0 +1,17 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:UI="clr-namespace:System.Windows.Controls">
+
+    <!--  Darstellung einer AdvancedTreeNode  -->
+    <HierarchicalDataTemplate DataType="{x:Type UI:AdvancedTreeNode}" ItemsSource="{Binding Path=Children}">
+
+        <TextBlock Text="{Binding Path=Text}" />
+
+    </HierarchicalDataTemplate>
+
+
+    <!--  AdvancedTreeView  -->
+    <Style BasedOn="{StaticResource {x:Type TreeView}}" TargetType="{x:Type UI:AdvancedTreeView}" />
+
+</ResourceDictionary>

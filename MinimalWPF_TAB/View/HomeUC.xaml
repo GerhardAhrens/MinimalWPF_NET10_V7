@@ -123,6 +123,11 @@
                 CommandParameter="{x:Static core:CommandButtons.Artikelliste}"
                 Content="Artikelliste" />
 
+            <Button
+                Command="{Binding Path=MenuKategorienCommand}"
+                CommandParameter="{x:Static core:CommandButtons.Kategorien}"
+                Content="Kategorien" />
+
             <UI:MenuButton
                 UI:MenuBar.Dock="Right"
                 Command="{Binding Path=SettingsCommand}"

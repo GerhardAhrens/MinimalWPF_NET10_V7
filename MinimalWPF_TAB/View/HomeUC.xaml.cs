@@ -34,6 +34,7 @@ namespace MinimalWPF.View
 
             this.QuitCommand = new CommandBase(commandParam => this.OnQuit(commandParam), () => true);
             this.MenuArtikellisteCommand = new CommandBase(commandParam => this.OnMenuArtikelliste(commandParam), () => true);
+            this.MenuKategorienCommand = new CommandBase(commandParam => this.OnMenuKategorien(commandParam), () => true);
             this.InformationCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.CloseInformationPopupCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
@@ -70,6 +71,7 @@ namespace MinimalWPF.View
         #region Properties
         public CommandBase QuitCommand { get; private set; }
         public CommandBase MenuArtikellisteCommand { get; private set; }
+        public CommandBase MenuKategorienCommand { get; private set; }
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
         public CommandBase CloseInformationPopupCommand { get; private set; }
@@ -115,6 +117,24 @@ namespace MinimalWPF.View
             if (commandParam != null && commandParam is CommandButtons button)
             {
                 if (button == CommandButtons.Artikelliste)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.FromPage = CommandButtons.Home;
+                    args.MenuButton = button;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
+
+        private async void OnMenuKategorien(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.Kategorien)
                 {
                     ChangeViewEventArgs args = new();
                     args.FromPage = CommandButtons.Home;
