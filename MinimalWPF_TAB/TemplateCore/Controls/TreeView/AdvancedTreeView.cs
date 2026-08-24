@@ -1,5 +1,6 @@
 ﻿namespace System.Windows.Controls
 {
+    using System.Collections.Specialized;
     using System.Globalization;
     using System.Windows.Data;
     using System.Windows.Input;
@@ -67,6 +68,70 @@
         #endregion
 
 
+        #region DoubleClickCommand
+
+        public static readonly DependencyProperty DoubleClickCommandProperty =
+            DependencyProperty.Register(nameof(DoubleClickCommand), typeof(ICommand), typeof(AdvancedTreeView), new PropertyMetadata(null));
+
+        public ICommand DoubleClickCommand
+        {
+            get => (ICommand)GetValue(DoubleClickCommandProperty);
+            set => SetValue(DoubleClickCommandProperty, value);
+        }
+
+        #endregion
+
+
+        #region Filter
+
+        public static readonly DependencyProperty FilterProperty =
+            DependencyProperty.Register(nameof(Filter), typeof(string), typeof(AdvancedTreeView),
+                new PropertyMetadata(string.Empty, OnFilterChanged));
+
+        public string Filter
+        {
+            get => (string)GetValue(FilterProperty);
+            set => SetValue(FilterProperty, value);
+        }
+
+
+        private static void OnFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is AdvancedTreeView treeView)
+            {
+                treeView.ApplyFilter();
+            }
+        }
+
+        #endregion
+
+
+        #region FilterPredicate
+
+        public static readonly DependencyProperty FilterPredicateProperty =
+            DependencyProperty.Register(nameof(FilterPredicate), typeof(Func<AdvancedTreeNode, string, bool>),
+                typeof(AdvancedTreeView),
+                new PropertyMetadata(null, OnFilterPredicateChanged));
+
+        public Func<AdvancedTreeNode, string, bool> FilterPredicate
+        {
+            get => (Func<AdvancedTreeNode, string, bool>)
+                GetValue(FilterPredicateProperty);
+
+            set => SetValue(FilterPredicateProperty, value);
+        }
+
+
+        private static void OnFilterPredicateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is AdvancedTreeView treeView)
+            {
+                treeView.ApplyFilter();
+            }
+        }
+
+        #endregion
+
         protected override void OnSelectedItemChanged(RoutedPropertyChangedEventArgs<object> e)
         {
             base.OnSelectedItemChanged(e);
@@ -82,19 +147,55 @@
             }
         }
 
+        protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
+        {
+            base.OnMouseDoubleClick(e);
+
+            if (DoubleClickCommand == null)
+                return;
+
+            var treeViewItem = FindParentTreeViewItem(e.OriginalSource as DependencyObject);
+
+            if (treeViewItem == null)
+                return;
+
+            var node = treeViewItem.DataContext;
+
+            if (node == null)
+                return;
+
+            if (DoubleClickCommand.CanExecute(node))
+            {
+                DoubleClickCommand.Execute(node);
+            }
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            ApplyFilter();
+        }
+
+
+        protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
+        {
+            base.OnItemsChanged(e);
+
+            ApplyFilter();
+        }
 
         private void SelectAndFocusItem(object item)
         {
-            Dispatcher.BeginInvoke(
-                DispatcherPriority.Loaded,
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded,
                 new Action(() =>
                 {
-                    var treeViewItem = FindTreeViewItem(
-                        this,
-                        item);
+                    var treeViewItem = FindTreeViewItem(this, item);
 
                     if (treeViewItem == null)
+                    {
                         return;
+                    }
 
                     treeViewItem.IsSelected = true;
 
@@ -104,6 +205,19 @@
                 }));
         }
 
+        private static TreeViewItem FindParentTreeViewItem(DependencyObject element)
+        {
+            while (element != null)
+            {
+                if (element is TreeViewItem treeViewItem)
+                    return treeViewItem;
+
+                element = VisualTreeHelper.GetParent(element);
+            }
+
+            return null;
+        }
+
 
         private static TreeViewItem FindTreeViewItem(ItemsControl parent, object item)
         {
@@ -111,38 +225,86 @@
             {
                 if (ReferenceEquals(child, item))
                 {
-                    return parent.ItemContainerGenerator
-                        .ContainerFromItem(child) as TreeViewItem;
+                    return parent.ItemContainerGenerator.ContainerFromItem(child) as TreeViewItem;
                 }
 
-                if (parent.ItemContainerGenerator.ContainerFromItem(child) is TreeViewItem treeViewItem)
+                if (parent.ItemContainerGenerator.ContainerFromItem(child) is not TreeViewItem treeViewItem)
                 {
-                    if (ReferenceEquals(treeViewItem.DataContext, item))
-                    {
-                        return treeViewItem;
-                    }
+                    continue;
+                }
 
-                    if (treeViewItem.HasItems)
-                    {
-                        if (!treeViewItem.IsExpanded)
-                        {
-                            treeViewItem.IsExpanded = true;
-                        }
+                // Prüfen, ob sich das gesuchte Element
+                // tatsächlich unterhalb dieser Node befindet.
+                if (!ContainsItem(treeViewItem, item))
+                {
+                    continue;
+                }
 
-                        var result = FindTreeViewItem(treeViewItem, item);
+                // Erst jetzt wissen wir, dass diese Node
+                // ein Elternknoten des gesuchten Elements ist.
+                if (!treeViewItem.IsExpanded)
+                {
+                    treeViewItem.IsExpanded = true;
+                }
 
-                        if (result != null)
-                            return result;
-                    }
+                var result = FindTreeViewItem(treeViewItem, item);
+
+                if (result != null)
+                {
+                    return result;
                 }
             }
 
             return null;
         }
+
+        private static bool ContainsItem(TreeViewItem parent, object item)
+        {
+            foreach (var child in parent.Items)
+            {
+                if (ReferenceEquals(child, item))
+                {
+                    return true;
+                }
+
+                if (child is TreeViewItem node)
+                {
+                    if (ContainsItem(node, item))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        #region Filter
+
+        private void ApplyFilter()
+        {
+            var predicate = FilterPredicate ?? DefaultFilterPredicate;
+
+            foreach (var item in Items)
+            {
+                if (item is AdvancedTreeNode node)
+                {
+                    node.ApplyFilter(Filter ?? string.Empty, predicate);
+                }
+            }
+        }
+
+
+        private static bool DefaultFilterPredicate(AdvancedTreeNode node, string filter)
+        {
+            return node.Text.Contains(filter, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        #endregion
     }
 
 
-    public class ExpandedImageConverter : IMultiValueConverter
+        public class ExpandedImageConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

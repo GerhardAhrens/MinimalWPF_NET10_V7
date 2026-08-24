@@ -7,20 +7,45 @@
 
     public class AdvancedTreeNode : INotifyPropertyChanged
     {
+        private Guid _id = Guid.Empty;
         private string _text = string.Empty;
         private bool _isExpanded;
         private bool _isSelected;
         private DrawingImage _openImage;
         private DrawingImage _expandedImage;
+        private readonly ObservableCollection<AdvancedTreeNode> _filteredChildren;
 
         public AdvancedTreeNode()
         {
-            Children = new ObservableCollection<AdvancedTreeNode>();
+            this.Children = new ObservableCollection<AdvancedTreeNode>();
+
+            this._filteredChildren = new ObservableCollection<AdvancedTreeNode>();
+
+            this.FilteredChildren = new ReadOnlyObservableCollection<AdvancedTreeNode>(this._filteredChildren);
         }
 
-        public AdvancedTreeNode(string text) : this()
+        public AdvancedTreeNode(Guid id, string text) : this()
         {
-            Text = text;
+            this.Id = id;
+            this.Text = text;
+        }
+
+        /// <summary>
+        /// Id der TreeNode.
+        /// </summary>
+        public Guid Id
+        {
+            get => this._id;
+            set
+            {
+                if (this._id == value)
+                {
+                    return;
+                }
+
+                this._id = value;
+                this.OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -28,14 +53,16 @@
         /// </summary>
         public string Text
         {
-            get => _text;
+            get => this._text;
             set
             {
                 if (_text == value)
+                {
                     return;
+                }
 
-                _text = value;
-                OnPropertyChanged();
+                this._text = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -44,16 +71,16 @@
         /// </summary>
         public DrawingImage OpenImage
         {
-            get => _openImage;
+            get => this._openImage;
             set
             {
-                if (ReferenceEquals(_openImage, value))
+                if (ReferenceEquals(this._openImage, value))
                 {
                     return;
                 }
 
-                _openImage = value;
-                OnPropertyChanged();
+                this._openImage = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -63,16 +90,16 @@
         /// </summary>
         public DrawingImage ExpandedImage
         {
-            get => _expandedImage;
+            get => this._expandedImage;
             set
             {
-                if (ReferenceEquals(_expandedImage, value))
+                if (ReferenceEquals(this._expandedImage, value))
                 {
                     return;
                 }
 
-                _expandedImage = value;
-                OnPropertyChanged();
+                this._expandedImage = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -81,14 +108,16 @@
         /// </summary>
         public bool IsExpanded
         {
-            get => _isExpanded;
+            get => this._isExpanded;
             set
             {
-                if (_isExpanded == value)
+                if (this._isExpanded == value)
+                {
                     return;
+                }
 
-                _isExpanded = value;
-                OnPropertyChanged();
+                this._isExpanded = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -97,13 +126,15 @@
         /// </summary>
         public bool IsSelected
         {
-            get => _isSelected;
+            get => this._isSelected;
             set
             {
-                if (_isSelected == value)
+                if (this._isSelected == value)
+                {
                     return;
+                }
 
-                _isSelected = value;
+                this._isSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -116,16 +147,62 @@
             get;
         }
 
+        public ReadOnlyObservableCollection<AdvancedTreeNode> FilteredChildren
+        {
+            get;
+        }
+
+        internal bool ApplyFilter(string filter, Func<AdvancedTreeNode, string, bool> predicate)
+        {
+            _filteredChildren.Clear();
+
+
+            // Kein Filter:
+            // alle Original-Kinder anzeigen.
+            if (string.IsNullOrWhiteSpace(filter))
+            {
+                foreach (var child in Children)
+                {
+                    child.ApplyFilter(filter, predicate);
+
+                    _filteredChildren.Add(child);
+                }
+
+                return true;
+            }
+
+
+            // Prüfen, ob diese Node selbst passt.
+            bool nodeMatches = predicate(this, filter);
+
+
+            // Kinder prüfen.
+            foreach (var child in Children)
+            {
+                bool childMatches = child.ApplyFilter(filter, predicate);
+
+                if (childMatches)
+                {
+                    _filteredChildren.Add(child);
+                }
+            }
+
+
+            // Node bleibt sichtbar, wenn sie selbst
+            // oder mindestens ein Kind passt.
+            return nodeMatches || _filteredChildren.Count > 0;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public override string ToString()
         {
-            return Text;
+            return this.Text;
         }
     }
 }

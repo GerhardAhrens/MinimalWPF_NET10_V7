@@ -10,7 +10,7 @@
     <UI:ExpandedImageConverter x:Key="ExpandedImageConverter" />
 
     <!--  Darstellung einer AdvancedTreeNode  -->
-    <HierarchicalDataTemplate DataType="{x:Type UI:AdvancedTreeNode}" ItemsSource="{Binding Path=Children}">
+    <HierarchicalDataTemplate DataType="{x:Type UI:AdvancedTreeNode}" ItemsSource="{Binding Path=FilteredChildren}">
 
         <StackPanel Orientation="Horizontal">
 
@@ -34,7 +34,8 @@
                 </Image.Source>
 
             </Image>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text}" />
+            
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text}" Padding="5,3,5,3" />
 
         </StackPanel>
 

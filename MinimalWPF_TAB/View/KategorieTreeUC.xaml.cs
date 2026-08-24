@@ -38,6 +38,7 @@ namespace MinimalWPF.View
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
             this.NodeSelectedCommand = new CommandBase(commandParam => this.OnNodeSelected(commandParam), () => true);
+            this.NodeDoubleClickedCommand = new CommandBase(commandParam => this.OnNodeDoubleClicked(commandParam), () => true);
         }
 
         private void OnNodeSelected(object commandParam)
@@ -45,9 +46,16 @@ namespace MinimalWPF.View
             AdvancedTreeNode node = commandParam as AdvancedTreeNode;
         }
 
+        private void OnNodeDoubleClicked(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+            this.Message.Hinweis("Auswahl Node", $"{node.Text}");
+        }
+
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
         public CommandBase NodeSelectedCommand { get; private set; }
+        public CommandBase NodeDoubleClickedCommand { get; private set; }
 
         public ObservableCollection<AdvancedTreeNode> Nodes { get; private set; }
 
@@ -69,8 +77,6 @@ namespace MinimalWPF.View
             this.Nodes = this.CreateDemoData();
 
             this.SelectedNode = Nodes[1];
-            //this.SelectedNode.IsSelected = true;
-            //this.SelectedNode.IsExpanded = true;
 
             this.DataContext = this;
 
@@ -108,41 +114,41 @@ namespace MinimalWPF.View
 
             ObservableCollection<AdvancedTreeNode> nodes = new ObservableCollection<AdvancedTreeNode>
             {
-                new AdvancedTreeNode("Kunden")
+                new AdvancedTreeNode(Guid.CreateVersion7(), "Kunden")
                 {
                     OpenImage = closedImage,
                     ExpandedImage = openImage,
                     IsExpanded = false,
                     Children =
                     {
-                        new AdvancedTreeNode("Müller")
+                        new AdvancedTreeNode(Guid.CreateVersion7(),"Müller")
                         {
                             Children =
                             {
-                                new AdvancedTreeNode("Rechnungen")
+                                new AdvancedTreeNode(Guid.CreateVersion7(),"Rechnungen")
                                 {
                                 },
-                                new AdvancedTreeNode("Aufträge")
+                                new AdvancedTreeNode(Guid.CreateVersion7(),"Aufträge")
                                 {
                                 }
                             }},
-                        new AdvancedTreeNode("Meier"),
-                        new AdvancedTreeNode("Schmidt")
+                        new AdvancedTreeNode(Guid.CreateVersion7(),"Meier"),
+                        new AdvancedTreeNode(Guid.CreateVersion7(),"Schmidt")
                     }
                 },
 
-                new AdvancedTreeNode("Projekte")
+                new AdvancedTreeNode(Guid.CreateVersion7(),"Projekte")
                 {
                     OpenImage = closedImage,
                     ExpandedImage = openImage,
                     Children =
                     {
-                        new AdvancedTreeNode("Projekt A"),
-                        new AdvancedTreeNode("Projekt B")
+                        new AdvancedTreeNode(Guid.CreateVersion7(),"Projekt A"),
+                        new AdvancedTreeNode(Guid.CreateVersion7(),"Projekt B")
                     }
                 },
 
-                new AdvancedTreeNode("Einstellungen")
+                new AdvancedTreeNode(Guid.CreateVersion7(),"Einstellungen")
                 {
                     OpenImage = closedImage,
                     ExpandedImage = openImage,
