@@ -16,6 +16,7 @@
 namespace MinimalWPF.View
 {
     using System.Collections.ObjectModel;
+    using System.Data;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -36,11 +37,26 @@ namespace MinimalWPF.View
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
+            this.NodeSelectedCommand = new CommandBase(commandParam => this.OnNodeSelected(commandParam), () => true);
+        }
+
+        private void OnNodeSelected(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
         }
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase NodeSelectedCommand { get; private set; }
+
         public ObservableCollection<AdvancedTreeNode> Nodes { get; private set; }
+
+        public AdvancedTreeNode SelectedNode
+        {
+            get => base.GetValue<AdvancedTreeNode>();
+            set => base.SetValue(value);
+        }
+
 
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
@@ -51,6 +67,10 @@ namespace MinimalWPF.View
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             this.Nodes = this.CreateDemoData();
+
+            this.SelectedNode = Nodes[1];
+            //this.SelectedNode.IsSelected = true;
+            //this.SelectedNode.IsExpanded = true;
 
             this.DataContext = this;
 
@@ -92,7 +112,7 @@ namespace MinimalWPF.View
                 {
                     OpenImage = closedImage,
                     ExpandedImage = openImage,
-                    IsExpanded = true,
+                    IsExpanded = false,
                     Children =
                     {
                         new AdvancedTreeNode("Müller")

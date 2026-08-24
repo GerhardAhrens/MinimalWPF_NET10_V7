@@ -52,6 +52,10 @@
         </GroupBox>
 
         <!--#endregion Hauptmenübar-->
-        <UI:AdvancedTreeView Grid.Row="1" ItemsSource="{Binding Path=Nodes}" />
+        <UI:AdvancedTreeView
+            Grid.Row="1"
+            ItemsSource="{Binding Path=Nodes}"
+            SelectedItem="{Binding Path=SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectionChangedCommand="{Binding Path=NodeSelectedCommand}" />
     </Grid>
 </base:UserControlBase>
