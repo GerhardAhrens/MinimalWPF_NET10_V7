@@ -17,19 +17,19 @@
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values.Length < 3)
+            {
                 return null;
+            }
 
-            var image = values[0] as DrawingImage;
+            var openImage = values[0] as DrawingImage;
             var expandedImage = values[1] as DrawingImage;
 
-            if (values[2] is bool isExpanded &&
-                isExpanded &&
-                expandedImage != null)
+            if (values[2] is bool isExpanded && isExpanded == true && expandedImage != null)
             {
                 return expandedImage;
             }
 
-            return image;
+            return openImage;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

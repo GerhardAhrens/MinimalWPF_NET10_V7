@@ -10,7 +10,7 @@
         private string _text = string.Empty;
         private bool _isExpanded;
         private bool _isSelected;
-        private DrawingImage _image;
+        private DrawingImage _openImage;
         private DrawingImage _expandedImage;
 
         public AdvancedTreeNode()
@@ -18,8 +18,7 @@
             Children = new ObservableCollection<AdvancedTreeNode>();
         }
 
-        public AdvancedTreeNode(string text)
-            : this()
+        public AdvancedTreeNode(string text) : this()
         {
             Text = text;
         }
@@ -43,15 +42,17 @@
         /// <summary>
         /// Symbol für die Node.
         /// </summary>
-        public DrawingImage Image
+        public DrawingImage OpenImage
         {
-            get => _image;
+            get => _openImage;
             set
             {
-                if (ReferenceEquals(_image, value))
+                if (ReferenceEquals(_openImage, value))
+                {
                     return;
+                }
 
-                _image = value;
+                _openImage = value;
                 OnPropertyChanged();
             }
         }
@@ -66,7 +67,9 @@
             set
             {
                 if (ReferenceEquals(_expandedImage, value))
+                {
                     return;
+                }
 
                 _expandedImage = value;
                 OnPropertyChanged();

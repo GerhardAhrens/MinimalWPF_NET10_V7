@@ -3,6 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:UI="clr-namespace:System.Windows.Controls">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TreeViewSymbols.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <UI:ExpandedImageConverter x:Key="ExpandedImageConverter" />
 
     <!--  Darstellung einer AdvancedTreeNode  -->
@@ -19,7 +23,7 @@
 
                     <MultiBinding Converter="{StaticResource ExpandedImageConverter}">
 
-                        <Binding Path="Image" />
+                        <Binding Path="OpenImage" />
 
                         <Binding Path="ExpandedImage" />
 
