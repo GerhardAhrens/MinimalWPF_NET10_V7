@@ -39,10 +39,14 @@
         private static void OnSelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not AdvancedTreeView treeView)
+            {
                 return;
+            }
 
             if (e.NewValue == null)
+            {
                 return;
+            }
 
             treeView.SelectAndFocusItem(e.NewValue);
         }
@@ -132,6 +136,13 @@
 
         #endregion
 
+
+        public bool IsFilterActive => false;
+        public int VisibleRowCount => 0;
+
+        public int TotalRowCount => 0;
+
+
         protected override void OnSelectedItemChanged(RoutedPropertyChangedEventArgs<object> e)
         {
             base.OnSelectedItemChanged(e);
@@ -174,7 +185,7 @@
         {
             base.OnInitialized(e);
 
-            ApplyFilter();
+            this.ApplyFilter();
         }
 
 
@@ -182,7 +193,7 @@
         {
             base.OnItemsChanged(e);
 
-            ApplyFilter();
+            this.ApplyFilter();
         }
 
         private void SelectAndFocusItem(object item)
@@ -210,7 +221,9 @@
             while (element != null)
             {
                 if (element is TreeViewItem treeViewItem)
+                {
                     return treeViewItem;
+                }
 
                 element = VisualTreeHelper.GetParent(element);
             }
@@ -283,9 +296,9 @@
 
         private void ApplyFilter()
         {
-            var predicate = FilterPredicate ?? DefaultFilterPredicate;
+            Func<AdvancedTreeNode,string,bool> predicate = FilterPredicate ?? DefaultFilterPredicate;
 
-            foreach (var item in Items)
+            foreach (var item in this.Items)
             {
                 if (item is AdvancedTreeNode node)
                 {

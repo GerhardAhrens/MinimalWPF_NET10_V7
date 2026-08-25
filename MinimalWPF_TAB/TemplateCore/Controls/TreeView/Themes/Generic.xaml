@@ -8,6 +8,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <UI:ExpandedImageConverter x:Key="ExpandedImageConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <!--  Darstellung einer AdvancedTreeNode  -->
     <HierarchicalDataTemplate DataType="{x:Type UI:AdvancedTreeNode}" ItemsSource="{Binding Path=FilteredChildren}">
@@ -20,35 +21,29 @@
                 Margin="0,0,6,0">
 
                 <Image.Source>
-
                     <MultiBinding Converter="{StaticResource ExpandedImageConverter}">
-
                         <Binding Path="OpenImage" />
-
                         <Binding Path="ExpandedImage" />
-
                         <Binding Path="IsExpanded" />
-
                     </MultiBinding>
-
                 </Image.Source>
 
             </Image>
-            
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text}" Padding="5,3,5,3" />
+
+            <TextBlock
+                Padding="5,3,5,3"
+                VerticalAlignment="Center"
+                Text="{Binding Path=Text}" />
 
         </StackPanel>
 
     </HierarchicalDataTemplate>
 
     <Style TargetType="{x:Type TreeViewItem}">
-
         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-
         <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-
+        <Setter Property="Visibility" Value="{Binding IsFilterVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Style>
-
 
     <!--  AdvancedTreeView  -->
     <Style BasedOn="{StaticResource {x:Type TreeView}}" TargetType="{x:Type UI:AdvancedTreeView}" />

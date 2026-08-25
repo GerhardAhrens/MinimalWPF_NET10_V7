@@ -26,8 +26,7 @@
                 if (_listView.ItemsSource == null)
                     return 0;
 
-                ICollectionView view =
-                    CollectionViewSource.GetDefaultView(_listView.ItemsSource);
+                ICollectionView view = CollectionViewSource.GetDefaultView(_listView.ItemsSource);
 
                 if (view is BindingListCollectionView blcv &&
                     blcv.SourceCollection is DataView dv)
@@ -46,8 +45,7 @@
                 if (_listView.ItemsSource == null)
                     return 0;
 
-                ICollectionView view =
-                    CollectionViewSource.GetDefaultView(_listView.ItemsSource);
+                ICollectionView view = CollectionViewSource.GetDefaultView(_listView.ItemsSource);
 
                 if (view is BindingListCollectionView blcv &&
                     blcv.SourceCollection is DataView dv)

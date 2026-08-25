@@ -14,6 +14,7 @@
         private DrawingImage _openImage;
         private DrawingImage _expandedImage;
         private readonly ObservableCollection<AdvancedTreeNode> _filteredChildren;
+        private bool _isFilterVisible = true;
 
         public AdvancedTreeNode()
         {
@@ -135,7 +136,22 @@
                 }
 
                 this._isSelected = value;
-                OnPropertyChanged();
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool IsFilterVisible
+        {
+            get => this._isFilterVisible;
+            private set
+            {
+                if (this._isFilterVisible == value)
+                {
+                    return;
+                }
+
+                this._isFilterVisible = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -158,25 +174,57 @@
 
 
             // Kein Filter:
-            // alle Original-Kinder anzeigen.
+            // komplette Hierarchie anzeigen.
             if (string.IsNullOrWhiteSpace(filter))
             {
+                IsFilterVisible = true;
+
                 foreach (var child in Children)
                 {
-                    child.ApplyFilter(filter, predicate);
+                    child.ApplyFilter(string.Empty, predicate);
 
                     _filteredChildren.Add(child);
+                }
+
+                return false;
+            }
+
+
+            // Prüfen, ob diese Node selbst dem Filter entspricht.
+            bool nodeMatches = predicate(this, filter);
+
+
+            // ---------------------------------------------------------
+            // Die Node selbst ist ein Treffer.
+            //
+            // In diesem Fall sollen alle Kinder sichtbar bleiben.
+            // ---------------------------------------------------------
+            if (nodeMatches)
+            {
+                IsFilterVisible = true;
+
+                foreach (var child in Children)
+                {
+                    child.ApplyFilter(string.Empty, predicate);
+
+                    _filteredChildren.Add(child);
+                }
+
+                // Die Treffer-Node wird geöffnet, damit ihre
+                // untergeordneten Nodes unmittelbar sichtbar sind.
+                if (Children.Count > 0)
+                {
+                    IsExpanded = true;
                 }
 
                 return true;
             }
 
 
-            // Prüfen, ob diese Node selbst passt.
-            bool nodeMatches = predicate(this, filter);
-
-
-            // Kinder prüfen.
+            // ---------------------------------------------------------
+            // Die Node selbst ist kein Treffer.
+            // Deshalb nur die Kinder untersuchen.
+            // ---------------------------------------------------------
             foreach (var child in Children)
             {
                 bool childMatches = child.ApplyFilter(filter, predicate);
@@ -188,10 +236,23 @@
             }
 
 
-            // Node bleibt sichtbar, wenn sie selbst
-            // oder mindestens ein Kind passt.
-            return nodeMatches || _filteredChildren.Count > 0;
+            // Die Node bleibt sichtbar, wenn sich irgendwo
+            // darunter ein Treffer befindet.
+            bool visible = _filteredChildren.Count > 0;
+
+            IsFilterVisible = visible;
+
+
+            // Elternknoten eines Treffers automatisch öffnen.
+            if (visible)
+            {
+                IsExpanded = true;
+            }
+
+
+            return visible;
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

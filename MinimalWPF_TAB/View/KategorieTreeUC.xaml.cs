@@ -37,6 +37,7 @@ namespace MinimalWPF.View
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
+            this.SelectionChangedCommand = new CommandBase(commandParam => this.OnTabSelectionChanged(commandParam), () => true);
             this.NodeSelectedCommand = new CommandBase(commandParam => this.OnNodeSelected(commandParam), () => true);
             this.NodeDoubleClickedCommand = new CommandBase(commandParam => this.OnNodeDoubleClicked(commandParam), () => true);
         }
@@ -54,6 +55,7 @@ namespace MinimalWPF.View
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase SelectionChangedCommand { get; private set; }
         public CommandBase NodeSelectedCommand { get; private set; }
         public CommandBase NodeDoubleClickedCommand { get; private set; }
 
@@ -62,6 +64,12 @@ namespace MinimalWPF.View
         public AdvancedTreeNode SelectedNode
         {
             get => base.GetValue<AdvancedTreeNode>();
+            set => base.SetValue(value);
+        }
+
+        public string TreeViewFilter
+        {
+            get => base.GetValue<string>();
             set => base.SetValue(value);
         }
 
@@ -76,7 +84,7 @@ namespace MinimalWPF.View
         {
             this.Nodes = this.CreateDemoData();
 
-            this.SelectedNode = Nodes[1];
+            //this.SelectedNode = Nodes[1];
 
             this.DataContext = this;
 
@@ -104,8 +112,17 @@ namespace MinimalWPF.View
                 }
             }
         }
-        #endregion Command Events
 
+        private void OnTabSelectionChanged(object commandParam)
+        {
+            if (commandParam is SelectionChangedEventArgs tabControl)
+            {
+                AdvancedTabControl tab = (AdvancedTabControl)tabControl.Source;
+                AdvancedTabItem selectedTab = tab.SelectedItem as AdvancedTabItem;
+            }
+        }
+
+        #endregion Command Events
 
         private ObservableCollection<AdvancedTreeNode> CreateDemoData()
         {

@@ -3,7 +3,7 @@
     using System.Windows.Media;
     using System.Windows.Shapes;
 
-    public class StatusRow : ContentControl
+    public class StatusListView : ContentControl
     {
         private readonly Border _border;
         private readonly DockPanel _panel;
@@ -11,19 +11,19 @@
         private readonly TextBlock _txtRows;
         private readonly Ellipse _statusIndicator;
 
-        public StatusRow()
+        public StatusListView()
         {
-            _txtFilter = new TextBlock
+            this._txtFilter = new TextBlock
             {
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            _txtRows = new TextBlock
+            this._txtRows = new TextBlock
             {
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            _statusIndicator = new Ellipse
+            this._statusIndicator = new Ellipse
             {
                 Width = 10,
                 Height = 10,
@@ -35,27 +35,27 @@
                 Fill = Brushes.LimeGreen
             };
 
-            DockPanel.SetDock(_txtFilter, Dock.Left);
-            DockPanel.SetDock(_txtRows, Dock.Right);
+            DockPanel.SetDock(this._txtFilter, Dock.Left);
+            DockPanel.SetDock(this._txtRows, Dock.Right);
 
-            _panel = new DockPanel
+            this._panel = new DockPanel
             {
                 LastChildFill = false,
                 Margin = new Thickness(4, 2, 4, 2)
             };
 
-            _panel.Children.Add(_statusIndicator);
-            _panel.Children.Add(_txtFilter);
-            _panel.Children.Add(_txtRows);
+            this._panel.Children.Add(this._statusIndicator);
+            this._panel.Children.Add(this._txtFilter);
+            this._panel.Children.Add(this._txtRows);
 
-            _border = new Border
+            this._border = new Border
             {
                 BorderBrush = Brushes.LightGray,
                 BorderThickness = new Thickness(1, 0, 1, 1),
-                Child = _panel
+                Child = this._panel
             };
 
-            Content = _border;
+            Content = this._border;
         }
 
         #region ListView
@@ -64,7 +64,7 @@
             DependencyProperty.Register(
                 nameof(ListView),
                 typeof(AdvancedListView),
-                typeof(StatusRow),
+                typeof(StatusListView),
                 new PropertyMetadata(null, OnListViewChanged));
 
         public AdvancedListView ListView
@@ -73,17 +73,19 @@
             set => SetValue(ListViewProperty, value);
         }
 
-        private static void OnListViewChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnListViewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            StatusRow row = (StatusRow)d;
+            StatusListView row = (StatusListView)d;
 
             if (e.OldValue is AdvancedListView oldList)
+            {
                 oldList.StatusChanged -= row.OnStatusChanged;
+            }
 
             if (e.NewValue is AdvancedListView newList)
+            {
                 newList.StatusChanged += row.OnStatusChanged;
+            }
 
             row.Refresh();
         }
@@ -92,34 +94,34 @@
 
         private void OnStatusChanged(object sender, EventArgs e)
         {
-            Refresh();
+            this.Refresh();
         }
 
         public void Refresh()
         {
-            if (ListView == null)
+            if (this.ListView == null)
             {
-                _txtFilter.Text = "";
-                _txtRows.Text = "";
+                this._txtFilter.Text = "";
+                this._txtRows.Text = "";
                 return;
             }
 
-            if (ListView.IsFilterActive)
+            if (this.ListView.IsFilterActive)
             {
-                _statusIndicator.Fill = Brushes.Goldenrod;
-                _statusIndicator.Fill = ListView.IsFilterActive ? CreateIndicatorBrush(Colors.Goldenrod) : CreateIndicatorBrush(Colors.LimeGreen);
-                _txtFilter.Text = "Filter aktiv";
-                _txtFilter.FontWeight = FontWeights.Bold;
+                this._statusIndicator.Fill = Brushes.Goldenrod;
+                this._statusIndicator.Fill = this.ListView.IsFilterActive ? CreateIndicatorBrush(Colors.Goldenrod) : CreateIndicatorBrush(Colors.LimeGreen);
+                this._txtFilter.Text = "Filter aktiv";
+                this._txtFilter.FontWeight = FontWeights.Bold;
 
-                _txtRows.Text = $"{ListView.VisibleRowCount:N0} / {ListView.TotalRowCount:N0} Datensätze";
+                this._txtRows.Text = $"{this.ListView.VisibleRowCount:N0} / {this.ListView.TotalRowCount:N0} Datensätze";
             }
             else
             {
-                _statusIndicator.Fill = Brushes.LimeGreen;
-                _statusIndicator.Fill = ListView.IsFilterActive ? CreateIndicatorBrush(Colors.Goldenrod) : CreateIndicatorBrush(Colors.LimeGreen);
-                _txtFilter.Text = "Kein Filter";
-                _txtFilter.FontWeight = FontWeights.Normal;
-                _txtRows.Text = $"{ListView.TotalRowCount:N0} Datensätze";
+                this._statusIndicator.Fill = Brushes.LimeGreen;
+                this._statusIndicator.Fill = this.ListView.IsFilterActive ? CreateIndicatorBrush(Colors.Goldenrod) : CreateIndicatorBrush(Colors.LimeGreen);
+                this._txtFilter.Text = "Kein Filter";
+                this._txtFilter.FontWeight = FontWeights.Normal;
+                this._txtRows.Text = $"{this.ListView.TotalRowCount:N0} Datensätze";
             }
         }
 
@@ -132,11 +134,11 @@
                 RadiusX = 0.75,
                 RadiusY = 0.75,
                 GradientStops =
-        {
-            new GradientStop(Colors.White, 0.0),
-            new GradientStop(color, 0.35),
-            new GradientStop(color, 1.0)
-        }
+                {
+                    new GradientStop(Colors.White, 0.0),
+                    new GradientStop(color, 0.35),
+                    new GradientStop(color, 1.0)
+                }
             };
         }
     }
