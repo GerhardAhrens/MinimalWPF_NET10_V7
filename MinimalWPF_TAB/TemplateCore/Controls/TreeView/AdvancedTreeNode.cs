@@ -1,6 +1,7 @@
 ﻿namespace System.Windows.Controls
 {
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Windows.Media;
@@ -15,6 +16,7 @@
         private DrawingImage _expandedImage;
         private readonly ObservableCollection<AdvancedTreeNode> _filteredChildren;
         private bool _isFilterVisible = true;
+        private ObservableCollection<AdvancedTreeMenuItem> _contextMenuItems;
 
         public AdvancedTreeNode()
         {
@@ -23,6 +25,8 @@
             this._filteredChildren = new ObservableCollection<AdvancedTreeNode>();
 
             this.FilteredChildren = new ReadOnlyObservableCollection<AdvancedTreeNode>(this._filteredChildren);
+
+            this.ContextMenuItems.CollectionChanged += ContextMenuItems_CollectionChanged;
         }
 
         public AdvancedTreeNode(Guid id, string text) : this()
@@ -166,6 +170,21 @@
         public ReadOnlyObservableCollection<AdvancedTreeNode> FilteredChildren
         {
             get;
+        }
+
+        public ObservableCollection<AdvancedTreeMenuItem> ContextMenuItems
+        {
+            get
+            {
+                return _contextMenuItems ??= new ObservableCollection<AdvancedTreeMenuItem>();
+            }
+        }
+
+        public bool HasContextMenu => ContextMenuItems.Count > 0;
+
+        private void ContextMenuItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.OnPropertyChanged(nameof(HasContextMenu));
         }
 
         internal bool ApplyFilter(string filter, Func<AdvancedTreeNode, string, bool> predicate)

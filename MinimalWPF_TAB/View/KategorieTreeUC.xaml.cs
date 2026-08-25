@@ -40,6 +40,13 @@ namespace MinimalWPF.View
             this.SelectionChangedCommand = new CommandBase(commandParam => this.OnTabSelectionChanged(commandParam), () => true);
             this.NodeSelectedCommand = new CommandBase(commandParam => this.OnNodeSelected(commandParam), () => true);
             this.NodeDoubleClickedCommand = new CommandBase(commandParam => this.OnNodeDoubleClicked(commandParam), () => true);
+            this.NodeContextMenueCommand = new CommandBase(commandParam => this.OnNodeContextMenue(commandParam), () => true);
+        }
+
+        private void OnNodeContextMenue(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+            this.Message.Hinweis("Kontextmenü Node", $"{node.Text}");
         }
 
         private void OnNodeSelected(object commandParam)
@@ -58,6 +65,7 @@ namespace MinimalWPF.View
         public CommandBase SelectionChangedCommand { get; private set; }
         public CommandBase NodeSelectedCommand { get; private set; }
         public CommandBase NodeDoubleClickedCommand { get; private set; }
+        public CommandBase NodeContextMenueCommand { get; private set; }
 
         public ObservableCollection<AdvancedTreeNode> Nodes { get; private set; }
 
@@ -149,8 +157,24 @@ namespace MinimalWPF.View
                                 {
                                 }
                             }},
-                        new AdvancedTreeNode(Guid.CreateVersion7(),"Meier"),
+                        new AdvancedTreeNode(Guid.CreateVersion7(),"Meier")
+                        {
+                            ContextMenuItems =
+                            {
+                                new AdvancedTreeMenuItem("Öffnen",this.NodeContextMenueCommand),
+                                new AdvancedTreeMenuItem("Bearbeiten",this.NodeContextMenueCommand),
+                                new AdvancedTreeMenuItem("Löschen",this.NodeContextMenueCommand)
+                            }
+                        },
                         new AdvancedTreeNode(Guid.CreateVersion7(),"Schmidt")
+                        {
+                            ContextMenuItems =
+                            {
+                                new AdvancedTreeMenuItem("Öffnen",this.NodeContextMenueCommand),
+                                new AdvancedTreeMenuItem("Bearbeiten",this.NodeContextMenueCommand),
+                                new AdvancedTreeMenuItem("Löschen",this.NodeContextMenueCommand)
+                            }
+                        }
                     }
                 },
 
