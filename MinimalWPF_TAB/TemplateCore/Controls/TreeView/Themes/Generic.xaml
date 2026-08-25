@@ -8,7 +8,6 @@
     </ResourceDictionary.MergedDictionaries>
 
     <UI:ExpandedImageConverter x:Key="ExpandedImageConverter" />
-    <UI:ContextMenuVisibilityConverter x:Key="ContextMenuVisibilityConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <!--  Darstellung einer AdvancedTreeNode  -->
