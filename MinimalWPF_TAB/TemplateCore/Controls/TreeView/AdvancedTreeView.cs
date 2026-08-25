@@ -9,6 +9,8 @@
 
     public class AdvancedTreeView : TreeView
     {
+        private bool _isApplyingFilter;
+
         static AdvancedTreeView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
@@ -192,10 +194,23 @@
         {
             base.OnSelectedItemChanged(e);
 
+
+            // Während des Filteraufbaus kann WPF eine momentan
+            // nicht mehr sichtbare Auswahl entfernen.
+            //
+            // Diese automatische Zwischenänderung darf unsere
+            // eigentliche SelectedItem-Auswahl nicht überschreiben.
+            if (_isApplyingFilter)
+            {
+                return;
+            }
+
+
             if (!ReferenceEquals(SelectedItem, e.NewValue))
             {
                 SelectedItem = e.NewValue;
             }
+
 
             if (e.NewValue != null && SelectionChangedCommand != null && SelectionChangedCommand.CanExecute(e.NewValue))
             {
@@ -246,21 +261,31 @@
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded,
                 new Action(() =>
                 {
-                    var treeViewItem = FindTreeViewItem(this, item);
+                    var node = item as AdvancedTreeNode;
 
-                    if (treeViewItem == null)
+                    if (node == null)
+                        return;
+
+
+                    // Eine durch den Filter ausgeblendete Node
+                    // darf nicht automatisch sichtbar gemacht werden.
+                    if (IsFiltered && !node.IsFilterVisible)
                     {
                         return;
                     }
 
+
+                    var treeViewItem = FindTreeViewItem(this, item);
+
+                    if (treeViewItem == null)
+                        return;
+
+
                     treeViewItem.IsSelected = true;
-
                     treeViewItem.BringIntoView();
-
-                    treeViewItem.Focus();
+                    //treeViewItem.Focus();
                 }));
         }
-
         private static TreeViewItem FindParentTreeViewItem(DependencyObject element)
         {
             while (element != null)
@@ -341,36 +366,66 @@
 
         private void ApplyFilter()
         {
-            var filter = Filter ?? string.Empty;
-
-            var predicate = FilterPredicate ?? DefaultFilterPredicate;
-
-
-            this.IsFiltered = !string.IsNullOrWhiteSpace(filter);
+            // Die aktuell ausgewählte Node merken.
+            AdvancedTreeNode selectedNode = SelectedItem as AdvancedTreeNode;
 
 
-            int totalCount = 0;
-            int filteredCount = 0;
+            this._isApplyingFilter = true;
 
-
-            foreach (var item in Items)
+            try
             {
-                if (item is AdvancedTreeNode node)
+                string filter = this.Filter ?? string.Empty;
+
+                Func<AdvancedTreeNode,string,bool> predicate = this.FilterPredicate ?? DefaultFilterPredicate;
+
+                this.IsFiltered = !string.IsNullOrWhiteSpace(filter);
+
+
+                int totalCount = 0;
+                int filteredCount = 0;
+
+
+                foreach (var item in Items)
                 {
-                    totalCount += CountNodes(node);
-
-                    bool visible = node.ApplyFilter(filter, predicate);
-
-                    if (visible)
+                    if (item is AdvancedTreeNode node)
                     {
-                        filteredCount += CountFilteredNodes(node);
+                        totalCount += CountNodes(node);
+
+
+                        bool visible = node.ApplyFilter(filter, predicate);
+
+
+                        if (visible)
+                        {
+                            filteredCount += CountFilteredNodes(node);
+                        }
                     }
                 }
+
+
+                this.TotalItemCount = totalCount;
+                this.FilteredItemCount = filteredCount;
+            }
+            finally
+            {
+                this._isApplyingFilter = false;
             }
 
 
-            this.TotalItemCount = totalCount;
-            this.FilteredItemCount = filteredCount;
+            // Die ursprüngliche Auswahl beibehalten.
+            if (selectedNode != null)
+            {
+                selectedNode.IsSelected = true;
+
+
+                // Nur wenn die Node momentan sichtbar ist,
+                // darf sie im TreeView tatsächlich selektiert
+                // und fokussiert werden.
+                if (!this.IsFiltered || selectedNode.IsFilterVisible)
+                {
+                    this.SelectAndFocusItem(selectedNode);
+                }
+            }
         }
 
         private static bool DefaultFilterPredicate(AdvancedTreeNode node, string filter)
