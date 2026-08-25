@@ -137,10 +137,55 @@
         #endregion
 
 
-        public bool IsFilterActive => false;
-        public int VisibleRowCount => 0;
+        #region Filter Information
 
-        public int TotalRowCount => 0;
+        public static readonly DependencyProperty IsFilteredProperty =
+            DependencyProperty.Register(
+                nameof(IsFiltered),
+                typeof(bool),
+                typeof(AdvancedTreeView),
+                new PropertyMetadata(false));
+
+
+        public bool IsFiltered
+        {
+            get => (bool)GetValue(IsFilteredProperty);
+            private set => SetValue(IsFilteredProperty, value);
+        }
+
+
+
+        public static readonly DependencyProperty TotalItemCountProperty =
+            DependencyProperty.Register(
+                nameof(TotalItemCount),
+                typeof(int),
+                typeof(AdvancedTreeView),
+                new PropertyMetadata(0));
+
+
+        public int TotalItemCount
+        {
+            get => (int)GetValue(TotalItemCountProperty);
+            private set => SetValue(TotalItemCountProperty, value);
+        }
+
+
+
+        public static readonly DependencyProperty FilteredItemCountProperty =
+            DependencyProperty.Register(
+                nameof(FilteredItemCount),
+                typeof(int),
+                typeof(AdvancedTreeView),
+                new PropertyMetadata(0));
+
+
+        public int FilteredItemCount
+        {
+            get => (int)GetValue(FilteredItemCountProperty);
+            private set => SetValue(FilteredItemCountProperty, value);
+        }
+
+        #endregion
 
 
         protected override void OnSelectedItemChanged(RoutedPropertyChangedEventArgs<object> e)
@@ -296,28 +341,74 @@
 
         private void ApplyFilter()
         {
-            Func<AdvancedTreeNode,string,bool> predicate = FilterPredicate ?? DefaultFilterPredicate;
+            var filter = Filter ?? string.Empty;
 
-            foreach (var item in this.Items)
+            var predicate = FilterPredicate ?? DefaultFilterPredicate;
+
+
+            this.IsFiltered = !string.IsNullOrWhiteSpace(filter);
+
+
+            int totalCount = 0;
+            int filteredCount = 0;
+
+
+            foreach (var item in Items)
             {
                 if (item is AdvancedTreeNode node)
                 {
-                    node.ApplyFilter(Filter ?? string.Empty, predicate);
+                    totalCount += CountNodes(node);
+
+                    bool visible = node.ApplyFilter(filter, predicate);
+
+                    if (visible)
+                    {
+                        filteredCount += CountFilteredNodes(node);
+                    }
                 }
             }
-        }
 
+
+            this.TotalItemCount = totalCount;
+            this.FilteredItemCount = filteredCount;
+        }
 
         private static bool DefaultFilterPredicate(AdvancedTreeNode node, string filter)
         {
             return node.Text.Contains(filter, StringComparison.CurrentCultureIgnoreCase);
         }
 
+        private static int CountNodes(AdvancedTreeNode node)
+        {
+            int count = 1;
+
+            foreach (var child in node.Children)
+            {
+                count += CountNodes(child);
+            }
+
+            return count;
+        }
+
+        private static int CountFilteredNodes(AdvancedTreeNode node)
+        {
+            if (!node.IsFilterVisible)
+                return 0;
+
+            int count = 1;
+
+            foreach (var child in node.FilteredChildren)
+            {
+                count += CountFilteredNodes(child);
+            }
+
+            return count;
+        }
         #endregion
     }
 
 
-        public class ExpandedImageConverter : IMultiValueConverter
+    public class ExpandedImageConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

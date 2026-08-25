@@ -73,6 +73,58 @@
             set => SetValue(TreeViewProperty, value);
         }
 
+        #endregion
+
+        #region Filter Information
+
+        public static readonly DependencyProperty IsFilteredProperty =
+            DependencyProperty.Register(
+                nameof(IsFiltered),
+                typeof(bool),
+                typeof(StatusTreeView),
+                new PropertyMetadata(false, OnTreeViewChanged));
+
+
+        public bool IsFiltered
+        {
+            get => (bool)GetValue(IsFilteredProperty);
+            set => SetValue(IsFilteredProperty, value);
+        }
+
+
+
+        public static readonly DependencyProperty TotalItemCountProperty =
+            DependencyProperty.Register(
+                nameof(TotalItemCount),
+                typeof(int),
+                typeof(StatusTreeView),
+                new PropertyMetadata(0, OnTreeViewChanged));
+
+
+        public int TotalItemCount
+        {
+            get => (int)GetValue(TotalItemCountProperty);
+            set => SetValue(TotalItemCountProperty, value);
+        }
+
+
+
+        public static readonly DependencyProperty FilteredItemCountProperty =
+            DependencyProperty.Register(
+                nameof(FilteredItemCount),
+                typeof(int),
+                typeof(StatusTreeView),
+                new PropertyMetadata(0, OnTreeViewChanged));
+
+
+        public int FilteredItemCount
+        {
+            get => (int)GetValue(FilteredItemCountProperty);
+            set => SetValue(FilteredItemCountProperty, value);
+        }
+
+        #endregion
+
         private static void OnTreeViewChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             StatusTreeView row = (StatusTreeView)d;
@@ -90,8 +142,6 @@
             row.Refresh();
         }
 
-        #endregion
-
         private void OnStatusChanged(object sender, EventArgs e)
         {
             this.Refresh();
@@ -99,29 +149,22 @@
 
         public void Refresh()
         {
-            if (this.TreeView == null)
-            {
-                this._txtFilter.Text = "";
-                this._txtRows.Text = "";
-                return;
-            }
-
-            if (this.TreeView.IsFilterActive)
+            if (this.IsFiltered == true)
             {
                 this._statusIndicator.Fill = Brushes.Goldenrod;
-                this._statusIndicator.Fill = this.TreeView.IsFilterActive ? CreateIndicatorBrush(Colors.Goldenrod) : CreateIndicatorBrush(Colors.LimeGreen);
+                this._statusIndicator.Fill = this.IsFiltered ? CreateIndicatorBrush(Colors.Goldenrod) : CreateIndicatorBrush(Colors.LimeGreen);
                 this._txtFilter.Text = "Filter aktiv";
                 this._txtFilter.FontWeight = FontWeights.Bold;
 
-                this._txtRows.Text = $"{this.TreeView.VisibleRowCount:N0} / {this.TreeView.TotalRowCount:N0} Datensätze";
+                this._txtRows.Text = $"{this.FilteredItemCount:N0} / {this.TotalItemCount:N0} Datensätze";
             }
             else
             {
                 this._statusIndicator.Fill = Brushes.LimeGreen;
-                this._statusIndicator.Fill = this.TreeView.IsFilterActive ? CreateIndicatorBrush(Colors.Goldenrod) : CreateIndicatorBrush(Colors.LimeGreen);
+                this._statusIndicator.Fill = this.IsFiltered ? CreateIndicatorBrush(Colors.Goldenrod) : CreateIndicatorBrush(Colors.LimeGreen);
                 this._txtFilter.Text = "Kein Filter";
                 this._txtFilter.FontWeight = FontWeights.Normal;
-                this._txtRows.Text = $"{this.TreeView.TotalRowCount:N0} Datensätze";
+                this._txtRows.Text = $"{this.TotalItemCount:N0} Datensätze";
             }
         }
 
