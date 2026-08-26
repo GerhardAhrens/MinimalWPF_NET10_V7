@@ -165,6 +165,13 @@
                                     SortMemberPath="C"
                                     StringFormat="{}{0:N2} €"
                                     TextAlignment="Right" />
+
+                                <UI:AdvancedGridViewColumn
+                                    Width="200"
+                                    DisplayMemberBinding="{Binding Path=[Warengruppe]}"
+                                    FilterType="Text"
+                                    Header="Warengruppe"
+                                    SortMemberPath="Warengruppe" />
                             </GridView>
                         </ListView.View>
                     </UI:AdvancedListView>
