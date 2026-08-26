@@ -67,7 +67,7 @@ namespace MinimalWPF.View
         public CommandBase NodeDoubleClickedCommand { get; private set; }
         public CommandBase NodeContextMenueCommand { get; private set; }
 
-        public ObservableCollection<AdvancedTreeNode> Nodes { get; private set; }
+        public ObservableCollection<AdvancedTreeNode> Nodes { get; private set; } = new();
 
         public AdvancedTreeNode SelectedNode
         {
@@ -82,6 +82,37 @@ namespace MinimalWPF.View
         }
 
 
+        public List<Device> Devices { get; } = new()
+        {
+            new Device
+            {
+                Id = 1,
+                Name = "FRITZ!DECT 200",
+                Type = "AVM"
+            },
+
+            new Device
+            {
+                Id = 2,
+                Name = "FRITZ!DECT 210",
+                Type = "AVM"
+            },
+
+            new Device
+            {
+                Id = 3,
+                Name = "FRITZ!DECT 301",
+                Type = "AVM"
+            },
+
+            new Device
+            {
+                Id = 4,
+                Name = "FRITZ!DECT 440",
+                Type = "AVM"
+            }
+        };
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
         #endregion Properties
@@ -90,6 +121,15 @@ namespace MinimalWPF.View
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            /*
+            var adapter = new AdvancedTreeItemAdapter<Device>(device => device.Name);
+            foreach (var device in Devices)
+            {
+                var n = adapter.Convert(device);
+                this.Nodes.Add(n);
+            }
+            */
+
             this.Nodes = this.CreateDemoData();
 
             //this.SelectedNode = Nodes[1];
@@ -198,5 +238,15 @@ namespace MinimalWPF.View
 
             return nodes;
         }
+    }
+
+
+    public class Device
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; } = string.Empty;
+
+        public string Type { get; set; } = string.Empty;
     }
 }

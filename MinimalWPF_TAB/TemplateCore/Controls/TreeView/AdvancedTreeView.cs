@@ -53,7 +53,6 @@
 
         #endregion
 
-
         #region SelectionChangedCommand
 
         public static readonly DependencyProperty SelectionChangedCommandProperty =
@@ -71,7 +70,6 @@
 
         #endregion
 
-
         #region DoubleClickCommand
 
         public static readonly DependencyProperty DoubleClickCommandProperty =
@@ -84,7 +82,6 @@
         }
 
         #endregion
-
 
         #region Filter
 
@@ -108,7 +105,6 @@
         }
 
         #endregion
-
 
         #region FilterPredicate
 
@@ -135,7 +131,6 @@
         }
 
         #endregion
-
 
         #region Filter Information
 
@@ -185,8 +180,18 @@
             private set => SetValue(FilteredItemCountProperty, value);
         }
 
-        #endregion
+        #endregion Filter Information
 
+        #region DisplayMemberPath
+        new public static readonly DependencyProperty DisplayMemberPathProperty =
+            DependencyProperty.Register(nameof(DisplayMemberPath), typeof(string), typeof(AdvancedTreeView), new PropertyMetadata(string.Empty));
+
+        new public string DisplayMemberPath
+        {
+            get => (string)GetValue(DisplayMemberPathProperty);
+            set => SetValue(DisplayMemberPathProperty, value);
+        }
+        #endregion DisplayMemberPath
 
         protected override void OnSelectedItemChanged(RoutedPropertyChangedEventArgs<object> e)
         {

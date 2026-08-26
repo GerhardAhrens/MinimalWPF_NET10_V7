@@ -7,7 +7,7 @@
 
         public AdvancedTreeItemAdapter(Func<T, string> textSelector)
         {
-            _textSelector = textSelector ?? throw new ArgumentNullException(nameof(textSelector));
+            this._textSelector = textSelector ?? throw new ArgumentNullException(nameof(textSelector));
         }
 
 
@@ -19,8 +19,7 @@
             }
 
 
-            var node =
-                new AdvancedTreeNode(Guid.CreateVersion7(), _textSelector(value));
+            var node = new AdvancedTreeNode(Guid.CreateVersion7(), this._textSelector(value));
 
 
             node.SourceItem = value;
