@@ -21,4 +21,9 @@
     <Resource Include="Resources\Picture\ApplicationIcon.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TemplateCore\Extension\System.Data\" />
+    <Folder Include="TemplateCore\ArgumentGuard\" />
+  </ItemGroup>
+
 </Project>

@@ -54,7 +54,7 @@
             Width="100"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            UI:TextBoxDecimalExtensions.IsDecimalOnly="True"
+            UI:TextBoxDecimalBehaviors.IsDecimalOnly="True"
             Text="{Binding Path=CurrentRow.Row[C], FallbackValue=~ArtikelPreis}" />
 
         <UI:ListBoxImage

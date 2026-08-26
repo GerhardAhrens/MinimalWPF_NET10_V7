@@ -5,7 +5,7 @@
     using System.Windows;
     using System.Windows.Input;
 
-    public static class TextBoxDecimalExtensions
+    public static class TextBoxDecimalBehaviors
     {
         private static readonly CultureInfo GermanCulture = new CultureInfo("de-DE");
 
@@ -13,7 +13,7 @@
             DependencyProperty.RegisterAttached(
                 "IsDecimalOnly",
                 typeof(bool),
-                typeof(TextBoxDecimalExtensions),
+                typeof(TextBoxDecimalBehaviors),
                 new PropertyMetadata(false, OnIsDecimalOnlyChanged));
 
         public static bool GetIsDecimalOnly(DependencyObject obj) => (bool)obj.GetValue(IsDecimalOnlyProperty);
