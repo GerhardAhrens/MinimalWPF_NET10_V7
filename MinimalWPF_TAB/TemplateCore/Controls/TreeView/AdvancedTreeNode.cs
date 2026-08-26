@@ -17,6 +17,7 @@
         private readonly ObservableCollection<AdvancedTreeNode> _filteredChildren;
         private bool _isFilterVisible = true;
         private ObservableCollection<AdvancedTreeMenuItem> _contextMenuItems;
+        private object _sourceItem;
 
         public AdvancedTreeNode()
         {
@@ -155,6 +156,28 @@
                 }
 
                 this._isFilterVisible = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Ursprüngliches Objekt, aus dem diese TreeNode erzeugt wurde.
+        /// Bei einer List&lt;T&gt; enthält diese Property das ursprüngliche
+        /// Element der Liste.
+        /// </summary>
+        public object SourceItem
+        {
+            get => this._sourceItem;
+
+            internal set
+            {
+                if (ReferenceEquals(_sourceItem, value))
+                {
+                    return;
+                }
+
+                this._sourceItem = value;
+
                 this.OnPropertyChanged();
             }
         }
