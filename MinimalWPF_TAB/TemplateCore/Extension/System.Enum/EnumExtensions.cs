@@ -22,9 +22,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace System.Windows
+namespace System
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;

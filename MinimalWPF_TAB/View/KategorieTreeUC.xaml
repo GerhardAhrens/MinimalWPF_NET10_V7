@@ -147,9 +147,11 @@
                         SelectedItem="{Binding Path=SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SelectionChangedCommand="{Binding Path=NodeSelectedCommand}" />
 
-                    <!--
-                    <TextBlock Grid.Row="2" Text="{Binding Path=IsFiltered, ElementName=treeMain}" />
-                    -->
+                    <!--  Wird über der DataGrid dargestellt  -->
+                    <UI:LoadingOverlay
+                        Grid.Row="1"
+                        IsActived="{Binding Path=IsLoading, UpdateSourceTrigger=PropertyChanged}"
+                        Text="Daten werden geladen..." />
 
                     <UI:StatusTreeView
                         Grid.Row="2"

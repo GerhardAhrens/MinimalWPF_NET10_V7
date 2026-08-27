@@ -75,6 +75,12 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
+        public bool IsLoading
+        {
+            get => base.GetValue<bool>();
+            set => base.SetValue(value);
+        }
+
         public string TreeViewFilter
         {
             get => base.GetValue<string>();
@@ -129,7 +135,7 @@ namespace MinimalWPF.View
                 this.Nodes.Add(n);
             }
             */
-
+            this.IsLoading = true;
             this.Nodes = this.CreateDemoData();
 
             //this.SelectedNode = Nodes[1];

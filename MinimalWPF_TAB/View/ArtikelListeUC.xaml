@@ -176,6 +176,12 @@
                         </ListView.View>
                     </UI:AdvancedListView>
 
+                    <!--  Wird über der DataGrid dargestellt  -->
+                    <UI:LoadingOverlay
+                        Grid.Row="1"
+                        IsActived="{Binding Path=IsLoading, UpdateSourceTrigger=PropertyChanged}"
+                        Text="Daten werden geladen..." />
+
                     <UI:StatusListView
                         Grid.Row="2"
                         Height="20"

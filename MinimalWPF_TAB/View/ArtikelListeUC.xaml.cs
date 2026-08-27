@@ -73,6 +73,12 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
+        public bool IsLoading
+        {
+            get => base.GetValue<bool>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
         private bool IsModified { get; set; } = false;
@@ -83,6 +89,8 @@ namespace MinimalWPF.View
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            this.IsLoading = true;
+
             // 1. Daten asynchron laden
             await this.RefeshDataSourceAsync();
 
@@ -98,6 +106,8 @@ namespace MinimalWPF.View
                     Keyboard.Focus(firstItem);
                 }
             }, System.Windows.Threading.DispatcherPriority.Background);
+
+            this.IsLoading = false;
         }
 
         private async Task RefeshDataSourceAsync()

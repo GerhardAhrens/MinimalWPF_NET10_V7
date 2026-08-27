@@ -13,7 +13,7 @@
 // </summary>
 //-----------------------------------------------------------------------
 
-namespace System.Windows
+namespace System
 {
     public static class IntegerExtensions
     {
