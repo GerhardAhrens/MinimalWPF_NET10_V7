@@ -104,10 +104,10 @@ namespace System.Data
         }
 
         #region DataRow
-        public static DataRow GetRow(this DataTable @this,int rowPos = 0)
+        public static DataRow GetRow(this DataTable @this, int rowPos = 0)
         {
-            Argument.NotNull<DataTable>(@this, "@this","Das DataTable Object darf nicht null sein.");
-            Argument.NotGreaterThan<int>(0, rowPos, "rowPos","Die Row-Position muß >= 0 sein");
+            Argument.NotNull<DataTable>(@this, "@this", "Das DataTable Object darf nicht null sein.");
+            Argument.NotGreaterThan<int>(0, rowPos, "rowPos", "Die Row-Position muß >= 0 sein");
             DataRow row = @this.Rows[rowPos];
 
             return row;
@@ -341,7 +341,7 @@ namespace System.Data
         }
         #endregion  Suchen und Filtern
 
-        #region Convert DataTable to ...
+        #region Convert DataTable to
         public static DataTable AsDataTable<T>(this IEnumerable<T> @this)
         {
             var table = new DataTable();
@@ -522,24 +522,105 @@ namespace System.Data
             }
         }
 
-        public static List<dynamic> ToDynamicList(this DataTable dt)
+        #endregion Convert DataTable to 
+
+        #region Select Where
+        /// <summary>
+        /// Selektiert eine Anzahl von DataRow und gibt diese als eine neue DataTabel zurück.
+        /// </summary>
+        /// <param name="table">Übergebene DataTable</param>
+        /// <param name="predicate">Bedingung zur Selektion von DataRow</param>
+        /// <returns>Neue DataTable mit den gefunden einträgen</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static DataTable SelectWhere(this DataTable table, Func<DataRow, bool> predicate)
         {
-            var list = new List<dynamic>();
-            foreach (DataRow row in dt.Rows)
+            bool whereFound = false;
+
+            if (table == null)
             {
-                dynamic dyn = new ExpandoObject();
-                list.Add(dyn);
-                foreach (DataColumn column in dt.Columns)
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            DataTable result = table.Clone();
+
+            foreach (DataRow row in table.Rows)
+            {
+                if (predicate(row))
                 {
-                    var dic = (IDictionary<string, object>)dyn;
-                    dic[column.ColumnName] = row[column];
+                    result.ImportRow(row);
+                    whereFound = true;
                 }
             }
 
-            return list;
+
+            if (whereFound == false)
+            {
+                result.Clear();
+                result.AcceptChanges();
+            }
+
+            return result;
         }
 
-        #endregion Convert DataTable to ...
+        /// <summary>
+        /// Selektiert eine Anzahl von DataRow und gibt diese sortiert als eine neue DataTabel zurück.
+        /// </summary>
+        /// <param name="table">Übergebene DataTable</param>
+        /// <param name="predicate"></param>
+        /// <param name="sortColumn"></param>
+        /// <param name="sortDirection"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static DataTable SelectWhere(this DataTable table, Func<DataRow, bool> predicate, string sortColumn = null, ListSortDirection sortDirection = ListSortDirection.Ascending)
+        {
+            bool whereFound = false;
+
+            if (table == null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            if (!string.IsNullOrWhiteSpace(sortColumn) && !table.Columns.Contains(sortColumn))
+            {
+                throw new ArgumentException($"Die Spalte '{sortColumn}' existiert nicht.", nameof(sortColumn));
+            }
+
+            DataTable result = table.Clone();
+
+            var rows = table.Rows.Cast<DataRow>().Where(predicate);
+
+            if (!string.IsNullOrWhiteSpace(sortColumn))
+            {
+                rows = sortDirection == ListSortDirection.Ascending ? rows.OrderBy(row => row[sortColumn]) : rows.OrderByDescending(row => row[sortColumn]);
+            }
+
+            foreach (DataRow row in rows)
+            {
+                result.ImportRow(row);
+                whereFound = true;
+            }
+
+            if (whereFound == false)
+            {
+                result.Clear();
+                result.AcceptChanges();
+            }
+
+            return result;
+        }
+        #endregion Select Where
+
 
         #region Select Distinct
         /// <summary>
@@ -570,32 +651,32 @@ namespace System.Data
         /// <example>
         /// DataTable dt2 = dt.SelectDistinct("Column1, Column2");
         /// </example>
-        public static DataTable SelectDistinct(this DataTable SourceTable, string FieldName)
+        public static DataTable SelectDistinct(this DataTable sourceTable, string columns)
         {
-            return SelectDistinct(SourceTable, FieldName, string.Empty);
+            return SelectDistinct(sourceTable, columns, string.Empty);
         }
 
         /// <summary>
         ///"SELECT DISTINCT" over a DataTable
         /// </summary>
         /// <param name="SourceTable">Input DataTable</param>
-        /// <param name="FieldNames">Fields to select (distinct)</param>
-        /// <param name="Filter">Optional filter to be applied to the selection</param>
+        /// <param name="columns">Fields to select (distinct)</param>
+        /// <param name="filter">Optional filter to be applied to the selection</param>
         /// <returns></returns>
-        public static DataTable SelectDistinct(this DataTable SourceTable, string FieldNames, string Filter)
+        private static DataTable SelectDistinct(this DataTable sourceTable, string columns, string filter)
         {
             DataTable dt = new DataTable();
-            string[] arrFieldNames = FieldNames.Replace(" ", "").Split(',');
+            string[] arrFieldNames = columns.Replace(" ", "").Split(',');
             foreach (string s in arrFieldNames)
             {
-                if (SourceTable.Columns.Contains(s))
-                    dt.Columns.Add(s, SourceTable.Columns[s].DataType);
+                if (sourceTable.Columns.Contains(s))
+                    dt.Columns.Add(s, sourceTable.Columns[s].DataType);
                 else
                     throw new Exception(string.Format("The column {0} does not exist.", s));
             }
 
             object[] LastValues = null;
-            foreach (DataRow dr in SourceTable.Select(Filter, FieldNames))
+            foreach (DataRow dr in sourceTable.Select(filter, columns))
             {
                 object[] NewValues = GetRowFields(dr, arrFieldNames);
                 if (LastValues == null || !(ObjectComparison(LastValues, NewValues)))
@@ -623,11 +704,11 @@ namespace System.Data
 
         #region GetColumnDataType
 
-        public static Type GetColumnDataType(this DataTable tbl, string ColumnName)
+        public static Type GetColumnDataType(this DataTable tbl, string columnName)
         {
             try
             {
-                return tbl.Columns[ColumnName].DataType;
+                return tbl.Columns[columnName].DataType;
             }
             catch (Exception ex)
             {
@@ -650,11 +731,11 @@ namespace System.Data
         #endregion GetColumnDataType
 
         #region GetColumnValue
-        public static T GetColumnValue<T>(this DataTable tbl, int ColInd, int RowInd)
+        public static T GetColumnValue<T>(this DataTable tbl, int colInd, int rowInd)
         {
             try
             {
-                object column = tbl.Rows[RowInd][ColInd];
+                object column = tbl.Rows[rowInd][colInd];
                 return column == DBNull.Value ? default(T) : (T)Convert.ChangeType(column, typeof(T));
             }
             catch
@@ -677,7 +758,6 @@ namespace System.Data
             }
         }
         #endregion GetColumnValue
-
 
         #region CompareTo
         public static bool CompareTo(this DataTable firstDataTable, DataTable secondDataTable)
@@ -749,7 +829,7 @@ namespace System.Data
 
             return ResultDataTable;
         }
-        #endregion CompareTo    }
+        #endregion CompareTo
 
         #region Join DataTable
         /// <summary>

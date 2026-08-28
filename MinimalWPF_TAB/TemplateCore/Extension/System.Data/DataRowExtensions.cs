@@ -16,7 +16,6 @@ namespace System.Data
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Dynamic;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -44,59 +43,6 @@ namespace System.Data
             return false;
         }
 
-
-        /// <summary>
-        /// Gibt eine Column von einem DataRow im gewünschten Typ zurück
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="this">Alltuelle DataRow Zeile</param>
-        /// <param name="fieldName">Column</param>
-        /// <returns>Ergebnis zur angegebenen Column</returns>
-        public static TResult GetAs<TResult>(this DataRow @this, string fieldName)
-        {
-            try
-            {
-                object getAs = null;
-                if (typeof(TResult).Name == "Guid")
-                {
-                    getAs = @this[fieldName] == DBNull.Value ? Guid.Empty : new Guid(@this[fieldName].ToString());
-                }
-                else if (typeof(TResult).IsEnum == true)
-                {
-                    if (@this[fieldName].GetType() == typeof(int))
-                    {
-                        getAs = (TResult)@this[fieldName];
-                    }
-                    else if (@this[fieldName].GetType() == typeof(string))
-                    {
-                        getAs = (TResult)Enum.Parse(typeof(TResult), @this[fieldName].ToString(), true);
-                    }
-                    else
-                    {
-                        getAs = (TResult)Enum.Parse(typeof(TResult), @this[fieldName].ToString(), true);
-                    }
-                }
-                else
-                {
-                    if (@this != null)
-                    {
-                        getAs = @this[fieldName] == DBNull.Value ? default(TResult) : (TResult)Convert.ChangeType(@this[fieldName], typeof(TResult), CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        return default(TResult);
-                    }
-                }
-
-                return (TResult)getAs;
-            }
-            catch (Exception ex)
-            {
-                string errText = ex.Message;
-                return default(TResult);
-            }
-        }
-
         /// <summary>
         /// Gibt eine Column von einem DataRow im gewünschten Typ zurück, mit der möglichkeit einen Default-Wert anzugeben
         /// </summary>
@@ -105,7 +51,7 @@ namespace System.Data
         /// <param name="fieldName">Column</param>
         /// <param name="defaultValue">Default-Wert</param>
         /// <returns>Ergebnis zur angegebenen Column</returns>
-        public static TResult GetAs<TResult>(this DataRow @this, string fieldName, TResult defaultValue)
+        public static TResult GetAs<TResult>(this DataRow @this, string fieldName, TResult defaultValue = default)
         {
             try
             {
@@ -272,6 +218,13 @@ namespace System.Data
             return result;
         }
 
+        #region ToObject
+        /// <summary>
+        /// Konvertiert eine DataRow in eine Objekt T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dataRow"></param>
+        /// <returns></returns>
         public static T ToObject<T>(this DataRow dataRow) where T : new()
         {
             T item = new T();
@@ -289,37 +242,7 @@ namespace System.Data
             return item;
         }
 
-        public static dynamic ToDynamicObject(this DataRow dataRow)
-        {
-            dynamic item = new ExpandoObject();
-
-            foreach (DataColumn column in dataRow.Table.Columns)
-            {
-                var dic = (IDictionary<string, object>)item;
-                dic[column.ColumnName] = dataRow[column];
-
-            }
-
-            return item;
-        }
-
-        public static IEnumerable<DataColumn> GetChangedColumns(this DataRow row)
-        {
-            return row.Table.Columns.Cast<DataColumn>().Where(col => HasCellChanged(row, col));
-        }
-
-        public static IEnumerable<DataColumn> GetChangedColumns(this IEnumerable<DataRow> rows)
-        {
-            return rows.SelectMany(row => row.GetChangedColumns()).Distinct();
-        }
-
-        public static IEnumerable<DataColumn> GetChangedColumns(this DataTable table)
-        {
-            return table.GetChanges().Rows.Cast<DataRow>().GetChangedColumns();
-        }
-
-
-        public static object ChangeType(object value, Type type)
+        private static object ChangeType(object value, Type type)
         {
             if (type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
             {
@@ -334,14 +257,39 @@ namespace System.Data
             return Convert.ChangeType(value, type);
         }
 
+        private static PropertyInfo GetProperty(Type type, string attributeName)
+        {
+            PropertyInfo property = type.GetProperty(attributeName);
+
+            if (property != null)
+            {
+                return property;
+            }
+
+            return type.GetProperties()
+                 .Where(p => p.IsDefined(typeof(DisplayAttribute), false) && p.GetCustomAttributes(typeof(DisplayAttribute), false)
+                 .Cast<DisplayAttribute>()
+                 .Single().Name == attributeName)
+                 .FirstOrDefault();
+        }
+        #endregion ToObject
+
+        public static IEnumerable<DataColumn> GetChangedColumns(this IEnumerable<DataRow> rows)
+        {
+            return rows.SelectMany(row => row.GetChangedColumns()).Distinct();
+        }
+
+        public static IEnumerable<DataColumn> GetChangedColumns(this DataTable table)
+        {
+            return table.GetChanges().Rows.Cast<DataRow>().GetChangedColumns();
+        }
+
         /// <summary>
-        /// Determines whether the record value is DBNull.Value
+        /// Prüfen, ob ein Wert einer Column Null ist
         /// </summary>
-        /// <param name = "@this">The data row.</param>
-        /// <param name = "field">The name of the record field.</param>
-        /// <returns>
-        /// 	<c>true</c> if the value is DBNull.Value; otherwise, <c>false</c>.
-        /// </returns>
+        /// <param name="this"></param>
+        /// <param name="columnName"></param>
+        /// <returns>Column ist Null = true, sonst false</returns>
         public static bool IsDBNull(this DataRow @this, string columnName)
         {
             bool columnFound = @this.Table.Columns.OfType<DataColumn>().ToList().Any(c => c.ColumnName == columnName);
@@ -354,6 +302,18 @@ namespace System.Data
             {
                 return false;
             }
+        }
+
+
+        #region GetChangedColumns
+        /// <summary>
+        /// Gibt eine Liste von geänderten Columns zurück
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public static IEnumerable<DataColumn> GetChangedColumns(this DataRow row)
+        {
+            return row.Table.Columns.Cast<DataColumn>().Where(col => HasCellChanged(row, col));
         }
 
         private static bool HasCellChanged(DataRow row, DataColumn col)
@@ -384,21 +344,6 @@ namespace System.Data
 
             return true;
         }
-
-        private static PropertyInfo GetProperty(Type type, string attributeName)
-        {
-            PropertyInfo property = type.GetProperty(attributeName);
-
-            if (property != null)
-            {
-                return property;
-            }
-
-            return type.GetProperties()
-                 .Where(p => p.IsDefined(typeof(DisplayAttribute), false) && p.GetCustomAttributes(typeof(DisplayAttribute), false)
-                 .Cast<DisplayAttribute>()
-                 .Single().Name == attributeName)
-                 .FirstOrDefault();
-        }
+        #endregion GetChangedColumns
     }
 }

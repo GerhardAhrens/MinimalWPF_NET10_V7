@@ -8,7 +8,9 @@
 // <email>developer@lifeprojects.de</email>
 // <date>29.09.2020</date>
 //
-// <summary>Extension Class für DataColumn und DataColumnCollection</summary>
+// <summary>
+// Extension Class für DataColumn und DataColumnCollection
+// </summary>
 //-----------------------------------------------------------------------
 
 namespace System.Data
@@ -18,18 +20,10 @@ namespace System.Data
     public static class DataColumnExtensions
     {
         /// <summary>
-        ///     A DataColumnCollection extension method that adds a range to 'columns'.
+        /// Die Methode prüft, ob eine Column Nummerisch ist.
         /// </summary>
-        /// <param name="this">The @this to act on.</param>
-        /// <param name="columns">A variable-length parameters list containing columns.</param>
-        public static void AddRange(this DataColumnCollection @this, params string[] columns)
-        {
-            foreach (string column in columns)
-            {
-                @this.Add(column);
-            }
-        }
-
+        /// <param name="col"></param>
+        /// <returns></returns>
         public static bool IsNumeric(this DataColumn col)
         {
             if (col == null)
@@ -44,6 +38,11 @@ namespace System.Data
             return numericTypes.Contains(col.DataType);
         }
 
+        /// <summary>
+        /// Die Methode prüft, ob eine Column ein Boolean ist.
+        /// </summary>
+        /// <param name="col"></param>
+        /// <returns></returns>
         public static bool IsBool(this DataColumn col)
         {
             if (col == null)
@@ -51,11 +50,16 @@ namespace System.Data
                 return false;
             }
 
-            var boolTypes = new[] { typeof(bool), typeof(Boolean), typeof(bool?), typeof(Boolean?)};
+            var boolTypes = new[] { typeof(bool), typeof(bool?)};
 
             return boolTypes.Contains(col.DataType);
         }
 
+        /// <summary>
+        /// Die Methode prüft, ob eine Column ein String ist.
+        /// </summary>
+        /// <param name="col"></param>
+        /// <returns></returns>
         public static bool IsString(this DataColumn col)
         {
             if (col == null)
@@ -63,11 +67,16 @@ namespace System.Data
                 return false;
             }
 
-            var stringTypes = new[] { typeof(string), typeof(String), typeof(char), typeof(Char) };
+            var stringTypes = new[] { typeof(string), typeof(char), typeof(char) };
 
             return stringTypes.Contains(col.DataType);
         }
 
+        /// <summary>
+        /// Die Methode prüft, ob eine Column ein DateTime ist.
+        /// </summary>
+        /// <param name="col"></param>
+        /// <returns></returns>
         public static bool IsDateTime(this DataColumn col)
         {
             if (col == null)
@@ -81,8 +90,13 @@ namespace System.Data
             return stringTypes.Contains(col.DataType);
         }
 
-        #region GetColumnDataType
-
+        /// <summary>
+        /// Die Methode gibt den Datentyp einer Column zurück
+        /// </summary>
+        /// <param name="tbl"></param>
+        /// <param name="ColumnName">Name der Column</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static Type GetColumnDataType(this DataTable tbl, string ColumnName)
         {
             try
@@ -91,10 +105,17 @@ namespace System.Data
             }
             catch (Exception ex)
             {
-                throw new Exception("GetColumnDataType: \n" + ex.Message);
+                throw new Exception($"GetColumnDataType: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Die Methode gibt den Datentyp einer Column zurück
+        /// </summary>
+        /// <param name="tbl"></param>
+        /// <param name="ColumnIndex">Index der Column</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static Type GetColumnDataType(this DataTable tbl, int ColumnIndex)
         {
             try
@@ -107,9 +128,14 @@ namespace System.Data
             }
         }
 
-        #endregion GetColumnDataType
-
-        #region GetColumnValue
+        /// <summary>
+        /// Die Methode gibt den Wert einer Row, einer Spalte zurück
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tbl"></param>
+        /// <param name="ColInd">Index der Column</param>
+        /// <param name="RowInd">Index der Row</param>
+        /// <returns></returns>
         public static T GetColumnValue<T>(this DataTable tbl, int ColInd, int RowInd)
         {
             try
@@ -123,6 +149,14 @@ namespace System.Data
             }
         }
 
+        /// <summary>
+        /// Die Methode gibt den Wert einer Row, für einen Spaltennamen zurück
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tbl"></param>
+        /// <param name="ColumnName">Name der Spalte</param>
+        /// <param name="RowInd">Index der Row</param>
+        /// <returns></returns>
         public static T GetColumnValue<T>(this DataTable tbl, string ColumnName, int RowInd)
         {
             try
@@ -136,6 +170,5 @@ namespace System.Data
                 return default(T);
             }
         }
-        #endregion GetColumnValue
     }
 }

@@ -23,6 +23,8 @@ namespace MinimalWPF.View
 
     using MinimalWPF.Core;
 
+    using MinimalWPF_TAB.DemoData;
+
     /// <summary>
     /// Interaktionslogik für KategorieTreeUC.xaml
     /// </summary>
@@ -40,24 +42,8 @@ namespace MinimalWPF.View
             this.SelectionChangedCommand = new CommandBase(commandParam => this.OnTabSelectionChanged(commandParam), () => true);
             this.NodeSelectedCommand = new CommandBase(commandParam => this.OnNodeSelected(commandParam), () => true);
             this.NodeDoubleClickedCommand = new CommandBase(commandParam => this.OnNodeDoubleClicked(commandParam), () => true);
-            this.NodeContextMenueCommand = new CommandBase(commandParam => this.OnNodeContextMenue(commandParam), () => true);
-        }
-
-        private void OnNodeContextMenue(object commandParam)
-        {
-            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
-            this.Message.Hinweis("Kontextmenü Node", $"{node.Text}");
-        }
-
-        private void OnNodeSelected(object commandParam)
-        {
-            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
-        }
-
-        private void OnNodeDoubleClicked(object commandParam)
-        {
-            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
-            this.Message.Hinweis("Auswahl Node", $"{node.Text}");
+            this.NodeContextMenueEditCommand = new CommandBase(commandParam => this.OnNodeContextMenueEdit(commandParam), () => true);
+            this.NodeContextMenueDeleteCommand = new CommandBase(commandParam => this.OnNodeContextMenueDelete(commandParam), () => true);
         }
 
         #region Properties
@@ -65,7 +51,8 @@ namespace MinimalWPF.View
         public CommandBase SelectionChangedCommand { get; private set; }
         public CommandBase NodeSelectedCommand { get; private set; }
         public CommandBase NodeDoubleClickedCommand { get; private set; }
-        public CommandBase NodeContextMenueCommand { get; private set; }
+        public CommandBase NodeContextMenueEditCommand { get; private set; }
+        public CommandBase NodeContextMenueDeleteCommand { get; private set; }
 
         public ObservableCollection<AdvancedTreeNode> Nodes { get; private set; } = new();
 
@@ -87,38 +74,6 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
-
-        public List<Device> Devices { get; } = new()
-        {
-            new Device
-            {
-                Id = 1,
-                Name = "FRITZ!DECT 200",
-                Type = "AVM"
-            },
-
-            new Device
-            {
-                Id = 2,
-                Name = "FRITZ!DECT 210",
-                Type = "AVM"
-            },
-
-            new Device
-            {
-                Id = 3,
-                Name = "FRITZ!DECT 301",
-                Type = "AVM"
-            },
-
-            new Device
-            {
-                Id = 4,
-                Name = "FRITZ!DECT 440",
-                Type = "AVM"
-            }
-        };
-
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
         #endregion Properties
@@ -136,16 +91,15 @@ namespace MinimalWPF.View
             }
             */
             this.IsLoading = true;
-            this.Nodes = this.CreateDemoData();
+
+            // 1. Daten asynchron laden
+            await this.RefeshDataSourceAsync();
+            //this.Nodes = this.CreateDemoData();
+
+            this.IsLoading = false;
 
             //this.SelectedNode = Nodes[1];
-
             this.DataContext = this;
-
-            if (App.EventAgg.IsSubscription<StatusEvent>() == true)
-            {
-                await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
-            }
         }
         #endregion Windows Events
 
@@ -176,83 +130,91 @@ namespace MinimalWPF.View
             }
         }
 
+        private void OnNodeContextMenueEdit(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+            this.Message.Hinweis("Kontextmenü Node Edit", $"{node.Text}");
+        }
+
+        private void OnNodeContextMenueDelete(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+            this.Message.Hinweis("Kontextmenü Node Delete", $"{node.Text}");
+        }
+
+        private void OnNodeSelected(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+        }
+
+        private void OnNodeDoubleClicked(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+            this.Message.Hinweis("Auswahl Node", $"{node.Text}");
+        }
+
         #endregion Command Events
+
+
+        private async Task RefeshDataSourceAsync()
+        {
+            TimeSpan t = Performance.Measure(() =>
+            {
+                this.Nodes = this.CreateDemoData();
+            });
+
+            if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+            {
+                await App.EventAgg.PublishAsync(new StatusEvent($"Bereit; {t.TotalMilliseconds:N1} ms"));
+            }
+        }
 
         private ObservableCollection<AdvancedTreeNode> CreateDemoData()
         {
             DrawingImage closedImage = Application.Current.TryFindResource("TreeFolderClosed") as DrawingImage;
             DrawingImage openImage = Application.Current.TryFindResource("TreeFolderOpen") as DrawingImage;
 
-            ObservableCollection<AdvancedTreeNode> nodes = new ObservableCollection<AdvancedTreeNode>
+            DataTable table = DemoData.LadeArtikel();
+
+            Nodes.Clear();
+
+            var groups = table.AsEnumerable().GroupBy(row => row.Field<string>("Warengruppe"));
+
+            foreach (var group in groups)
             {
-                new AdvancedTreeNode(Guid.CreateVersion7(), "Kunden")
-                {
-                    OpenImage = closedImage,
-                    ExpandedImage = openImage,
-                    IsExpanded = false,
-                    Children =
-                    {
-                        new AdvancedTreeNode(Guid.CreateVersion7(),"Müller")
-                        {
-                            Children =
-                            {
-                                new AdvancedTreeNode(Guid.CreateVersion7(),"Rechnungen")
-                                {
-                                },
-                                new AdvancedTreeNode(Guid.CreateVersion7(),"Aufträge")
-                                {
-                                }
-                            }},
-                        new AdvancedTreeNode(Guid.CreateVersion7(),"Meier")
-                        {
-                            ContextMenuItems =
-                            {
-                                new AdvancedTreeMenuItem("Öffnen",this.NodeContextMenueCommand),
-                                new AdvancedTreeMenuItem("Bearbeiten",this.NodeContextMenueCommand),
-                                new AdvancedTreeMenuItem("Löschen",this.NodeContextMenueCommand)
-                            }
-                        },
-                        new AdvancedTreeNode(Guid.CreateVersion7(),"Schmidt")
-                        {
-                            ContextMenuItems =
-                            {
-                                new AdvancedTreeMenuItem("Öffnen",this.NodeContextMenueCommand),
-                                new AdvancedTreeMenuItem("Bearbeiten",this.NodeContextMenueCommand),
-                                new AdvancedTreeMenuItem("Löschen",this.NodeContextMenueCommand)
-                            }
-                        }
-                    }
-                },
+                AdvancedTreeNode groupNode = new AdvancedTreeNode(Guid.CreateVersion7(),group.Key);
+                groupNode.OpenImage = closedImage;
+                groupNode.ExpandedImage = openImage;
+                groupNode.IsExpanded = false;
 
-                new AdvancedTreeNode(Guid.CreateVersion7(),"Projekte")
+                foreach (var row in group)
                 {
-                    OpenImage = closedImage,
-                    ExpandedImage = openImage,
-                    Children =
-                    {
-                        new AdvancedTreeNode(Guid.CreateVersion7(),"Projekt A"),
-                        new AdvancedTreeNode(Guid.CreateVersion7(),"Projekt B")
-                    }
-                },
+                    AdvancedTreeNode articleNode = new AdvancedTreeNode(Guid.CreateVersion7(), row.Field<string>("B"));
+                    articleNode.OpenImage = closedImage;
+                    articleNode.ExpandedImage = openImage;
+                    articleNode.IsExpanded = false;
 
-                new AdvancedTreeNode(Guid.CreateVersion7(),"Einstellungen")
-                {
-                    OpenImage = closedImage,
-                    ExpandedImage = openImage,
+                    // Originale DataRow merken
+                    articleNode.SourceItem = row;
+
+                    // ContextMenu nur für Artikel
+                    articleNode.ContextMenuItems.Add(new AdvancedTreeMenuItem("Bearbeiten")
+                        {
+                            Command = this.NodeContextMenueEditCommand
+                    });
+
+                    articleNode.ContextMenuItems.Add(new AdvancedTreeMenuItem("Löschen")
+                        {
+                            Command = this.NodeContextMenueDeleteCommand
+                    });
+
+                    groupNode.Children.Add(articleNode);
                 }
-            };
 
-            return nodes;
+                Nodes.Add(groupNode);
+            }
+
+            return Nodes;
         }
-    }
-
-
-    public class Device
-    {
-        public int Id { get; set; }
-
-        public string Name { get; set; } = string.Empty;
-
-        public string Type { get; set; } = string.Empty;
     }
 }

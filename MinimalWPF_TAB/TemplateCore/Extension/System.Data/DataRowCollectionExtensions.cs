@@ -19,26 +19,26 @@ namespace System.Data
     public static class DataRowCollectionExtensions
     {
         /// <summary>
-        /// A DataTable extension method that return the first row.
+        /// Eine Erweiterungsmethode für DataTable, die die erste Zeile zurück gibt.
         /// </summary>
-        /// <param name="this">The table to act on.</param>
-        /// <returns>The first row of the table.</returns>
+        /// <param name="this">Übergebene DataTable</param>
+        /// <returns>Gibt die erste Row der DataTable zurück</returns>
         public static DataRow FirstRow(this DataRowCollection @this)
         {
             return @this[0];
         }
 
-        /// <summary>A DataTable extension method that last row.</summary>
-        /// <param name="this">The @this to act on.</param>
-        /// <returns>A DataRow.</returns>
+        /// <summary>Eine Erweiterungsmethode für DataTable, die die letzte Zeile zurück gibt.</summary>
+        /// <param name="this">Übergebene DataTable</param>
+        /// <returns>Gibt die letzte Row der DataTable zurück</returns>
         public static DataRow LastRow(this DataRowCollection @this)
         {
             return @this[@this.Count - 1];
         }
 
-        /// <summary>returns the datarow with the passed index.</summary>
-        /// <param name="this">The @this to act on.</param>
-        /// <returns>A DataRow.</returns>
+        /// <summary>Eine Erweiterungsmethode für DataTable, die eine DataRow auf Basis eines Row Index zurück gibt</summary>
+        /// <param name="this">Übergebene DataTable</param>
+        /// <returns>Gibt eine DataRow auf Basis des Row Index zurück</returns>
         public static DataRow RowByIndex(this DataRowCollection @this, int index)
         {
             return @this[index];

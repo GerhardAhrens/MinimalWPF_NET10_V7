@@ -24,51 +24,6 @@ namespace System.Data
     public static class DataRowViewExtensions
     {
         /// <summary>
-        /// Gibt eine Column von einem DataRow im gewünschten Typ zurück
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="this">Alltuelle DataRow Zeile</param>
-        /// <param name="fieldName">Column</param>
-        /// <returns>Ergebnis zur angegebenen Column</returns>
-        public static TResult GetAs<TResult>(this DataRowView @this, string fieldName)
-        {
-            try
-            {
-                object getAs = null;
-                if (typeof(TResult).Name == "Guid")
-                {
-                    getAs = @this[fieldName] == DBNull.Value ? Guid.Empty : new Guid(@this[fieldName].ToString());
-                }
-                else if (typeof(TResult).IsEnum == true)
-                {
-                    if (@this[fieldName].GetType() == typeof(int))
-                    {
-                        getAs = (TResult)@this[fieldName];
-                    }
-                    else if (@this[fieldName].GetType() == typeof(string))
-                    {
-                        getAs = (TResult)Enum.Parse(typeof(TResult), @this[fieldName].ToString(), true);
-                    }
-                    else
-                    {
-                        getAs = (TResult)Enum.Parse(typeof(TResult), @this[fieldName].ToString(), true);
-                    }
-                }
-                else
-                {
-                    getAs = @this[fieldName] == DBNull.Value ? default(TResult) : (TResult)Convert.ChangeType(@this[fieldName], typeof(TResult), CultureInfo.InvariantCulture);
-                }
-
-                return (TResult)getAs;
-            }
-            catch (Exception ex)
-            {
-                string errText = ex.Message;
-                return default(TResult);
-            }
-        }
-
-        /// <summary>
         /// Gibt eine Column von einem DataRow im gewünschten Typ zurück, mit der möglichkeit einen Default-Wert anzugeben
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
@@ -76,7 +31,7 @@ namespace System.Data
         /// <param name="fieldName">Column</param>
         /// <param name="defaultValue">Default-Wert</param>
         /// <returns>Ergebnis zur angegebenen Column</returns>
-        public static TResult GetAs<TResult>(this DataRowView @this, string fieldName, TResult defaultValue)
+        public static TResult GetAs<TResult>(this DataRowView @this, string fieldName, TResult defaultValue = default)
         {
             try
             {
