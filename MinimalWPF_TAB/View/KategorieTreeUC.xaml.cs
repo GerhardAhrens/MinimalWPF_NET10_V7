@@ -158,9 +158,10 @@ namespace MinimalWPF.View
 
         private async Task RefeshDataSourceAsync()
         {
-            TimeSpan t = Performance.Measure(() =>
+            TimeSpan t = Performance.Measure(async () =>
             {
-                this.Nodes = this.CreateDemoData();
+                this.Nodes = await this.CreateDemoDataAsync();
+
             });
 
             if (App.EventAgg.IsSubscription<StatusEvent>() == true)
@@ -169,7 +170,7 @@ namespace MinimalWPF.View
             }
         }
 
-        private ObservableCollection<AdvancedTreeNode> CreateDemoData()
+        private async Task<ObservableCollection<AdvancedTreeNode>> CreateDemoDataAsync()
         {
             DrawingImage closedImage = Application.Current.TryFindResource("TreeFolderClosed") as DrawingImage;
             DrawingImage openImage = Application.Current.TryFindResource("TreeFolderOpen") as DrawingImage;

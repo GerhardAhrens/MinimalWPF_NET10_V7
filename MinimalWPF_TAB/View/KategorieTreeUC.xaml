@@ -148,9 +148,12 @@
                         SelectionChangedCommand="{Binding Path=NodeSelectedCommand}" />
 
                     <!--  Wird über der DataGrid dargestellt  -->
-                    <UI:LoadingOverlay
+                    <UI:ProgressOverlay
                         Grid.Row="1"
-                        IsActived="{Binding Path=IsLoading, UpdateSourceTrigger=PropertyChanged}"
+                        IsActived="True"
+                        MaxValue="100"
+                        MinValue="0"
+                        Value="50"
                         Text="Daten werden geladen..." />
 
                     <UI:StatusTreeView
