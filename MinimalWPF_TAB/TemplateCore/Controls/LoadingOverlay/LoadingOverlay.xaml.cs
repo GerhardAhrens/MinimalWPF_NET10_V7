@@ -10,7 +10,7 @@
     {
         public LoadingOverlay()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #region Text
