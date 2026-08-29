@@ -9,7 +9,14 @@
             DataTable table = new("Artikel");
 
             table.Columns.Add("A", typeof(int));         // Key
-            table.Columns.Add("B", typeof(string));      // Artikelname
+
+            DataColumn artikelName = new();
+            artikelName.ColumnName = "B";
+            artikelName.DataType = typeof(string);
+            artikelName.MaxLength = 50;
+            artikelName.ExtendedProperties["Artikelname"] = "Artikelname";
+            table.Columns.Add(artikelName);      // Artikelname
+
             table.Columns.Add("C", typeof(decimal));     // Preis
             table.Columns.Add("Warengruppe", typeof(string));      // Warengruppe
             table.Columns.Add("Anzahl", typeof(int));      // Stückzahl pro Packung

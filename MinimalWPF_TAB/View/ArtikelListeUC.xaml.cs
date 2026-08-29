@@ -115,6 +115,7 @@ namespace MinimalWPF.View
             TimeSpan t = Performance.Measure(() =>
             {
                 DataTable dt = DemoData.LadeArtikel();
+
                 this.DataSource = CollectionViewSource.GetDefaultView(dt);
                 if (this.DataSource != null)
                 {

@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TemplateCore\Extension\System.Data\" />
     <Folder Include="TemplateCore\ArgumentGuard\" />
   </ItemGroup>
 

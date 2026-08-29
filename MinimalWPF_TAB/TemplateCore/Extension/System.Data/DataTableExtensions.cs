@@ -17,8 +17,10 @@ namespace System.Data
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Dynamic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text.Json;
     using System.Windows;
 
     public static class DataTableExtensions
@@ -620,7 +622,6 @@ namespace System.Data
             return result;
         }
         #endregion Select Where
-
 
         #region Select Distinct
         /// <summary>
