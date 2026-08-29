@@ -149,11 +149,11 @@
 
                     <!--  Wird über der DataGrid dargestellt  -->
                     <UI:ProgressOverlay
-                        Grid.Row="1"
+                        Grid.Row="0" Grid.RowSpan="2"
                         IsActived="True"
                         MaxValue="100"
                         MinValue="0"
-                        Value="50"
+                        Value="51"
                         Text="Daten werden geladen..." />
 
                     <UI:StatusTreeView

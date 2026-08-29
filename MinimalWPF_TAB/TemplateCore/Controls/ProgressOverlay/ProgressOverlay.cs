@@ -1,14 +1,13 @@
 ﻿namespace System.Windows.Controls
 {
     using System.Windows;
+    using System.Windows.Media;
 
     public class ProgressOverlay : Control
     {
         static ProgressOverlay()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(ProgressOverlay),
-                new FrameworkPropertyMetadata(typeof(ProgressOverlay)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ProgressOverlay), new FrameworkPropertyMetadata(typeof(ProgressOverlay)));
         }
 
         #region IsActived
@@ -20,8 +19,7 @@
                 typeof(ProgressOverlay),
                 new FrameworkPropertyMetadata(
                     false,
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    OnIsActivedChanged));
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public bool IsActived
         {
@@ -29,22 +27,8 @@
             set => SetValue(IsActivedProperty, value);
         }
 
-        private static void OnIsActivedChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ProgressOverlay)d;
-
-            // Beim erneuten Öffnen auf MinValue zurücksetzen.
-            if ((bool)e.NewValue)
-            {
-                control.SetCurrentValue(
-                    ValueProperty,
-                    control.MinValue);
-            }
-        }
-
         #endregion
+
 
         #region MinValue
 
@@ -65,6 +49,7 @@
 
         #endregion
 
+
         #region MaxValue
 
         public static readonly DependencyProperty MaxValueProperty =
@@ -84,6 +69,7 @@
 
         #endregion
 
+
         #region Value
 
         public static readonly DependencyProperty ValueProperty =
@@ -102,16 +88,8 @@
             set => SetValue(ValueProperty, value);
         }
 
-        private static void OnValueChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ProgressOverlay)d;
-
-            control.CheckValue();
-        }
-
         #endregion
+
 
         #region Text
 
@@ -120,7 +98,7 @@
                 nameof(Text),
                 typeof(string),
                 typeof(ProgressOverlay),
-                new PropertyMetadata(string.Empty));
+                new FrameworkPropertyMetadata(string.Empty));
 
         public string Text
         {
@@ -130,35 +108,71 @@
 
         #endregion
 
-        #region RangeChanged
+        #region PercentageForeground
 
-        private static void OnRangeChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        public static readonly DependencyProperty PercentageForegroundProperty =
+            DependencyProperty.Register(nameof(PercentageForeground), typeof(Brush), typeof(ProgressOverlay), new FrameworkPropertyMetadata(Brushes.Black));
+
+        public Brush PercentageForeground
         {
-            var control = (ProgressOverlay)d;
-
-            control.CheckValue();
+            get => (Brush)GetValue(PercentageForegroundProperty);
+            private set => SetValue(PercentageForegroundProperty, value);
         }
 
         #endregion
 
-        private void CheckValue()
-        {
-            if (!IsActived)
-                return;
+        #region Events
 
-            // Ungültiger Bereich
+        private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (ProgressOverlay)d;
+
+            control.UpdatePercentageForeground();
+            control.CheckProgress();
+        }
+
+        private void UpdatePercentageForeground()
+        {
             if (MaxValue <= MinValue)
             {
-                IsActived = false;
+                this.PercentageForeground = Brushes.Black;
                 return;
             }
 
-            // Value unter MinValue
+            double percentage = (Value - MinValue) / (MaxValue - MinValue) * 100.0;
+
+            this.PercentageForeground = percentage >= 50.0 ? Brushes.White : Brushes.Black;
+        }
+        private static void OnRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (ProgressOverlay)d;
+
+            control.UpdatePercentageForeground();
+            control.CheckProgress();
+        }
+        #endregion
+
+        #region Progress
+
+        private void CheckProgress()
+        {
+            if (IsActived == false)
+            {
+                return;
+            }
+
+            // Ungültiger Wertebereich
+            if (MaxValue <= MinValue)
+            {
+                SetCurrentValue(IsActivedProperty, false);
+                return;
+            }
+
+            // Wert kleiner als Minimum
             if (Value < MinValue)
             {
                 SetCurrentValue(ValueProperty, MinValue);
+
                 return;
             }
 
@@ -166,8 +180,11 @@
             if (Value >= MaxValue)
             {
                 SetCurrentValue(ValueProperty, MaxValue);
+
                 SetCurrentValue(IsActivedProperty, false);
             }
         }
+
+        #endregion
     }
 }

@@ -3,6 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:UI="clr-namespace:System.Windows.Controls">
 
+    <!--  Converter  -->
+    <UI:ProgressPercentageConverter x:Key="ProgressPercentageConverter" />
+    <UI:ProgressBarWidthConverter x:Key="ProgressBarWidthConverter" />
+
+    <!--  ProgressOverlay  -->
     <Style TargetType="{x:Type UI:ProgressOverlay}">
 
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -10,50 +15,108 @@
         <Setter Property="Panel.ZIndex" Value="1000" />
         <Setter Property="Visibility" Value="Collapsed" />
         <Setter Property="Template">
+
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type UI:ProgressOverlay}">
 
                     <Grid>
-                        <Border Background="#80000000">
-                            <Border
-                                MinWidth="350"
-                                Padding="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Background="White"
-                                CornerRadius="6">
 
-                                <StackPanel>
+                        <!--  Overlay  -->
+                        <Border Background="#66000000" />
 
-                                    <TextBlock
-                                        Margin="0,0,0,15"
-                                        HorizontalAlignment="Center"
-                                        FontSize="16"
-                                        FontWeight="SemiBold"
-                                        Text="{TemplateBinding Text}"
-                                        TextAlignment="Center" />
+                        <!--  Card  -->
+                        <Border
+                            Width="420"
+                            Padding="28"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                            CornerRadius="10">
 
-                                    <ProgressBar
-                                        Height="20"
-                                        Maximum="{TemplateBinding MaxValue}"
-                                        Minimum="{TemplateBinding MinValue}"
-                                        Value="{TemplateBinding Value}" />
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="25"
+                                    Opacity="0.30"
+                                    ShadowDepth="4" />
+                            </Border.Effect>
 
-                                </StackPanel>
-                            </Border>
+
+                            <StackPanel>
+                                <!--  Text  -->
+                                <TextBlock
+                                    Margin="0,0,0,18"
+                                    HorizontalAlignment="Center"
+                                    FontSize="17"
+                                    FontWeight="SemiBold"
+                                    Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                    Text="{TemplateBinding Text}"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+
+                                <!--  ProgressBar  -->
+                                <ProgressBar
+                                    x:Name="PART_ProgressBar"
+                                    Height="22"
+                                    Background="#E5E5E5"
+                                    BorderThickness="0"
+                                    Foreground="{TemplateBinding PercentageForeground}"
+                                    Maximum="{TemplateBinding MaxValue}"
+                                    Minimum="{TemplateBinding MinValue}"
+                                    Value="{TemplateBinding Value}">
+
+                                    <ProgressBar.Template>
+                                        <ControlTemplate TargetType="{x:Type ProgressBar}">
+                                            <Grid>
+                                                <!--  Hintergrund  -->
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="11" />
+
+                                                <!--  Fortschritt  -->
+                                                <Grid HorizontalAlignment="Left">
+                                                    <Grid.Width>
+                                                        <MultiBinding Converter="{StaticResource ProgressBarWidthConverter}">
+                                                            <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding Path="Minimum" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding Path="Maximum" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        </MultiBinding>
+                                                    </Grid.Width>
+
+                                                    <Border Background="#3478F6" CornerRadius="11" />
+
+                                                </Grid>
+
+                                                <!--  Prozentanzeige  -->
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="12"
+                                                    FontWeight="SemiBold"
+                                                    Foreground="{TemplateBinding Foreground}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource ProgressPercentageConverter}">
+                                                            <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding Path="Minimum" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                            <Binding Path="Maximum" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </ProgressBar.Template>
+                                </ProgressBar>
+                            </StackPanel>
                         </Border>
                     </Grid>
 
+                    <!--  Overlay sichtbar / unsichtbar  -->
                     <ControlTemplate.Triggers>
-
                         <Trigger Property="IsActived" Value="True">
-
                             <Setter Property="Visibility" Value="Visible" />
-
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
 </ResourceDictionary>
