@@ -1,0 +1,151 @@
+<base:UserControlBase
+    x:Class="MinimalWPF.View.ControlDemoUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:UI="clr-namespace:System.Windows.Controls"
+    xmlns:base="clr-namespace:System.Windows"
+    xmlns:core="clr-namespace:MinimalWPF.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MinimalWPF.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <Grid
+        x:Name="gridMain"
+        Background="WhiteSmoke"
+        ColumnDefinitions="*"
+        RowDefinitions="Auto,*">
+
+        <!--#region Hauptmenübar-->
+        <GroupBox
+            x:Name="MainMenubar"
+            Grid.Row="0"
+            Margin="5"
+            Padding="5">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <Border
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <DockPanel Grid.Row="0" Grid.Column="0">
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    Command="{Binding Path=GoBackCommand}"
+                    CommandParameter="{x:Static core:CommandButtons.GoBack}"
+                    ToolTip="Zurück">
+                    <Image Source="{StaticResource ResourceKey=IconGoBack}" Stretch="Uniform" />
+                </Button>
+
+            </DockPanel>
+        </GroupBox>
+
+        <Grid Margin="5,0,0,0"
+            x:Name="gridControlDemo"
+            Grid.Row="1"
+            Grid.Column="0"
+            Background="Transparent"
+            ColumnDefinitions="120,*"
+            RowDefinitions="25,40,Auto,Auto,25,25,Auto,*">
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="SelectedIndex" />
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Width="100"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="{Binding Path=SelectedImage, FallbackValue=~SelectedImage}" />
+
+            <UI:ListBoxImage
+                x:Name="HorizontalImageList"
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Height="Auto"
+                ImageHeight="32"
+                ImageStretch="UniformToFill"
+                ImageWidth="32"
+                ItemsSource="{Binding Path=ImageSource}"
+                Orientation="Horizontal"
+                SelectedValue="{Binding Path=SelectedImage}"
+                SymbolColor="Green" />
+
+            <StackPanel Margin="0,5,0,0"
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Orientation="Horizontal">
+
+                <TextBlock
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    Text="TextBoxMask" />
+
+                <UI:TextBoxMask
+                    Width="200"
+                    HorizontalAlignment="Left"
+                    Mask="(00000) 00 00 00 00 00"
+                    RawText="{Binding Path=PhonNumberRaw}"
+                    Text="{Binding Path=PhonNumber, UpdateSourceTrigger=PropertyChanged}" />
+
+                <UI:TextBoxMask
+                    Width="100"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Mask="&gt;LL LL"
+                    RawText="{Binding Path=KennzeichenRaw}"
+                    Text="{Binding Path=Kennzeichen, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Button
+                    Margin="10,0,0,0"
+                    Click="OnTestTextBoxMask"
+                    Content="Test Inhalt" />
+            </StackPanel>
+
+            <StackPanel
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,10,0,0"
+                Orientation="Horizontal">
+
+                <TextBlock
+                    Margin="0,0,12,0"
+                    VerticalAlignment="Center"
+                    Text="Automatische Aktualisierung" />
+
+                <UI:SwitchBox
+                    AnimationDuration="0:0:0.0"
+                    IsChecked="False"
+                    OffColor="#666666"
+                    OffContent="Aus"
+                    OnColor="#107C10"
+                    OnContent="Ein"
+                    SwitchHeight="25"
+                    SwitchWidth="44"
+                    ThumbSize="18" />
+
+            </StackPanel>
+
+        </Grid>
+
+        <!--#endregion Hauptmenübar-->
+    </Grid>
+</base:UserControlBase>

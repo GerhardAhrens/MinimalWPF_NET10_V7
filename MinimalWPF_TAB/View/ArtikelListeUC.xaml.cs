@@ -220,17 +220,6 @@ namespace MinimalWPF.View
             }
         }
 
-        private void OnTabSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.Source is TabControl tabControl)
-            {
-                if (tabControl.SelectedItem is TabItem selectedTab && selectedTab.Tag is DataRowView rowView)
-                {
-                    selectedTab.Content = new TabArtikelDetail(rowView);
-                }
-            }
-        }
-
         private async void OnCloseTab(object commandParam)
         {
             if (((FrameworkElement)commandParam).Tag.ToString() == string.Empty)

@@ -157,7 +157,7 @@ namespace MinimalWPF.View
                 if (button == CommandButtons.ControlDemo)
                 {
                     ChangeViewEventArgs args = new();
-                    args.FromPage = CommandButtons.ControlDemo;
+                    args.FromPage = CommandButtons.Home;
                     args.MenuButton = button;
 
                     if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)

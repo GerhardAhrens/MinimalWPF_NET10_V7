@@ -39,6 +39,7 @@ namespace MinimalWPF.View
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
+            this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
             this.SelectionChangedCommand = new CommandBase(commandParam => this.OnTabSelectionChanged(commandParam), () => true);
             this.NodeSelectedCommand = new CommandBase(commandParam => this.OnNodeSelected(commandParam), () => true);
             this.NodeDoubleClickedCommand = new CommandBase(commandParam => this.OnNodeDoubleClicked(commandParam), () => true);
@@ -48,6 +49,7 @@ namespace MinimalWPF.View
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase CloseTabCommand { get; private set; }
         public CommandBase SelectionChangedCommand { get; private set; }
         public CommandBase NodeSelectedCommand { get; private set; }
         public CommandBase NodeDoubleClickedCommand { get; private set; }
@@ -127,6 +129,19 @@ namespace MinimalWPF.View
             }
         }
 
+        private async void OnCloseTab(object commandParam)
+        {
+            if (((FrameworkElement)commandParam).Tag.ToString() == string.Empty)
+            {
+                return;
+            }
+
+            if (commandParam is TabItem tabItem)
+            {
+                DataRow rowView = ((TabArtikelDetail)tabItem.Content).CurrentRow.Row;
+            }
+        }
+
         private void OnTabSelectionChanged(object commandParam)
         {
             if (commandParam is SelectionChangedEventArgs tabControl)
@@ -167,6 +182,7 @@ namespace MinimalWPF.View
                 if (isTabFound == false)
                 {
                     DataRow currentRow = (DataRow)rowNode.SourceItem;
+                    kategorieTab.Tag = currentRow;
                     currentRow.AcceptChanges();
                     this.KategorieTabControl.Items.Add(kategorieTab);
 
