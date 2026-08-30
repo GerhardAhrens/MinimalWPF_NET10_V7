@@ -14,7 +14,7 @@
         x:Name="gridMain"
         Background="Transparent"
         ColumnDefinitions="120,*"
-        RowDefinitions="25,25,25,Auto,25,25,*">
+        RowDefinitions="25,25,25,Auto,25,25,Auto,*">
 
         <TextBlock
             Grid.Row="0"
@@ -114,6 +114,31 @@
                 Margin="10,0,0,0"
                 Click="OnTestTextBoxMask"
                 Content="Test Inhalt" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="0,10,0,0"
+            Orientation="Horizontal">
+
+            <TextBlock
+                Margin="0,0,12,0"
+                VerticalAlignment="Center"
+                Text="Automatische Aktualisierung" />
+
+            <UI:SwitchBox
+                AnimationDuration="0:0:0.0"
+                IsChecked="False"
+                OffColor="#666666"
+                OffContent="Aus"
+                OnColor="#107C10"
+                OnContent="Ein"
+                SwitchHeight="25"
+                SwitchWidth="44"
+                ThumbSize="18" />
+
         </StackPanel>
 
     </Grid>
