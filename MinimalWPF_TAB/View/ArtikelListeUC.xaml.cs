@@ -17,6 +17,7 @@ namespace MinimalWPF.View
 {
     using System.ComponentModel;
     using System.Data;
+    using System.IO;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -40,6 +41,7 @@ namespace MinimalWPF.View
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
+            this.NewEntryCommand = new CommandBase(commandParam => this.OnNewEntry(commandParam), () => true);
             this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
             this.RowDoubleClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
             this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
@@ -50,6 +52,7 @@ namespace MinimalWPF.View
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase NewEntryCommand { get; private set; }
         public CommandBase CloseTabCommand { get; private set; }
         public CommandBase SelectDataRowCommand { get; private set; }
         public CommandBase RowDoubleClickCommand { get; private set; }
@@ -114,8 +117,13 @@ namespace MinimalWPF.View
         {
             TimeSpan t = Performance.Measure(() =>
             {
-                DataTable dt = DemoData.LadeArtikel();
+                if (File.Exists("artikel.json") == false)
+                {
+                    DataTable dtNew = DemoData.LadeArtikel();
+                    DataTableJsonSerializer.Save(dtNew, "artikel.json");
+                }
 
+                DataTable dt = DataTableJsonSerializer.Load("artikel.json");
                 this.DataSource = CollectionViewSource.GetDefaultView(dt);
                 if (this.DataSource != null)
                 {
@@ -166,6 +174,16 @@ namespace MinimalWPF.View
                     {
                         await App.EventAgg.PublishAsync(args);
                     }
+                }
+            }
+        }
+
+        private async void OnNewEntry(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.NewEntry)
+                {
                 }
             }
         }
@@ -238,6 +256,7 @@ namespace MinimalWPF.View
                     if (quesion == MessageBoxResult.Yes)
                     {
                         rowView.AcceptChanges();
+                        DataTableJsonSerializer.Save(rowView.Table, "artikel.json");
                         this.ArtikelTabControl.Items.Remove(tabItem);
                         await this.RefeshDataSourceAsync();
                     }

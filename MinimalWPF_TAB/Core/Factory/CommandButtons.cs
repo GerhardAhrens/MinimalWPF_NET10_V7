@@ -14,6 +14,12 @@
         Help = 3,
         [Description("Zurück zur vorherigen Seite")]
         GoBack = 4,
+        [Description("Neuer Eintrag erstellen")]
+        NewEntry = 5,
+        [Description("Eintrag löschen")]
+        DeleteEntry = 6,
+        [Description("Eintrag kopieren")]
+        CopyEntry = 7,
         [Description("Artikelliste")]
         Artikelliste = 10,
         [Description("Kategorien")]

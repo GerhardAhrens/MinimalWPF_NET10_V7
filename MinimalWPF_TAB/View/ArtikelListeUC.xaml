@@ -46,6 +46,23 @@
                 Image="{StaticResource ResourceKey=IconGoBack}"
                 ToolTipText="Zurück zum Hauptmenü" />
 
+            <UI:MenuButton
+                Command="{Binding Path=NewEntryCommand}"
+                CommandParameter="{x:Static core:CommandButtons.NewEntry}"
+                Image="{StaticResource ResourceKey=IconNewEntry}"
+                ToolTipText="Neuer Eintrag erstellen" />
+
+            <UI:MenuButton
+                Command="{Binding Path=DeleteEntryCommand}"
+                CommandParameter="{x:Static core:CommandButtons.DeleteEntry}"
+                Image="{StaticResource ResourceKey=IconDeleteEntry}"
+                ToolTipText="Eintrag löschen" />
+
+            <UI:MenuButton
+                Command="{Binding Path=CopyEntryCommand}"
+                CommandParameter="{x:Static core:CommandButtons.CopyEntry}"
+                Image="{StaticResource ResourceKey=IconCopyEntry}"
+                ToolTipText="Eintrag kopieren" />
         </UI:MenuBar>
         <!--#endregion Hauptmenübar-->
 

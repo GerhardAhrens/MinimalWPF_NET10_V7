@@ -25,6 +25,14 @@ namespace System.Data
     [SupportedOSPlatform("windows")]
     public static class DataRowExtensions
     {
+        /// <summary>
+        /// Prüft, ob sich eine Spalte des DataRow geändert hat.
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns>True = Eine Spalte hat sich geändern, False = nicht</returns>
+        /// <example>
+        /// bool hasChanged = HasRowChanges(row)
+        /// </example>
         public static bool HasRowChanges(this DataRow @this)
         {
             if (@this.RowState != DataRowState.Modified)
@@ -274,9 +282,20 @@ namespace System.Data
         }
         #endregion ToObject
 
+        /// <summary>
+        /// Gibt eine Liste geänderten DataColumns zurück
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns>Liste geänderter DataColumns</returns>
+        /// <example>
+        /// foreach (DataColumn column in GetChangedColumns(row))
+        /// {
+        ///   Console.WriteLine($"{column.ColumnName} wurde geändert.");
+        /// }
+        /// </example>
         public static IEnumerable<DataColumn> GetChangedColumns(this IEnumerable<DataRow> rows)
         {
-            return rows.SelectMany(row => row.GetChangedColumns()).Distinct();
+            return rows.SelectMany(row => rows.GetChangedColumns()).Distinct();
         }
 
         public static IEnumerable<DataColumn> GetChangedColumns(this DataTable table)
@@ -303,47 +322,5 @@ namespace System.Data
                 return false;
             }
         }
-
-
-        #region GetChangedColumns
-        /// <summary>
-        /// Gibt eine Liste von geänderten Columns zurück
-        /// </summary>
-        /// <param name="row"></param>
-        /// <returns></returns>
-        public static IEnumerable<DataColumn> GetChangedColumns(this DataRow row)
-        {
-            return row.Table.Columns.Cast<DataColumn>().Where(col => HasCellChanged(row, col));
-        }
-
-        private static bool HasCellChanged(DataRow row, DataColumn col)
-        {
-            if (!row.HasVersion(DataRowVersion.Original))
-            {
-                // Row has been added. All columns have changed. 
-                return true;
-            }
-
-            if (!row.HasVersion(DataRowVersion.Current))
-            {
-                // Row has been removed. No columns have changed.
-                return false;
-            }
-
-            var originalVersion = row[col, DataRowVersion.Original];
-            var currentVersion = row[col, DataRowVersion.Current];
-
-            if (originalVersion == DBNull.Value && currentVersion == DBNull.Value)
-            {
-                return false;
-            }
-            else if (originalVersion != DBNull.Value && currentVersion != DBNull.Value)
-            {
-                return !originalVersion.Equals(currentVersion);
-            }
-
-            return true;
-        }
-        #endregion GetChangedColumns
     }
 }
