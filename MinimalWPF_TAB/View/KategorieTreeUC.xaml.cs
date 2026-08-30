@@ -58,6 +58,12 @@ namespace MinimalWPF.View
 
         public ObservableCollection<AdvancedTreeNode> Nodes { get; private set; } = new();
 
+        public ID Id
+        {
+            get => base.GetValue<ID>();
+            set => base.SetValue(value);
+        }
+
         public AdvancedTreeNode SelectedNode
         {
             get => base.GetValue<AdvancedTreeNode>();
@@ -138,7 +144,32 @@ namespace MinimalWPF.View
 
             if (commandParam is TabItem tabItem)
             {
-                DataRow rowView = ((TabArtikelDetail)tabItem.Content).CurrentRow.Row;
+                DataRow rowView = ((TabArtikelDetail)tabItem.Content).CurrentRow;
+                if (rowView.HasRowChanges() == true)
+                {
+                    // Es existieren Änderungen
+                    MessageBoxResult quesion = this.Message.CancelQuestion("Änderungen speichern", "Es existieren Änderungen an den Daten. Möchten Sie die Änderungen speichern?");
+                    if (quesion == MessageBoxResult.Yes)
+                    {
+                        rowView.AcceptChanges();
+                        this.KategorieTabControl.Items.Remove(tabItem);
+                        await this.RefeshDataSourceAsync();
+                    }
+                    else if (quesion == MessageBoxResult.No)
+                    {
+                        rowView.RejectChanges();
+                        this.KategorieTabControl.Items.Remove(tabItem);
+                        await this.RefeshDataSourceAsync();
+                    }
+                    else if (quesion == MessageBoxResult.Cancel)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    this.KategorieTabControl.Items.Remove(tabItem);
+                }
             }
         }
 
@@ -148,24 +179,20 @@ namespace MinimalWPF.View
             {
                 AdvancedTabControl tab = (AdvancedTabControl)tabControl.Source;
                 AdvancedTabItem selectedTab = tab.SelectedItem as AdvancedTabItem;
+                if (selectedTab != null && selectedTab.Tag is DataRow rowView)
+                {
+                    selectedTab.Content = new TabArtikelDetail(rowView);
+                }
             }
-        }
-
-        private void OnNodeContextMenueEdit(object commandParam)
-        {
-            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
-            this.Message.Hinweis("Kontextmenü Node Edit", $"{node.Text}");
-        }
-
-        private void OnNodeContextMenueDelete(object commandParam)
-        {
-            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
-            this.Message.Hinweis("Kontextmenü Node Delete", $"{node.Text}");
         }
 
         private void OnNodeSelected(object commandParam)
         {
-            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+            if (commandParam is AdvancedTreeNode treeNode)
+            {
+                DataRow currentRow = (DataRow)treeNode.SourceItem;
+                this.Id = ((DataRow)treeNode.SourceItem).GetAs<int>("A");
+            }
         }
 
         private async void OnNodeDoubleClicked(object commandParam)
@@ -196,6 +223,17 @@ namespace MinimalWPF.View
             }
         }
 
+        private void OnNodeContextMenueEdit(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+            this.Message.Hinweis("Kontextmenü Node Edit", $"{node.Text}");
+        }
+
+        private void OnNodeContextMenueDelete(object commandParam)
+        {
+            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
+            this.Message.Hinweis("Kontextmenü Node Delete", $"{node.Text}");
+        }
         #endregion Command Events
 
 

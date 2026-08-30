@@ -24,7 +24,7 @@ namespace MinimalWPF.View
     /// </summary>
     public partial class TabArtikelDetail : UserControlBase
     {
-        public TabArtikelDetail(DataRowView rowView) : base(typeof(TabArtikelDetail))
+        public TabArtikelDetail(DataRow rowView) : base(typeof(TabArtikelDetail))
 
         {
             this.InitializeComponent();
@@ -36,9 +36,9 @@ namespace MinimalWPF.View
 
         #region Properties
 
-        public DataRowView CurrentRow
+        public DataRow CurrentRow
         {
-            get => base.GetValue<DataRowView>();
+            get => base.GetValue<DataRow>();
             set => base.SetValue(value);
         }
 

@@ -215,7 +215,7 @@ namespace MinimalWPF.View
 
                 if (selectedTab != null && selectedTab.Tag is DataRowView rowView)
                 {
-                    selectedTab.Content = new TabArtikelDetail(rowView);
+                    selectedTab.Content = new TabArtikelDetail(rowView.Row);
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace MinimalWPF.View
 
             if (commandParam is TabItem tabItem)
             {
-                DataRow rowView = ((TabArtikelDetail)tabItem.Content).CurrentRow.Row;
+                DataRow rowView = ((TabArtikelDetail)tabItem.Content).CurrentRow;
 
                 if (rowView.HasRowChanges() == true)
                 {
