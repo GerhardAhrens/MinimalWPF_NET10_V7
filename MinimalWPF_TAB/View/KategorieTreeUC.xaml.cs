@@ -62,6 +62,12 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
+        public DataRowView SelectedDataRow
+        {
+            get => base.GetValue<DataRowView>();
+            set => base.SetValue(value);
+        }
+
         public bool IsLoading
         {
             get => base.GetValue<bool>();
@@ -147,10 +153,31 @@ namespace MinimalWPF.View
             AdvancedTreeNode node = commandParam as AdvancedTreeNode;
         }
 
-        private void OnNodeDoubleClicked(object commandParam)
+        private async void OnNodeDoubleClicked(object commandParam)
         {
-            AdvancedTreeNode node = commandParam as AdvancedTreeNode;
-            this.Message.Hinweis("Auswahl Node", $"{node.Text}");
+            if (commandParam is AdvancedTreeNode rowNode)
+            {
+                AdvancedTabItem kategorieTab = new AdvancedTabItem()
+                {
+                    Header = $"Artikel {((DataRow)rowNode.SourceItem).GetAs<int>("A")}",
+                    HeaderImage = (ImageSource)Application.Current.FindResource("IconApplicationEnd"),
+                };
+
+                bool isTabFound = this.KategorieTree.Items.OfType<AdvancedTabItem>().Any(tab => tab.Header?.ToString() == kategorieTab.Header.ToString());
+                if (isTabFound == false)
+                {
+                    DataRow currentRow = (DataRow)rowNode.SourceItem;
+                    currentRow.AcceptChanges();
+                    this.KategorieTabControl.Items.Add(kategorieTab);
+
+                    if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(new StatusEvent($"Bereit"));
+                    }
+                }
+
+                this.KategorieTabControl.SelectedItem = kategorieTab;
+            }
         }
 
         #endregion Command Events

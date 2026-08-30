@@ -121,12 +121,17 @@
             <Button
                 Command="{Binding Path=MenuArtikellisteCommand}"
                 CommandParameter="{x:Static core:CommandButtons.Artikelliste}"
-                Content="Artikelliste" />
+                Content="ListView" />
 
             <Button
                 Command="{Binding Path=MenuKategorienCommand}"
                 CommandParameter="{x:Static core:CommandButtons.Kategorien}"
-                Content="Kategorien" />
+                Content="TreeView" />
+
+            <Button
+                Command="{Binding Path=MenuControlDemoCommand}"
+                CommandParameter="{x:Static core:CommandButtons.ControlDemo}"
+                Content="Control Demo" />
 
             <UI:MenuButton
                 UI:MenuBar.Dock="Right"

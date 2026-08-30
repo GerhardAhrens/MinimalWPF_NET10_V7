@@ -53,7 +53,7 @@
 
         <!--#endregion Hauptmenübar-->
         <UI:AdvancedTabControl
-            x:Name="ArtikelTabControl"
+            x:Name="KategorieTabControl"
             Grid.Row="1"
             SelectionChangedCommand="{Binding Path=SelectionChangedCommand}">
             <UI:AdvancedTabControl.Resources>
@@ -138,7 +138,7 @@
                     </Grid>
 
                     <UI:AdvancedTreeView
-                        x:Name="treeMain"
+                        x:Name="KategorieTree"
                         Grid.Row="1"
                         Margin="5,0,5,0"
                         DoubleClickCommand="{Binding Path=NodeDoubleClickedCommand}"
@@ -149,12 +149,13 @@
 
                     <!--  Wird über der DataGrid dargestellt  -->
                     <UI:ProgressOverlay
-                        Grid.Row="0" Grid.RowSpan="2"
-                        IsActived="True"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        IsActived="False"
                         MaxValue="100"
                         MinValue="0"
-                        Value="51"
-                        Text="Daten werden geladen..." />
+                        Text="Daten werden geladen..."
+                        Value="51" />
 
                     <UI:StatusTreeView
                         Grid.Row="2"

@@ -18,6 +18,8 @@
         Artikelliste = 10,
         [Description("Kategorien")]
         Kategorien = 11,
+        [Description("Control Demo")]
+        ControlDemo = 12,
         [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]

@@ -35,6 +35,7 @@ namespace MinimalWPF.View
             this.QuitCommand = new CommandBase(commandParam => this.OnQuit(commandParam), () => true);
             this.MenuArtikellisteCommand = new CommandBase(commandParam => this.OnMenuArtikelliste(commandParam), () => true);
             this.MenuKategorienCommand = new CommandBase(commandParam => this.OnMenuKategorien(commandParam), () => true);
+            this.MenuControlDemoCommand = new CommandBase(commandParam => this.OnMenuControlDemo(commandParam), () => true);
             this.InformationCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.CloseInformationPopupCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
@@ -72,6 +73,7 @@ namespace MinimalWPF.View
         public CommandBase QuitCommand { get; private set; }
         public CommandBase MenuArtikellisteCommand { get; private set; }
         public CommandBase MenuKategorienCommand { get; private set; }
+        public CommandBase MenuControlDemoCommand { get; private set; }
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
         public CommandBase CloseInformationPopupCommand { get; private set; }
@@ -138,6 +140,24 @@ namespace MinimalWPF.View
                 {
                     ChangeViewEventArgs args = new();
                     args.FromPage = CommandButtons.Home;
+                    args.MenuButton = button;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
+
+        private async void OnMenuControlDemo(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ControlDemo)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.FromPage = CommandButtons.ControlDemo;
                     args.MenuButton = button;
 
                     if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)

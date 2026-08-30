@@ -41,7 +41,7 @@ namespace MinimalWPF.View
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
             this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
-            this.SelectDataRowClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
+            this.RowDoubleClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
             this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
             this.SelectionChangedCommand = new CommandBase(commandParam => this.OnSelectionChanged(commandParam), () => true);
 
@@ -52,7 +52,7 @@ namespace MinimalWPF.View
         public CommandBase GoBackCommand { get; private set; }
         public CommandBase CloseTabCommand { get; private set; }
         public CommandBase SelectDataRowCommand { get; private set; }
-        public CommandBase SelectDataRowClickCommand { get; private set; }
+        public CommandBase RowDoubleClickCommand { get; private set; }
         public CommandBase SelectionChangedCommand { get; private set; }
 
         public ICollectionView DataSource
