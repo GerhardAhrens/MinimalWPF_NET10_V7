@@ -693,6 +693,23 @@ namespace System.Data
 
         #endregion Select Distinct
 
+        #region SelectCount
+        public static int SelectCount(this DataTable table, Func<DataRow, bool> predicate)
+        {
+            if (table == null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            return table.AsEnumerable().Count(predicate);
+        }
+        #endregion SelectCount
+
         #region AddRange
         public static void AddRange(this DataRowCollection rc, IEnumerable<object[]> tuples)
         {

@@ -132,11 +132,21 @@
 
         private static string GetProposedText(TextBox textBox, string neueEingabe)
         {
-            string text = textBox.Text;
+            string text = textBox.Text ?? string.Empty;
+
             int selectionStart = textBox.SelectionStart;
             int selectionLength = textBox.SelectionLength;
 
-            return text.Remove(selectionStart, selectionLength).Insert(selectionStart, neueEingabe);
+            // SelectionStart absichern
+            selectionStart = Math.Max(0, Math.Min(selectionStart, text.Length));
+
+            // SelectionLength absichern
+            selectionLength = Math.Max(
+                0,
+                Math.Min(selectionLength, text.Length - selectionStart));
+
+            return text.Remove(selectionStart, selectionLength)
+                       .Insert(selectionStart, neueEingabe);
         }
 
         private static bool IsValidDecimal(string text)

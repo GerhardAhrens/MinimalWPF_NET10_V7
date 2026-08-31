@@ -22,11 +22,16 @@
             VerticalAlignment="Center"
             Text="Artikelnummer" />
 
-        <TextBlock
+        <TextBox
+            x:Name="ArtikelNummer"
             Grid.Row="0"
             Grid.Column="1"
+            Width="100"
+            HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Text="{Binding Path=CurrentRow[A], FallbackValue=~ArtikelId}" />
+            UI:TextBoxIntegerBehavior.AllowNegative="False"
+            UI:TextBoxIntegerBehavior.IsEnabled="True"
+            Text="{Binding Path=CurrentRow[A], FallbackValue=~ArtikelId, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock
             Grid.Row="1"
@@ -40,7 +45,7 @@
             Width="200"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Text="{Binding Path=CurrentRow[B], FallbackValue=~ArtikelBezeichnung}" />
+            Text="{Binding Path=CurrentRow[B], FallbackValue=~ArtikelBezeichnung, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBlock
             Grid.Row="2"
@@ -55,6 +60,6 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             UI:TextBoxDecimalBehaviors.IsDecimalOnly="True"
-            Text="{Binding Path=CurrentRow[C], FallbackValue=~ArtikelPreis}" />
+            Text="{Binding Path=CurrentRow[C], FallbackValue=~ArtikelPreis, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </base:UserControlBase>

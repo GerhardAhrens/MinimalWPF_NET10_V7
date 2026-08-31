@@ -17,6 +17,7 @@ namespace MinimalWPF.View
 {
     using System.Data;
     using System.Windows;
+    using System.Windows.Media;
     using System.Windows.Controls;
 
     /// <summary>
@@ -29,6 +30,7 @@ namespace MinimalWPF.View
         {
             this.InitializeComponent();
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
+            WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "LostFocus", this.OnLostFocus);
             this.CurrentRow = rowView;
             this.Background = System.Windows.Media.Brushes.LightBlue;
         }
@@ -49,16 +51,32 @@ namespace MinimalWPF.View
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (this.CurrentRow.RowState == DataRowState.Added)
+            if (this.CurrentRow.RowState == DataRowState.Detached)
             {
                 this.CurrentRow.SetField("A", 0);
                 this.CurrentRow.SetField("B", string.Empty);
                 this.CurrentRow.SetField("C", 0.0m);
+                this.CurrentRow.SetField("Warengruppe", "Schreibwaren");
+            }
+            else if (this.CurrentRow.RowState == DataRowState.Unchanged)
+            {
+                this.ArtikelNummer.IsReadOnly = true;
+                this.ArtikelNummer.Background = Brushes.LightYellow;
+            }
+            else if (this.CurrentRow.RowState == DataRowState.Added)
+            {
+                this.CurrentRow.AcceptChanges();
+                this.CurrentRow.Table.AcceptChanges();
+                this.CurrentRow.SetModified();
             }
 
             this.DataContext = this;
         }
 
+        private void OnLostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
         #endregion Windows Events
 
         #region Command Events
