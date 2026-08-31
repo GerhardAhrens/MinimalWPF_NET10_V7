@@ -184,6 +184,29 @@ namespace MinimalWPF.View
             {
                 if (button == CommandButtons.NewEntry)
                 {
+                    AdvancedTabItem artikelTab = new AdvancedTabItem()
+                    {
+                        Header = $"Artikel {this.Id}",
+                        HeaderImage = (ImageSource)Application.Current.FindResource("IconApplicationEnd"),
+                    };
+
+
+                    ICollectionView view = (ICollectionView)this.DataSource;
+                    if (view.SourceCollection is DataView dv)
+                    {
+                        DataRow newRow = dv.Table.NewRow();
+                        dv.Table.Rows.Add(newRow);
+                        artikelTab.Tag = newRow;
+
+                        if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+                        {
+                            await App.EventAgg.PublishAsync(new StatusEvent($"Neuer Eintrag"));
+                        }
+
+                        this.ArtikelTabControl.Items.Add(artikelTab);
+                        artikelTab.Content = new TabArtikelDetail(newRow);
+                        this.ArtikelTabControl.SelectedItem = artikelTab;
+                    }
                 }
             }
         }

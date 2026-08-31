@@ -8,7 +8,12 @@
         {
             DataTable table = new("Artikel");
 
-            table.Columns.Add("A", typeof(int));         // Key
+            DataColumn artikelNummer = new();
+            artikelNummer.ColumnName = "A";
+            artikelNummer.DataType = typeof(int);
+            artikelNummer.AllowDBNull = true;
+            artikelNummer.ExtendedProperties["ArtikelNummer"] = "Artikelnummer";
+            table.Columns.Add(artikelNummer);         // Key
 
             DataColumn artikelName = new();
             artikelName.ColumnName = "B";
@@ -21,7 +26,7 @@
             table.Columns.Add("Warengruppe", typeof(string));      // Warengruppe
             table.Columns.Add("Anzahl", typeof(int));      // Stückzahl pro Packung
 
-            table.PrimaryKey = new[] { table.Columns["A"] };
+            //table.PrimaryKey = new[] { table.Columns["A"] };
 
             table.Rows.Add(2001, "Kugelschreiber", 1.99m, "Schreibwaren",2);
             table.Rows.Add(2002, "Bleistift", 0.79m, "Schreibwaren",5);
