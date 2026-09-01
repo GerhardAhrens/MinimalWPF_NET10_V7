@@ -188,7 +188,7 @@ namespace MinimalWPF.View
                 {
                     AdvancedTabItem artikelTab = new AdvancedTabItem()
                     {
-                        Header = $"Artikel {this.Id}",
+                        Header = $"Neuer Artikel",
                         HeaderImage = (ImageSource)Application.Current.FindResource("IconApplicationEnd"),
                     };
 
@@ -196,8 +196,7 @@ namespace MinimalWPF.View
                     ICollectionView view = (ICollectionView)this.DataSource;
                     if (view.SourceCollection is DataView dv)
                     {
-                        DataRow newRow = dv.Table.NewRow();
-                        artikelTab.Tag = newRow;
+                        DataTable originalTable = dv.Table;
 
                         if (App.EventAgg.IsSubscription<StatusEvent>() == true)
                         {
@@ -205,7 +204,7 @@ namespace MinimalWPF.View
                         }
 
                         this.ArtikelTabControl.Items.Add(artikelTab);
-                        artikelTab.Content = new TabArtikelDetail(newRow);
+                        artikelTab.Content = new TabArtikelDetail(originalTable, DataRowAction.Add);
                         this.ArtikelTabControl.SelectedItem = artikelTab;
                     }
                 }
@@ -227,22 +226,13 @@ namespace MinimalWPF.View
                     ICollectionView view = (ICollectionView)this.DataSource;
                     if (view.SourceCollection is DataView dv)
                     {
-                        DataRow newRow = dv.Table.NewRow();
-                        newRow = this.SelectedDataRow.Row.Clone<DataRow>(dv.Table);
-                        //newRow.Table.Rows.Add(newRow);
-                        //newRow.AcceptChanges();
-                        newRow.SetColumnError("A", "COPY"); 
-                        //newRow.Table.AcceptChanges();
-                        //newRow.SetAdded();
-                        artikelTab.Tag = newRow;
-
                         if (App.EventAgg.IsSubscription<StatusEvent>() == true)
                         {
                             await App.EventAgg.PublishAsync(new StatusEvent($"Kopieren Eintrag"));
                         }
 
                         this.ArtikelTabControl.Items.Add(artikelTab);
-                        artikelTab.Content = new TabArtikelDetail(newRow);
+                        artikelTab.Content = new TabArtikelDetail(this.SelectedDataRow.Row,DataRowAction.ChangeOriginal);
                         this.ArtikelTabControl.SelectedItem = artikelTab;
                     }
                 }
@@ -294,41 +284,28 @@ namespace MinimalWPF.View
 
                 if (selectedTab != null && selectedTab.Tag is DataRowView rowView)
                 {
-                    selectedTab.Content = new TabArtikelDetail(rowView.Row);
+                    selectedTab.Content = new TabArtikelDetail(rowView.Row,DataRowAction.Change);
                 }
             }
         }
 
         private async void OnCloseTab(object commandParam)
         {
-            if (((FrameworkElement)commandParam).Tag.ToString() == string.Empty)
-            {
-                return;
-            }
-
             if (commandParam is TabItem tabItem)
             {
                 DataRow rowView = ((TabArtikelDetail)tabItem.Content).CurrentRow;
+                DataRowAction rowAction = ((TabArtikelDetail)tabItem.Content).RowAction;
 
-                if (rowView.HasRowChanges() == true)
+                if (rowAction == DataRowAction.Change && rowView.HasRowChanges() == true)
                 {
                     // Es existieren Änderungen
                     MessageBoxResult quesion = this.Message.CancelQuestion("Änderungen speichern", "Es existieren Änderungen an den Daten. Möchten Sie die Änderungen speichern?");
                     if (quesion == MessageBoxResult.Yes)
                     {
-                        int artikelNr = this.SelectedDataRow.Row.Field<int>("A");
-                        if (rowView.Table.SelectCount(f => f.Field<int>("A") == artikelNr) == 0)
-                        {
-                            rowView.AcceptChanges();
-                            DataTableJsonSerializer.Save(rowView.Table, "artikel.json");
-                            this.ArtikelTabControl.Items.Remove(tabItem);
-                            await this.RefeshDataSourceAsync();
-                        }
-                        else
-                        {
-                            this.Message.Hinweis("Artikelnummer", $"Die Artikelnummer '{rowView.Field<int>("A")}'");
-                            return;
-                        }
+                        rowView.AcceptChanges();
+                        DataTableJsonSerializer.Save(rowView.Table, "artikel.json");
+                        this.ArtikelTabControl.Items.Remove(tabItem);
+                        await this.RefeshDataSourceAsync();
                     }
                     else if (quesion == MessageBoxResult.No)
                     {
@@ -341,9 +318,9 @@ namespace MinimalWPF.View
                         return;
                     }
                 }
-                else if (rowView.RowState == DataRowState.Detached)
+                else if (rowAction == DataRowAction.Add)
                 {
-                    int artikelNr = this.SelectedDataRow.Row.Field<int>("A");
+                    int artikelNr = rowView.Field<int>("A");
                     if (rowView.Table.SelectCount(f => f.Field<int>("A") == artikelNr) == 0)
                     {
                         rowView.Table.Rows.Add(rowView);
@@ -359,6 +336,9 @@ namespace MinimalWPF.View
                         this.Message.Hinweis("Artikelnummer", $"Die Artikelnummer '{rowView.Field<int>("A")}'");
                         return;
                     }
+                }
+                else if (rowAction == DataRowAction.Add)
+                { 
                 }
                 else
                 {

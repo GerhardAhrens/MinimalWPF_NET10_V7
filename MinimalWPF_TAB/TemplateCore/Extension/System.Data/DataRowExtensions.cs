@@ -125,6 +125,17 @@ namespace System.Data
             return result;
         }
 
+        public static DataRow CloneRow(this DataRow source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+
+            DataRow clone = source.Table.NewRow();
+
+            clone.ItemArray = (object[])source.ItemArray.Clone();
+
+            return clone;
+        }
+
         public static T Clone<T>(this DataRow @this, DataTable parentTable) where T : DataRow
         {
             T clonedRow = (T)parentTable.NewRow();

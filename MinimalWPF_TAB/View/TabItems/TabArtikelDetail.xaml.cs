@@ -17,21 +17,34 @@ namespace MinimalWPF.View
 {
     using System.Data;
     using System.Windows;
-    using System.Windows.Media;
     using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
 
     /// <summary>
     /// Interaktionslogik für TabArtikelDetail.xaml
     /// </summary>
     public partial class TabArtikelDetail : UserControlBase
     {
-        public TabArtikelDetail(DataRow rowView) : base(typeof(TabArtikelDetail))
+        public TabArtikelDetail(DataRow rowView, DataRowAction rowAction = DataRowAction.Change) : base(typeof(TabArtikelDetail))
 
         {
             this.InitializeComponent();
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "LostFocus", this.OnLostFocus);
             this.CurrentRow = rowView;
+            this.RowAction = rowAction;
+            this.Background = System.Windows.Media.Brushes.LightBlue;
+        }
+
+        public TabArtikelDetail(DataTable originalTable, DataRowAction rowAction = DataRowAction.Add) : base(typeof(TabArtikelDetail))
+
+        {
+            this.InitializeComponent();
+            WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
+            WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "LostFocus", this.OnLostFocus);
+            this.OriginalTable = originalTable;
+            this.RowAction = rowAction;
             this.Background = System.Windows.Media.Brushes.LightBlue;
         }
 
@@ -43,6 +56,10 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
+        public DataRowAction RowAction { get; set; }
+
+        private DataTable OriginalTable { get; set; }
+        private DataRow CopyRow { get; set; }
         private MessageBase Message { get; } = new MessageBase();
 
         #endregion Properties
@@ -51,23 +68,23 @@ namespace MinimalWPF.View
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (this.CurrentRow.RowState == DataRowState.Detached)
+            if (this.RowAction == DataRowAction.Add)
             {
+                this.CurrentRow = this.OriginalTable.NewRow();
                 this.CurrentRow.SetField("A", 0);
                 this.CurrentRow.SetField("B", string.Empty);
                 this.CurrentRow.SetField("C", 0.0m);
                 this.CurrentRow.SetField("Warengruppe", "Schreibwaren");
             }
-            else if (this.CurrentRow.RowState == DataRowState.Unchanged)
+            else if (this.RowAction == DataRowAction.Change)
             {
                 this.ArtikelNummer.IsReadOnly = true;
                 this.ArtikelNummer.Background = Brushes.LightYellow;
             }
-            else if (this.CurrentRow.RowState == DataRowState.Added)
+            else if (this.RowAction == DataRowAction.ChangeOriginal)
             {
-                this.CurrentRow.AcceptChanges();
-                this.CurrentRow.Table.AcceptChanges();
-                this.CurrentRow.SetModified();
+                this.CopyRow = this.CurrentRow.Table.NewRow();
+                this.CurrentRow = this.CopyRow.CloneRow();
             }
 
             this.DataContext = this;
