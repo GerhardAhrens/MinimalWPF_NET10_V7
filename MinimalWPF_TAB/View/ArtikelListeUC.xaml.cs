@@ -188,6 +188,10 @@ namespace MinimalWPF.View
             {
                 if (button == CommandButtons.NewEntry)
                 {
+                    this.NewEntryCommand.IsEnabled = false;
+                    this.CopyEntryCommand.IsEnabled = false;
+                    this.DeleteEntryCommand.IsEnabled = false;
+
                     AdvancedTabItem artikelTab = new AdvancedTabItem()
                     {
                         Header = $"Neuer Artikel",
@@ -219,6 +223,10 @@ namespace MinimalWPF.View
             {
                 if (button == CommandButtons.CopyEntry)
                 {
+                    this.NewEntryCommand.IsEnabled = false;
+                    this.CopyEntryCommand.IsEnabled = false;
+                    this.DeleteEntryCommand.IsEnabled = false;
+
                     string artikelName = this.SelectedDataRow.Row.Field<string>("B");
                     MessageBoxResult question = this.Message.Question("Eintrag kopieren", $"Möchten Sie den Eintrag '{artikelName}' wirklich kopieren?");
                     if (question == MessageBoxResult.Yes)
@@ -329,21 +337,21 @@ namespace MinimalWPF.View
                 if (rowAction == DataRowAction.Change && rowView.HasRowChanges() == true)
                 {
                     // Es existieren Änderungen
-                    MessageBoxResult quesion = this.Message.CancelQuestion("Änderungen speichern", "Es existieren Änderungen an den Daten. Möchten Sie die Änderungen speichern?");
-                    if (quesion == MessageBoxResult.Yes)
+                    MessageBoxResult question = this.Message.CancelQuestion("Änderungen speichern", "Es existieren Änderungen an den Daten. Möchten Sie die Änderungen speichern?");
+                    if (question == MessageBoxResult.Yes)
                     {
                         rowView.AcceptChanges();
                         DataTableJsonSerializer.Save(rowView.Table, "artikel.json");
                         this.ArtikelTabControl.Items.Remove(tabItem);
                         await this.RefeshDataSourceAsync();
                     }
-                    else if (quesion == MessageBoxResult.No)
+                    else if (question == MessageBoxResult.No)
                     {
                         rowView.RejectChanges();
                         this.ArtikelTabControl.Items.Remove(tabItem);
                         await this.RefeshDataSourceAsync();
                     }
-                    else if (quesion == MessageBoxResult.Cancel)
+                    else if (question == MessageBoxResult.Cancel)
                     {
                         return;
                     }
@@ -351,6 +359,21 @@ namespace MinimalWPF.View
                 else if (rowAction == DataRowAction.Add)
                 {
                     int artikelNr = rowView.Field<int>("A");
+                    if (artikelNr == 0)
+                    {
+                        MessageBoxResult question = this.Message.Question("Artikel hinzufügen", $"Die Artikelnummer darf nicht '{artikelNr}' sein.\n Eingabe korrigieren?");
+                        if (question == MessageBoxResult.Yes)
+                        {
+                            return;
+                        }
+                        else if (question == MessageBoxResult.No)
+                        {
+                            this.ArtikelTabControl.Items.Remove(tabItem);
+                            await this.RefeshDataSourceAsync();
+                            return;
+                        }
+                    }
+
                     if (rowView.Table.SelectCount(f => f.Field<int>("A") == artikelNr) == 0)
                     {
                         rowView.Table.Rows.Add(rowView);
@@ -390,6 +413,11 @@ namespace MinimalWPF.View
                 {
                     this.ArtikelTabControl.Items.Remove(tabItem);
                 }
+
+                this.NewEntryCommand.IsEnabled = true;
+                this.CopyEntryCommand.IsEnabled = true;
+                this.DeleteEntryCommand.IsEnabled = true;
+
             }
         }
 

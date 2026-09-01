@@ -26,7 +26,7 @@
             table.Columns.Add("Warengruppe", typeof(string));      // Warengruppe
             table.Columns.Add("Anzahl", typeof(int));      // Stückzahl pro Packung
 
-            //table.PrimaryKey = new[] { table.Columns["A"] };
+            table.PrimaryKey = new[] { table.Columns["A"] };
 
             table.Rows.Add(2001, "Kugelschreiber", 1.99m, "Schreibwaren",2);
             table.Rows.Add(2002, "Bleistift", 0.79m, "Schreibwaren",5);

@@ -75,6 +75,7 @@ namespace MinimalWPF.View
                 this.CurrentRow.SetField("B", string.Empty);
                 this.CurrentRow.SetField("C", 0.0m);
                 this.CurrentRow.SetField("Warengruppe", "Schreibwaren");
+                this.CurrentRow.SetField("Anzahl", 0);
             }
             else if (this.RowAction == DataRowAction.Change)
             {
