@@ -16,7 +16,9 @@
 namespace MinimalWPF.View
 {
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Data;
+    using System.IO;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -96,19 +98,10 @@ namespace MinimalWPF.View
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            /*
-            var adapter = new AdvancedTreeItemAdapter<Device>(device => device.Name);
-            foreach (var device in Devices)
-            {
-                var n = adapter.Convert(device);
-                this.Nodes.Add(n);
-            }
-            */
             this.IsLoading = true;
 
             // 1. Daten asynchron laden
             await this.RefeshDataSourceAsync();
-            //this.Nodes = this.CreateDemoData();
 
             this.IsLoading = false;
 
@@ -256,7 +249,13 @@ namespace MinimalWPF.View
             DrawingImage closedImage = Application.Current.TryFindResource("TreeFolderClosed") as DrawingImage;
             DrawingImage openImage = Application.Current.TryFindResource("TreeFolderOpen") as DrawingImage;
 
-            DataTable table = DemoData.LadeArtikel();
+            if (File.Exists("artikel.json") == false)
+            {
+                DataTable dtNew = DemoData.LadeArtikel();
+                DataTableJsonSerializer.Save(dtNew, "artikel.json");
+            }
+
+            DataTable table = DataTableJsonSerializer.Load("artikel.json").ToSorting(ListSortDirection.Ascending, "A");
 
             Nodes.Clear();
 

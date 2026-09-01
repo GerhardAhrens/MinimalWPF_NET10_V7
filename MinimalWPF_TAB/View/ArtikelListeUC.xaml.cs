@@ -43,6 +43,7 @@ namespace MinimalWPF.View
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
             this.NewEntryCommand = new CommandBase(commandParam => this.OnNewEntry(commandParam), () => true);
             this.CopyEntryCommand = new CommandBase(commandParam => this.OnCopyEntry(commandParam), () => true);
+            this.DeleteEntryCommand = new CommandBase(commandParam => this.OnDeleteEntry(commandParam), () => true);
             this.SelectDataRowCommand = new CommandBase(commandParam => this.OnSelectDataRow(commandParam), () => true);
             this.RowDoubleClickCommand = new CommandBase(commandParam => this.OnSelectDataRowClick(commandParam), () => true);
             this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
@@ -55,6 +56,7 @@ namespace MinimalWPF.View
         public CommandBase GoBackCommand { get; private set; }
         public CommandBase NewEntryCommand { get; private set; }
         public CommandBase CopyEntryCommand { get; private set; }
+        public CommandBase DeleteEntryCommand { get; private set; }
         public CommandBase CloseTabCommand { get; private set; }
         public CommandBase SelectDataRowCommand { get; private set; }
         public CommandBase RowDoubleClickCommand { get; private set; }
@@ -217,23 +219,51 @@ namespace MinimalWPF.View
             {
                 if (button == CommandButtons.CopyEntry)
                 {
-                    AdvancedTabItem artikelTab = new AdvancedTabItem()
+                    string artikelName = this.SelectedDataRow.Row.Field<string>("B");
+                    MessageBoxResult question = this.Message.Question("Eintrag kopieren", $"Möchten Sie den Eintrag '{artikelName}' wirklich kopieren?");
+                    if (question == MessageBoxResult.Yes)
                     {
-                        Header = $"Artikel {this.Id}",
-                        HeaderImage = (ImageSource)Application.Current.FindResource("IconApplicationEnd"),
-                    };
-
-                    ICollectionView view = (ICollectionView)this.DataSource;
-                    if (view.SourceCollection is DataView dv)
-                    {
-                        if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+                        AdvancedTabItem artikelTab = new AdvancedTabItem()
                         {
-                            await App.EventAgg.PublishAsync(new StatusEvent($"Kopieren Eintrag"));
-                        }
+                            Header = $"Artikel {this.Id}",
+                            HeaderImage = (ImageSource)Application.Current.FindResource("IconApplicationEnd"),
+                        };
 
-                        this.ArtikelTabControl.Items.Add(artikelTab);
-                        artikelTab.Content = new TabArtikelDetail(this.SelectedDataRow.Row,DataRowAction.ChangeOriginal);
-                        this.ArtikelTabControl.SelectedItem = artikelTab;
+                        ICollectionView view = (ICollectionView)this.DataSource;
+                        if (view.SourceCollection is DataView dv)
+                        {
+                            if (App.EventAgg.IsSubscription<StatusEvent>() == true)
+                            {
+                                await App.EventAgg.PublishAsync(new StatusEvent($"Kopieren Eintrag"));
+                            }
+
+                            this.ArtikelTabControl.Items.Add(artikelTab);
+                            artikelTab.Content = new TabArtikelDetail(this.SelectedDataRow.Row, DataRowAction.ChangeOriginal);
+                            this.ArtikelTabControl.SelectedItem = artikelTab;
+                        }
+                    }
+                }
+            }
+        }
+
+        private async void OnDeleteEntry(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.DeleteEntry)
+                {
+                    string artikelName = this.SelectedDataRow.Row.Field<string>("B");
+                    MessageBoxResult question = this.Message.Question("Eintrag löschen", $"Möchten Sie den Eintrag '{artikelName}' wirklich löschen?");
+                    if (question == MessageBoxResult.Yes)
+                    {
+                        this.SelectedDataRow.DataView.Table.Rows.Remove(this.SelectedDataRow.Row);
+                        ICollectionView view = (ICollectionView)this.DataSource;
+                        if (view.SourceCollection is DataView dv)
+                        {
+                            DataTable originalTable = dv.Table;
+                            DataTableJsonSerializer.Save(originalTable, "artikel.json");
+                            await this.RefeshDataSourceAsync();
+                        }
                     }
                 }
             }
@@ -291,7 +321,7 @@ namespace MinimalWPF.View
 
         private async void OnCloseTab(object commandParam)
         {
-            if (commandParam is TabItem tabItem)
+            if (commandParam is AdvancedTabItem tabItem)
             {
                 DataRow rowView = ((TabArtikelDetail)tabItem.Content).CurrentRow;
                 DataRowAction rowAction = ((TabArtikelDetail)tabItem.Content).RowAction;
@@ -333,13 +363,13 @@ namespace MinimalWPF.View
                     }
                     else
                     {
-                        this.Message.Hinweis("Artikelnummer", $"Die Artikelnummer '{rowView.Field<int>("A")}'");
+                        this.Message.Hinweis("Artikel kopieren", $"Die Artikelnummer '{artikelNr}' ist bereits vorhanden.");
                         return;
                     }
                 }
                 else if (rowAction == DataRowAction.ChangeOriginal)
                 {
-                    int artikelNr = rowView.Field<int>("A");
+                    int artikelNr = Convert.ToInt32(rowView["A"]);
                     if (rowView.Table.SelectCount(f => f.Field<int>("A") == artikelNr) == 0)
                     {
                         rowView.Table.Rows.Add(rowView);
@@ -349,6 +379,11 @@ namespace MinimalWPF.View
                         this.ArtikelTabControl.Items.Remove(tabItem);
                         await this.RefeshDataSourceAsync();
                         this.ArtikelTabControl.Items.Remove(tabItem);
+                    }
+                    else
+                    {
+                        this.Message.Hinweis("Artikel kopieren", $"Die Artikelnummer '{artikelNr}' ist bereits vorhanden.");
+                        return;
                     }
                 }
                 else

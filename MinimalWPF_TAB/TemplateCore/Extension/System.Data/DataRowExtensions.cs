@@ -61,6 +61,11 @@ namespace System.Data
         /// <returns>Ergebnis zur angegebenen Column</returns>
         public static TResult GetAs<TResult>(this DataRow @this, string fieldName, TResult defaultValue = default)
         {
+            if (@this == null)
+            {
+                return defaultValue;
+            }
+
             try
             {
                 object getAs = null;
