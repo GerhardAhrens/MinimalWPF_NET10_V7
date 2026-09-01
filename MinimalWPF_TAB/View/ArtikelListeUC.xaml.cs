@@ -229,10 +229,11 @@ namespace MinimalWPF.View
                     {
                         DataRow newRow = dv.Table.NewRow();
                         newRow = this.SelectedDataRow.Row.Clone<DataRow>(dv.Table);
-                        newRow.Table.Rows.Add(newRow);
-                        newRow.AcceptChanges();
-                        newRow.Table.AcceptChanges();
-                        newRow.SetAdded();
+                        //newRow.Table.Rows.Add(newRow);
+                        //newRow.AcceptChanges();
+                        newRow.SetColumnError("A", "COPY"); 
+                        //newRow.Table.AcceptChanges();
+                        //newRow.SetAdded();
                         artikelTab.Tag = newRow;
 
                         if (App.EventAgg.IsSubscription<StatusEvent>() == true)
@@ -315,7 +316,7 @@ namespace MinimalWPF.View
                     MessageBoxResult quesion = this.Message.CancelQuestion("Änderungen speichern", "Es existieren Änderungen an den Daten. Möchten Sie die Änderungen speichern?");
                     if (quesion == MessageBoxResult.Yes)
                     {
-                        int artikelNr = rowView.Field<int>("A");
+                        int artikelNr = this.SelectedDataRow.Row.Field<int>("A");
                         if (rowView.Table.SelectCount(f => f.Field<int>("A") == artikelNr) == 0)
                         {
                             rowView.AcceptChanges();
@@ -325,7 +326,7 @@ namespace MinimalWPF.View
                         }
                         else
                         {
-                            this.Message.Hinweis("Artikelnummer", $"Die Artikelnummer '{artikelNr}'");
+                            this.Message.Hinweis("Artikelnummer", $"Die Artikelnummer '{rowView.Field<int>("A")}'");
                             return;
                         }
                     }
@@ -342,7 +343,7 @@ namespace MinimalWPF.View
                 }
                 else if (rowView.RowState == DataRowState.Detached)
                 {
-                    int artikelNr = rowView.Field<int>("A");
+                    int artikelNr = this.SelectedDataRow.Row.Field<int>("A");
                     if (rowView.Table.SelectCount(f => f.Field<int>("A") == artikelNr) == 0)
                     {
                         rowView.Table.Rows.Add(rowView);
@@ -355,7 +356,7 @@ namespace MinimalWPF.View
                     }
                     else
                     {
-                        this.Message.Hinweis("Artikelnummer", $"Die Artikelnummer '{artikelNr}'");
+                        this.Message.Hinweis("Artikelnummer", $"Die Artikelnummer '{rowView.Field<int>("A")}'");
                         return;
                     }
                 }
