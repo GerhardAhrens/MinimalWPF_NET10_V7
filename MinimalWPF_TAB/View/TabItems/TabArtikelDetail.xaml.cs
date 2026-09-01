@@ -83,8 +83,9 @@ namespace MinimalWPF.View
             }
             else if (this.RowAction == DataRowAction.ChangeOriginal)
             {
-                this.CopyRow = this.CurrentRow.Table.NewRow();
-                this.CurrentRow = this.CopyRow.CloneRow();
+                DataRow newRow = this.CurrentRow.Table.NewRow();
+                newRow = this.CurrentRow.CloneRow();
+                this.CurrentRow = newRow;
             }
 
             this.DataContext = this;

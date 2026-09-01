@@ -337,8 +337,19 @@ namespace MinimalWPF.View
                         return;
                     }
                 }
-                else if (rowAction == DataRowAction.Add)
-                { 
+                else if (rowAction == DataRowAction.ChangeOriginal)
+                {
+                    int artikelNr = rowView.Field<int>("A");
+                    if (rowView.Table.SelectCount(f => f.Field<int>("A") == artikelNr) == 0)
+                    {
+                        rowView.Table.Rows.Add(rowView);
+                        rowView.AcceptChanges();
+                        rowView.Table.AcceptChanges();
+                        DataTableJsonSerializer.Save(rowView.Table, "artikel.json");
+                        this.ArtikelTabControl.Items.Remove(tabItem);
+                        await this.RefeshDataSourceAsync();
+                        this.ArtikelTabControl.Items.Remove(tabItem);
+                    }
                 }
                 else
                 {
