@@ -17,5 +17,9 @@ Per Doppelklick wird ein weiters TabItem geöffnet, in dem die Daten des ListVie
 So können weiter TabItems geöffnet werden, die jeweils die Daten des ListView als Detailansicht anzeigen.
 <img src="Main_TAB_2.png" style="width:650px;"/>
 
+<img src="Main_TAB_3.png" style="width:650px;"/>
+
+<img src="Main_TAB_4.png" style="width:650px;"/>
+
 ![Version](https://img.shields.io/badge/Version-1.0.2026.1-yellow.svg)
 - Erste Version
