@@ -174,7 +174,7 @@ namespace MinimalWPF.View
                 AdvancedTabItem selectedTab = tab.SelectedItem as AdvancedTabItem;
                 if (selectedTab != null && selectedTab.Tag is DataRow rowView)
                 {
-                    selectedTab.Content = new TabArtikelDetail(rowView);
+                    selectedTab.Content = new TabArtikelDetail(rowView, DataRowAction.Nothing);
                 }
             }
         }

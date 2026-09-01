@@ -87,6 +87,19 @@ namespace MinimalWPF.View
                 newRow = this.CurrentRow.CloneRow();
                 this.CurrentRow = newRow;
             }
+            else if (this.RowAction == DataRowAction.Nothing)
+            {
+                this.ArtikelNummer.IsReadOnly = true;
+                this.ArtikelNummer.Background = Brushes.LightYellow;
+                this.ArtikelBezeichnung.IsReadOnly = true;
+                this.ArtikelBezeichnung.Background = Brushes.LightYellow;
+                this.Artikelpreis.IsReadOnly = true;
+                this.Artikelpreis.Background = Brushes.LightYellow;
+                this.Warengruppe.IsReadOnly = true;
+                this.Warengruppe.Background = Brushes.LightYellow;
+                this.AnzahlProPackung.IsReadOnly = true;
+                this.AnzahlProPackung.Background = Brushes.LightYellow;
+            }
 
             this.DataContext = this;
         }

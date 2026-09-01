@@ -58,7 +58,7 @@
             Grid.Column="0"
             Background="Transparent"
             ColumnDefinitions="120,*"
-            RowDefinitions="25,40,Auto,Auto,25,25,Auto,*">
+            RowDefinitions="25,50,Auto,Auto,25,25,Auto,*">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"

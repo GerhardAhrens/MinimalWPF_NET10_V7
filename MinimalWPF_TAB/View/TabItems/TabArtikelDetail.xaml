@@ -40,6 +40,7 @@
             Text="Artikelbezeichnung" />
 
         <TextBox
+            x:Name="ArtikelBezeichnung"
             Grid.Row="1"
             Grid.Column="1"
             Width="200"
@@ -54,6 +55,7 @@
             Text="Artikelpreis" />
 
         <TextBox
+            x:Name="Artikelpreis"
             Grid.Row="2"
             Grid.Column="1"
             Width="100"
@@ -61,5 +63,38 @@
             VerticalAlignment="Center"
             UI:TextBoxDecimalBehaviors.IsDecimalOnly="True"
             Text="{Binding Path=CurrentRow[C], FallbackValue=~ArtikelPreis, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="Warengruppe" />
+
+        <TextBox
+            x:Name="Warengruppe"
+            Grid.Row="3"
+            Grid.Column="1"
+            Width="200"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Text="{Binding Path=CurrentRow[Warengruppe], FallbackValue=~Warengruppe, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="Anzahl pro Packung" />
+
+        <TextBox
+            x:Name="AnzahlProPackung"
+            Grid.Row="4"
+            Grid.Column="4"
+            Width="100"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            UI:TextBoxIntegerBehavior.AllowNegative="False"
+            UI:TextBoxIntegerBehavior.IsEnabled="True"
+            Text="{Binding Path=CurrentRow[Anzahl], FallbackValue=~Anzahl, UpdateSourceTrigger=PropertyChanged}" />
+
     </Grid>
 </base:UserControlBase>
