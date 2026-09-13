@@ -184,6 +184,17 @@
                         this.WorkContent = null;
                         this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
                     }
+                    else if (button.In(CommandButtons.Login))
+                    {
+
+                        if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
+                        {
+                            await App.EventAgg.PublishAsync(new WindowsTitelEvent(button.ToDescription()));
+                        }
+
+                        this.WorkContent = null;
+                        this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
+                    }
                     else if (button.In(CommandButtons.Home, CommandButtons.GoBack))
                     {
 
@@ -217,6 +228,7 @@
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Artikelliste, (param) => new ArtikellisteUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Kategorien, (param) => new KategorieTreeUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ControlDemo, (param) => new ControlDemoUC((ChangeViewEventArgs)param!));
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.Login, (param) => new LoginUC((ChangeViewEventArgs)param!));
         }
     }
 }

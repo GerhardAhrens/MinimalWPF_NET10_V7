@@ -30,5 +30,7 @@
         InformationPopup = 20,
         [Description("Einstellungen")]
         SettingsPopup = 21,
+        [Description("Anmeldung")]
+        Login = 22,
     }
 }
