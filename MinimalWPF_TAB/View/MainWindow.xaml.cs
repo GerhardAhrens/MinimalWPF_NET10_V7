@@ -1,10 +1,8 @@
 ﻿namespace MinimalWPF
 {
     using System.ComponentModel;
-    using System.Data;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Data;
     using System.Windows.Input;
 
     using MinimalWPF.Core;
@@ -24,7 +22,7 @@
             this.StatusBarAccountCommand = new CommandBase(commandParam => this.OnStatusBarCommand(commandParam), () => true);
 
             this.SetVectorIcon("IconApplicationLogo", 64);
-            this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
+            this.WindowTitel = LocalizationValue.Get("WindowsTitelShort");
 
             this.RegisterFactory();
 
@@ -75,12 +73,12 @@
         {
             if (string.IsNullOrEmpty(evt.DialogTitel) == true)
             {
-                this.WindowTitel = $"{LocalizationValue.Get("WindowsTitelZeile")} ({base.ApplicationVersion})";
+                this.WindowTitel = $"{LocalizationValue.Get("WindowsTitelShort")} ({base.ApplicationVersion})";
                 return;
             }
             else
             {
-                this.WindowTitel = $"{LocalizationValue.Get("WindowsTitelZeile")} ({base.ApplicationVersion}) [{evt.DialogTitel}]";
+                this.WindowTitel = $"{LocalizationValue.Get("WindowsTitelShort")} ({base.ApplicationVersion}) [{evt.DialogTitel}]";
             }
         }
 

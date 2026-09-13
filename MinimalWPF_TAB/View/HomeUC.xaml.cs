@@ -15,6 +15,8 @@
 
 namespace MinimalWPF.View
 {
+    using System.IO;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -43,8 +45,6 @@ namespace MinimalWPF.View
             this.SelectionChangedCommand = new CommandBase(commandParam => this.OnSelectionChanged(commandParam), () => true);
             this.CloseTabCommand = new CommandBase(commandParam => this.OnCloseTab(commandParam), () => true);
             this.DropDownCommand = new CommandBase(commandParam => this.OnDropDown(commandParam), () => true);
-
-            this.DataContext = this;
         }
 
         private void OnCloseTab(object commandParam)
@@ -82,6 +82,24 @@ namespace MinimalWPF.View
         public CommandBase CloseTabCommand { get; private set; }
         public CommandBase DropDownCommand { get; private set; }
 
+        public string PopupTitel
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
+        public string InstallFolder
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
+        public string SettingsFolder
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         #endregion Properties
 
@@ -89,10 +107,16 @@ namespace MinimalWPF.View
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            this.InstallFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            this.SettingsFolder = App.Settings.Pathname;
+            this.PopupTitel = LocalizationValue.Get("WindowsTitelShort");
+
             if (App.EventAgg.IsSubscription<StatusEvent>() == true)
             {
                 await App.EventAgg.PublishAsync(new StatusEvent("Bereit"));
             }
+
+            this.DataContext = this;
         }
         #endregion Windows Events
 

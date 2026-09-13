@@ -1,10 +1,7 @@
-﻿namespace MinimalWPF.View
+﻿namespace System.Windows
 {
     using System.Diagnostics;
-    using System.IO;
     using System.Management;
-    using System.Reflection;
-    using System.Windows;
     using System.Windows.Controls;
 
     /// <summary>
@@ -12,8 +9,17 @@
     /// </summary>
     public partial class InformationUC : UserControlBase
     {
+        public static readonly DependencyProperty PopupTitelProperty =
+            DependencyProperty.Register(nameof(PopupTitel), typeof(string), typeof(InformationUC), new PropertyMetadata(null, OnPopupTitelChanged));
+
         public static readonly DependencyProperty IsParentOpenProperty =
-    DependencyProperty.Register(nameof(IsParentOpen), typeof(bool), typeof(InformationUC), new PropertyMetadata(false, OnIsParentOpenChanged));
+            DependencyProperty.Register(nameof(IsParentOpen), typeof(bool), typeof(InformationUC), new PropertyMetadata(false, OnIsParentOpenChanged));
+
+        public static readonly DependencyProperty InstallFolderProperty =
+            DependencyProperty.Register(nameof(InstallFolder), typeof(string), typeof(InformationUC), new PropertyMetadata(null, OnInstallFolderChanged));
+
+        public static readonly DependencyProperty SettingsFolderProperty =
+            DependencyProperty.Register(nameof(SettingsFolder), typeof(string), typeof(InformationUC), new PropertyMetadata(null, OnSettingsFolderChanged));
 
         public InformationUC()
         {
@@ -22,21 +28,11 @@
 
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
             {
-                this.WindowTitel = LocalizationValue.Get("WindowsTitelZeile");
-                this.ApplikationVersion = base.ApplicationVersion.ToString();
-                this.LaufzeitVersion = base.RuntimeVersion;
                 this.WinVersion = base.WindowsVersion;
             }
-
-            this.DataContext = this;
         }
 
         #region Properties
-        public string WindowTitel
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
 
         public bool IsParentOpen
         {
@@ -44,10 +40,22 @@
             set { SetValue(IsParentOpenProperty, value); }
         }
 
-        public string ApplikationVersion
+        public string PopupTitel
         {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
+            get { return (string)GetValue(PopupTitelProperty); }
+            set { SetValue(PopupTitelProperty, value); }
+        }
+
+        public string InstallFolder
+        {
+            get { return (string)GetValue(InstallFolderProperty); }
+            set { SetValue(InstallFolderProperty, value); }
+        }
+
+        public string SettingsFolder
+        {
+            get { return (string)GetValue(SettingsFolderProperty); }
+            set { SetValue(SettingsFolderProperty, value); }
         }
 
         public string LaufzeitVersion
@@ -57,18 +65,6 @@
         }
 
         public string WinVersion
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string InstallFolder
-        {
-            get => base.GetValue<string>();
-            set => base.SetValue(value);
-        }
-
-        public string SettingsFolder
         {
             get => base.GetValue<string>();
             set => base.SetValue(value);
@@ -99,6 +95,9 @@
         {
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
             {
+                this.ApplicationVersionTB.Text = base.ApplicationVersion.ToString();
+                this.LaufzeitVersionTB.Text = base.RuntimeVersion;
+
                 /* hier ist Source, der im Design Mode nicht ausgeführt werden darf */
             }
         }
@@ -107,7 +106,7 @@
         private static void OnIsParentOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             // Hier optional Code ausführen, wenn sich der Zustand ändert
-            var control = (InformationUC)d;
+            InformationUC control = (InformationUC)d;
             bool popupIsOpen = (bool)e.NewValue;
             if (popupIsOpen == true)
             {
@@ -118,9 +117,39 @@
                     control.FreeRAM = readRAM[1];
                     control.UsedRAM = readRAM[2];
                 }
+            }
+        }
 
-                control.InstallFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                control.SettingsFolder = App.Settings.Pathname;
+        private static void OnPopupTitelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // Hier optional Code ausführen, wenn sich der Zustand ändert
+            InformationUC control = (InformationUC)d;
+            string titel = (string)e.NewValue;
+            if (string.IsNullOrEmpty(titel) == false)
+            {
+                control.PopupTitelRUN.Text = titel;
+            }
+        }
+
+        private static void OnInstallFolderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // Hier optional Code ausführen, wenn sich der Zustand ändert
+            InformationUC control = (InformationUC)d;
+            string folder = (string)e.NewValue;
+            if (string.IsNullOrEmpty(folder) == false)
+            {
+                control.InstallFolder = folder;
+            }
+        }
+
+        private static void OnSettingsFolderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // Hier optional Code ausführen, wenn sich der Zustand ändert
+            InformationUC control = (InformationUC)d;
+            string folder = (string)e.NewValue;
+            if (string.IsNullOrEmpty(folder) == false)
+            {
+                control.SettingsFolder = folder;
             }
         }
 

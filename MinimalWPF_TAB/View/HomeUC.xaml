@@ -43,7 +43,10 @@
                     Grid.Row="0"
                     Background="#FAFAFB"
                     CornerRadius="5">
-                    <views:InformationUC IsParentOpen="{Binding Path=IsOpen, UpdateSourceTrigger=PropertyChanged, ElementName=InformationPopup}" />
+                    <base:InformationUC PopupTitel="{Binding Path=PopupTitel}"
+                        InstallFolder="{Binding Path=InstallFolder, UpdateSourceTrigger=PropertyChanged}"
+                        IsParentOpen="{Binding Path=IsOpen, UpdateSourceTrigger=PropertyChanged, ElementName=InformationPopup}"
+                        SettingsFolder="{Binding Path=SettingsFolder, UpdateSourceTrigger=PropertyChanged}" />
                 </Border>
 
                 <base:IconButton
