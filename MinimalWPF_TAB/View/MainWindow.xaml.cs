@@ -59,7 +59,7 @@
             this.ConfigurationStatusInfoBar();
 
             ChangeViewEventArgs args = new();
-            args.MenuButton = CommandButtons.Home;
+            args.MenuButton = CommandButtons.Login;
             args.FromPage = CommandButtons.Home;
             this.ChangeControl(args);
         }
@@ -194,6 +194,7 @@
 
                         this.WorkContent = null;
                         this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
+                        ((LoginUC)this.WorkContent).LoginTitel = $"Anmeldung für {LocalizationValue.Get("WindowsTitelShort")}";
                     }
                     else if (button.In(CommandButtons.Home, CommandButtons.GoBack))
                     {

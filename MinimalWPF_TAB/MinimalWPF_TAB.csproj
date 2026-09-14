@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="TemplateCore\ArgumentGuard\" />
+    <Folder Include="TemplateCore\Extension\System.Security\" />
   </ItemGroup>
 
 </Project>
