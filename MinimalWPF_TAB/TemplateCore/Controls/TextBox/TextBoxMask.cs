@@ -12,7 +12,7 @@
 // Die Klasse stellt einen TextBox zur Verfügung, bei der Eingabe über eine Maske erfolgt.
 // </summary>
 // <example>
-// <local:TextBoxMask x: Name = "PhoneTextBox" Width = "250" Mask = "(000) 000 000 000" />
+// <local:TextBoxMask x: Name = "PhoneTextBox" Width = "250" Mask = "(0000) 000 000 000" />
 // Zeichen	Bedeutung
 // 0		Ziffer, erforderlich
 // 9		Ziffer oder Leerzeichen, optional
