@@ -1,5 +1,6 @@
 ﻿namespace System.Windows
 {
+    using System.Data;
     using System.Reflection;
     using System.Windows.Controls;
 
@@ -65,6 +66,8 @@
             set => base.SetValue(value);
         }
 
+        private Dictionary<Guid, string> AccountSource { get; set; } = new Dictionary<Guid, string>();
+
         private string FullAccountName { get; set; }
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
@@ -89,7 +92,10 @@
                 }
                 else
                 {
-                    this.LoginStep = LoginState.LoginUsername;
+                    var jsonStorage = new JsonListSerializer<ApplicationAccount>();
+                    this.Accounts = jsonStorage.Load(this.FullAccountName);
+
+                    Dictionary<Guid, string> AccountSource = this.Accounts.ToDictionary(account => account.AccountId, account => account.Displayname);
                 }
             }
         }
@@ -101,6 +107,31 @@
                 if (this.Accounts.Count == 0)
                 {
                     ApplicationAccount account = new ApplicationAccount();
+                    account.Displayname = this.Displayname;
+                    account.Benutzername = this.Benutzername;
+                    account.Password = this.Password;
+                    account.HasPin = !string.IsNullOrEmpty(this.Pin);
+                    account.Pin = this.Pin;
+                    this.Accounts.Add(account);
+                    var jsonStorage = new JsonListSerializer<ApplicationAccount>();
+                    jsonStorage.Version = 1;
+                    jsonStorage.Save(this.FullAccountName, this.Accounts);
+
+                    if (account.HasPin == true)
+                    {
+                        this.LoginStep = LoginState.LoginPin;
+                    }
+                    else
+                    {
+                        this.LoginStep = LoginState.LoginUsername;
+                    }
+                }
+
+                if (this.LoginStep == LoginState.LoginUsername)
+                {
+                }
+                else if (this.LoginStep == LoginState.LoginPin)
+                {
                 }
             }
             catch (Exception ex)
