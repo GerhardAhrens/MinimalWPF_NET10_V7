@@ -69,6 +69,7 @@
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
         private LoginState LoginStep { get; set; } = LoginState.None;
+        private List<ApplicationAccount> Accounts { get; set; } = new List<ApplicationAccount>();
         #endregion Properties
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -95,7 +96,18 @@
 
         private async void OnCreateAccount(object commandParam)
         {
-
+            try
+            {
+                if (this.Accounts.Count == 0)
+                {
+                    ApplicationAccount account = new ApplicationAccount();
+                }
+            }
+            catch (Exception ex)
+            {
+                App.ErrorMessage(ex, $"{this.Name}:");
+                App.ApplicationExit();
+            }
         }
 
         private async void OnCancelLogin(object commandParam)
@@ -123,5 +135,25 @@
             LoginUsername,
             LoginPin,
         }
+    }
+
+    public class ApplicationAccount
+    {
+        public ApplicationAccount()
+        {
+            this.AccountId = Guid.CreateVersion7();
+            this.CreatedBy = Environment.UserName;
+            this.CreatedOn = DateTime.Now;
+        }
+
+        public Guid AccountId { get; set; }
+        public string Displayname { get; set; }
+        public string Benutzername { get; set; }
+        public string Password { get; set; }
+        public bool HasPin { get; set; }
+        public string Pin { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+
     }
 }

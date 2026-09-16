@@ -297,9 +297,7 @@
         // JSON -> .NET Typ
         // ================================================================
 
-        private static object ConvertJsonValue(
-            JsonElement value,
-            Type targetType)
+        private static object ConvertJsonValue(JsonElement value, Type targetType)
         {
             if (value.ValueKind == JsonValueKind.Null)
                 return DBNull.Value;
@@ -373,19 +371,12 @@
 
             if (targetType == typeof(TimeSpan))
             {
-                return TimeSpan.Parse(
-                    value.GetString()
-                    ?? throw new InvalidOperationException(
-                        "Der TimeSpan-Wert fehlt."));
+                return TimeSpan.Parse(value.GetString() ?? throw new InvalidOperationException("Der TimeSpan-Wert fehlt."));
             }
 
             if (targetType.IsEnum)
             {
-                return Enum.Parse(
-                    targetType,
-                    value.GetString()
-                    ?? throw new InvalidOperationException(
-                        "Der Enum-Wert fehlt."));
+                return Enum.Parse(targetType, value.GetString() ?? throw new InvalidOperationException("Der Enum-Wert fehlt."));
             }
 
             // Fallback für weitere Datentypen
