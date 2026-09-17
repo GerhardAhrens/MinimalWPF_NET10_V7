@@ -269,10 +269,17 @@
         /// <summary>
         /// Programmende erzwingen
         /// </summary>
-        public static void ApplicationExit()
+        public static void ApplicationExit(bool exitDirect = false)
         {
-            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-            Application.Current.Shutdown(0);
+            if (exitDirect == false)
+            {
+                Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                Application.Current.Shutdown(0);
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

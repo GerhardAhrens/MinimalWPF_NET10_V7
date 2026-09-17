@@ -36,43 +36,38 @@
         }
 
         private bool _updating;
-        /*
-        private int _selectionStart;
-        private int _selectionLength;
-        */
+
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            AssociatedObject.PreviewTextInput += OnPreviewTextInput;
-            AssociatedObject.PreviewKeyDown += OnPreviewKeyDown;
-            AssociatedObject.TextChanged += OnTextChanged;
-            AssociatedObject.VerticalContentAlignment = VerticalAlignment.Center;
-            AssociatedObject.VerticalAlignment = VerticalAlignment.Center;
+            this.AssociatedObject.PreviewTextInput += OnPreviewTextInput;
+            this.AssociatedObject.PreviewKeyDown += OnPreviewKeyDown;
+            this.AssociatedObject.TextChanged += OnTextChanged;
+            this.AssociatedObject.VerticalContentAlignment = VerticalAlignment.Center;
+            this.AssociatedObject.VerticalAlignment = VerticalAlignment.Center;
 
-            DataObject.AddPastingHandler(AssociatedObject, OnPaste);
-            DataObject.AddCopyingHandler(AssociatedObject, OnCopy);
-            DataObject.AddSettingDataHandler(AssociatedObject, OnSettingData);
+            DataObject.AddPastingHandler(this.AssociatedObject, OnPaste);
+            DataObject.AddCopyingHandler(this.AssociatedObject, OnCopy);
+            DataObject.AddSettingDataHandler(this.AssociatedObject, OnSettingData);
 
             UpdateDisplayedText();
         }
 
         protected override void OnDetaching()
         {
-            DataObject.RemovePastingHandler(AssociatedObject, OnPaste);
-            DataObject.RemoveCopyingHandler(AssociatedObject, OnCopy);
-            DataObject.RemoveSettingDataHandler(AssociatedObject, OnSettingData);
+            DataObject.RemovePastingHandler(this.AssociatedObject, OnPaste);
+            DataObject.RemoveCopyingHandler(this.AssociatedObject, OnCopy);
+            DataObject.RemoveSettingDataHandler(this.AssociatedObject, OnSettingData);
 
-            AssociatedObject.PreviewTextInput -= OnPreviewTextInput;
-            AssociatedObject.PreviewKeyDown -= OnPreviewKeyDown;
-            AssociatedObject.TextChanged -= OnTextChanged;
+            this.AssociatedObject.PreviewTextInput -= OnPreviewTextInput;
+            this.AssociatedObject.PreviewKeyDown -= OnPreviewKeyDown;
+            this.AssociatedObject.TextChanged -= OnTextChanged;
 
             base.OnDetaching();
         }
 
-        private static void OnPasswordChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var behavior = (PasswordTextBoxBehavior)d;
 
@@ -95,11 +90,16 @@
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (AssociatedObject.MaxLength > 0 && AssociatedObject.Text.Length > AssociatedObject.MaxLength)
+            {
+                e.Handled = true;
+                return;
+            }
+
             var key = e.Key == Key.System ? e.SystemKey : e.Key;
 
             // Clipboard-Aktionen vollständig unterbinden.
-            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) ||
-                Keyboard.Modifiers.HasFlag(ModifierKeys.Windows))
+            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || Keyboard.Modifiers.HasFlag(ModifierKeys.Windows))
             {
                 if (key is Key.C or Key.X or Key.V)
                 {
@@ -118,7 +118,7 @@
             // Delete
             if (key == Key.Delete)
             {
-                DeleteForward();
+                this.DeleteForward();
                 e.Handled = true;
                 return;
             }
@@ -126,7 +126,7 @@
             // Backspace
             if (key == Key.Back)
             {
-                DeleteBackward();
+                this.DeleteBackward();
                 e.Handled = true;
                 return;
             }
@@ -144,7 +144,7 @@
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
             // Verhindert Änderungen, die nicht über unser Behavior laufen.
-            if (_updating)
+            if (this._updating == true)
             {
                 return;
             }
@@ -169,12 +169,12 @@
 
         private void ReplaceSelection(string text)
         {
-            var password = Password ?? string.Empty;
+            var password = this.Password ?? string.Empty;
 
-            var start = AssociatedObject.SelectionStart;
-            var length = AssociatedObject.SelectionLength;
+            var start = this.AssociatedObject.SelectionStart;
+            var length = this.AssociatedObject.SelectionLength;
 
-            Password = password.Remove(start, length).Insert(start, text);
+            this.Password = password.Remove(start, length).Insert(start, text);
 
             var newPosition = start + text.Length;
 
@@ -183,13 +183,13 @@
 
         private void DeleteBackward()
         {
-            var password = Password ?? string.Empty;
-            var start = AssociatedObject.SelectionStart;
-            var length = AssociatedObject.SelectionLength;
+            var password = this.Password ?? string.Empty;
+            var start = this.AssociatedObject.SelectionStart;
+            var length = this.AssociatedObject.SelectionLength;
 
             if (length > 0)
             {
-                Password = password.Remove(start, length);
+                this.Password = password.Remove(start, length);
                 this.UpdateDisplayedText(start, 0);
                 return;
             }
@@ -197,19 +197,19 @@
             if (start <= 0)
                 return;
 
-            Password = password.Remove(start - 1, 1);
+            this.Password = password.Remove(start - 1, 1);
             this.UpdateDisplayedText(start - 1, 0);
         }
 
         private void DeleteForward()
         {
-            var password = Password ?? string.Empty;
-            var start = AssociatedObject.SelectionStart;
-            var length = AssociatedObject.SelectionLength;
+            var password = this.Password ?? string.Empty;
+            var start = this.AssociatedObject.SelectionStart;
+            var length = this.AssociatedObject.SelectionLength;
 
             if (length > 0)
             {
-                Password = password.Remove(start, length);
+                this.Password = password.Remove(start, length);
                 this.UpdateDisplayedText(start, 0);
                 return;
             }
@@ -219,13 +219,13 @@
                 return;
             }
 
-            Password = password.Remove(start, 1);
+            this.Password = password.Remove(start, 1);
             this.UpdateDisplayedText(start, 0);
         }
 
         private void UpdateDisplayedText(int? selectionStart = null, int? selectionLength = null)
         {
-            if (AssociatedObject == null)
+            if (this.AssociatedObject == null)
             {
                 return;
             }
@@ -234,19 +234,19 @@
 
             try
             {
-                var password = Password ?? string.Empty;
+                var password = this.Password ?? string.Empty;
 
-                AssociatedObject.Text = new string(MaskCharacter, password.Length);
+                this.AssociatedObject.Text = new string(this.MaskCharacter, password.Length);
 
                 if (selectionStart.HasValue)
                 {
-                    AssociatedObject.SelectionStart = Math.Clamp(selectionStart.Value,  0, AssociatedObject.Text.Length);
-                    AssociatedObject.SelectionLength = Math.Clamp(selectionLength ?? 0, 0, AssociatedObject.Text.Length - AssociatedObject.SelectionStart);
+                    this.AssociatedObject.SelectionStart = Math.Clamp(selectionStart.Value,  0, this.AssociatedObject.Text.Length);
+                    this.AssociatedObject.SelectionLength = Math.Clamp(selectionLength ?? 0, 0, this.AssociatedObject.Text.Length - this.AssociatedObject.SelectionStart);
                 }
                 else
                 {
-                    AssociatedObject.SelectionStart = Math.Clamp(AssociatedObject.SelectionStart, 0, AssociatedObject.Text.Length);
-                    AssociatedObject.SelectionLength = 0;
+                    this.AssociatedObject.SelectionStart = Math.Clamp(this.AssociatedObject.SelectionStart, 0, this.AssociatedObject.Text.Length);
+                    this.AssociatedObject.SelectionLength = 0;
                 }
             }
             finally

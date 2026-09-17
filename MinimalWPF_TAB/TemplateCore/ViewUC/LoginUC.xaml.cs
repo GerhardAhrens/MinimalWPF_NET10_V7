@@ -12,7 +12,6 @@
     /// </summary>
     public partial class LoginUC : UserControlBase
     {
-        private int tryLoginCount = 0;
         private readonly string programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
         private readonly string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
@@ -176,21 +175,60 @@
 
             try
             {
-                if (string.IsNullOrEmpty(this.Benutzername) == true || string.IsNullOrEmpty(this.Password) == true)
+                if (this.CurrentAccount.HasPin == false)
                 {
-                    this.Message.Warning("Login", "Für die Anmeldung muß ein Benutzername und ein Passwort eingegeben werden.");
-                    return;
-                }
+                    if (string.IsNullOrEmpty(this.Benutzername) == true || string.IsNullOrEmpty(this.Password) == true)
+                    {
+                        this.Message.Warning("Login", "Für die Anmeldung muß ein Benutzername und ein Passwort eingegeben werden.");
+                        return;
+                    }
 
-                int countAccount = this.Accounts.Count(a => a.Benutzername == this.Benutzername && a.Password == this.Password && a.CreatedBy == Environment.UserName);
-                if (countAccount == 0)
-                {
-                    this.Message.Warning("Login", "Benutzername oder Passwort ist falsch.");
-                    this.tryLoginCount++;
+                    int countAccount = this.Accounts.Count(a => a.Benutzername == this.Benutzername && a.Password == this.Password && a.CreatedBy == Environment.UserName);
+                    if (countAccount == 0)
+                    {
+                        this.MaxTryLogin--;
+                        this.Message.Warning("Login", $"Benutzername oder Passwort ist falsch. Sie haben noch {this.MaxTryLogin} Versuche.");
+                        if (this.MaxTryLogin <= 0)
+                        {
+                            this.Message.Warning("Login", $"Sie haben die maximale Anzahl an Login-Versuchen erreicht. Das Programm wird beendet.");
+                            App.ApplicationExit();
+                        }
+                    }
+                    else
+                    {
+                        ApplicationAccount account = this.Accounts.First(a => a.Benutzername == this.Benutzername && a.Password == this.Password);
+                    }
                 }
                 else
                 {
-                    ApplicationAccount account = this.Accounts.First(a => a.Benutzername == this.Benutzername && a.Password == this.Password);
+                    if (string.IsNullOrEmpty(this.Pin) == true)
+                    {
+                        this.Message.Warning("Login", "Für die Anmeldung muß eine gültige Pin eingegeben werden.");
+                        return;
+                    }
+
+                    int countAccount = this.Accounts.Count(a => a.Pin == this.Pin && a.CreatedBy == Environment.UserName);
+                    if (countAccount > 0)
+                    {
+                        ChangeViewEventArgs args = new();
+                        args.MenuButton = CommandButtons.Home;
+                        args.FromPage = CommandButtons.Login;
+                        if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                        {
+                            await App.EventAgg.PublishAsync(args);
+                        }
+                    }
+                    else
+                    {
+                        this.MaxTryLogin--;
+                        this.Message.Warning("Login", $"Die eingegebene Pin ist falsch. Sie haben noch {this.MaxTryLogin} Versuche.");
+                        this.Pin = string.Empty;
+                        if (this.MaxTryLogin <= 0)
+                        {
+                            this.Message.Warning("Login", $"Sie haben die maximale Anzahl an Login-Versuchen erreicht. Das Programm wird beendet.");
+                            App.ApplicationExit(true);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
