@@ -12,6 +12,7 @@
     /// </summary>
     public partial class LoginUC : UserControlBase
     {
+        private int tryLoginCount = 0;
         private readonly string programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
         private readonly string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
@@ -21,6 +22,7 @@
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
 
             this.CreateAccountCommand = new CommandBase(commandParam => this.OnCreateAccount(commandParam), () => true);
+            this.LoginCommand = new CommandBase(commandParam => this.OnLogin(commandParam), () => true);
             this.CancelLoginCommand = new CommandBase(commandParam => this.OnCancelLogin(commandParam), () => true);
 
             this.CurrentCtorArgs = args;
@@ -28,6 +30,7 @@
 
         #region Properties
         public CommandBase CreateAccountCommand { get; private set; }
+        public CommandBase LoginCommand { get; private set; }
         public CommandBase CancelLoginCommand { get; private set; }
 
         public string LoginTitel
@@ -66,8 +69,19 @@
             set => base.SetValue(value);
         }
 
-        private Dictionary<Guid, string> AccountSource { get; set; } = new Dictionary<Guid, string>();
+        public List<ApplicationAccount> AccountSource
+        {
+            get => base.GetValue<List<ApplicationAccount>>();
+            set => base.SetValue(value);
+        }
 
+        public ApplicationAccount CurrentAccount
+        {
+            get => base.GetValue<ApplicationAccount>();
+            set => base.SetValue(value);
+        }
+
+        private int MaxTryLogin { get; set; } = 3;
         private string FullAccountName { get; set; }
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
@@ -95,7 +109,30 @@
                     var jsonStorage = new JsonListSerializer<ApplicationAccount>();
                     this.Accounts = jsonStorage.Load(this.FullAccountName);
 
-                    Dictionary<Guid, string> AccountSource = this.Accounts.ToDictionary(account => account.AccountId, account => account.Displayname);
+                    this.AccountSource = this.Accounts.Where(w => w.HasPin == true).ToList();
+                    if (this.Accounts.Count == 1)
+                    {
+                        this.CurrentAccount = this.Accounts.First();
+                        if (this.CurrentAccount.HasPin == true)
+                        {
+                            this.LoginStep = LoginState.LoginPin;
+                            this.GridLoginPin.Visibility = Visibility.Visible;
+                            this.Displayname = this.CurrentAccount.Displayname;
+                        }
+                        else
+                        {
+                            this.LoginStep = LoginState.LoginUsername;
+                            this.GridLoginPassword.Visibility = Visibility.Visible;
+                        }
+                    }
+                    else if (this.Accounts.Count > 1)
+                    {
+                    }
+                    else
+                    {
+                        this.LoginStep = LoginState.CreateFirstAccount;
+                        this.GridNeuesKonto.Visibility = Visibility.Visible;
+                    }
                 }
             }
         }
@@ -119,19 +156,41 @@
 
                     if (account.HasPin == true)
                     {
-                        this.LoginStep = LoginState.LoginPin;
                     }
                     else
                     {
-                        this.LoginStep = LoginState.LoginUsername;
+                        this.GridLoginPassword.Visibility = Visibility.Visible;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                App.ErrorMessage(ex, $"{this.Name}:");
+                App.ApplicationExit();
+            }
+        }
 
-                if (this.LoginStep == LoginState.LoginUsername)
+        private async void OnLogin(object commandParam)
+        {
+            string loginTyp = commandParam.ToString();
+
+            try
+            {
+                if (string.IsNullOrEmpty(this.Benutzername) == true || string.IsNullOrEmpty(this.Password) == true)
                 {
+                    this.Message.Warning("Login", "Für die Anmeldung muß ein Benutzername und ein Passwort eingegeben werden.");
+                    return;
                 }
-                else if (this.LoginStep == LoginState.LoginPin)
+
+                int countAccount = this.Accounts.Count(a => a.Benutzername == this.Benutzername && a.Password == this.Password && a.CreatedBy == Environment.UserName);
+                if (countAccount == 0)
                 {
+                    this.Message.Warning("Login", "Benutzername oder Passwort ist falsch.");
+                    this.tryLoginCount++;
+                }
+                else
+                {
+                    ApplicationAccount account = this.Accounts.First(a => a.Benutzername == this.Benutzername && a.Password == this.Password);
                 }
             }
             catch (Exception ex)

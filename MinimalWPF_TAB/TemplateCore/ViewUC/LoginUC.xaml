@@ -9,9 +9,15 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:System.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <sys:Double x:Key="ScaleXY">1.35</sys:Double>
+    </UserControl.Resources>
+
     <Grid x:Name="rootGrid" DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
         <Border Background="#FAFAFB" CornerRadius="5">
             <Grid
@@ -153,8 +159,147 @@
                             CommandParameter="{x:Static core:CommandButtons.AppQuit}"
                             Content="Abbrechen" />
                     </StackPanel>
-
                 </Grid>
+
+                <Grid
+                    x:Name="GridLoginPassword"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ColumnDefinitions="100,120,*"
+                    RowDefinitions="100,30,30,10,30,10,40"
+                    Visibility="Collapsed">
+                    <Grid.LayoutTransform>
+                        <ScaleTransform ScaleX="{StaticResource ResourceKey=ScaleXY}" ScaleY="{StaticResource ResourceKey=ScaleXY}" />
+                    </Grid.LayoutTransform>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Text="Benutzername"
+                        TextAlignment="Right" />
+
+                    <TextBox
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Width="200"
+                        Height="22"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        Text="{Binding Path=Benutzername, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Text="Passwort"
+                        TextAlignment="Right" />
+
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        Width="200"
+                        Height="22"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left">
+                        <i:Interaction.Behaviors>
+                            <UI:PasswordTextBoxBehavior MaskCharacter="*" Password="{Binding Path=Password, Mode=TwoWay}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+
+                    <StackPanel
+                        Grid.Row="8"
+                        Grid.Column="2"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Command="{Binding Path=LoginCommand}"
+                            CommandParameter="PW"
+                            Content="Anmelden" />
+
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="50,0,0,0"
+                            Command="{Binding Path=CancelLoginCommand}"
+                            CommandParameter="{x:Static core:CommandButtons.AppQuit}"
+                            Content="Abbrechen" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid
+                    x:Name="GridLoginPin"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ColumnDefinitions="100,120,*"
+                    RowDefinitions="100,30,30,10,30,10,40"
+                    Visibility="Collapsed">
+                    <Grid.LayoutTransform>
+                        <ScaleTransform ScaleX="{StaticResource ResourceKey=ScaleXY}" ScaleY="{StaticResource ResourceKey=ScaleXY}" />
+                    </Grid.LayoutTransform>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Text="Benutzername"
+                        TextAlignment="Right" />
+
+                    <ComboBox
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Width="200"
+                        Height="22"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        DisplayMemberPath="Displayname"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding Path=AccountSource}"
+                        SelectedItem="{Binding Path=CurrentAccount, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValuePath="AccountId" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Text="Pin"
+                        TextAlignment="Right" />
+
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        Width="100"
+                        Height="22"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        MaxLength="8">
+                        <i:Interaction.Behaviors>
+                            <UI:PasswordTextBoxBehavior MaskCharacter="*" Password="{Binding Path=Pin, Mode=TwoWay}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+
+                    <StackPanel
+                        Grid.Row="8"
+                        Grid.Column="2"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Command="{Binding Path=LoginCommand}"
+                            CommandParameter="PIN"
+                            Content="Anmelden" />
+
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="50,0,0,0"
+                            Command="{Binding Path=CancelLoginCommand}"
+                            CommandParameter="{x:Static core:CommandButtons.AppQuit}"
+                            Content="Abbrechen" />
+                    </StackPanel>
+                </Grid>
+
 
                 <Border
                     Grid.Row="2"
