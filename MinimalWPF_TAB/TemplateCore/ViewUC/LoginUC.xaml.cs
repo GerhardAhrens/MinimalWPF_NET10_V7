@@ -3,6 +3,7 @@
     using System.Data;
     using System.Reflection;
     using System.Windows.Controls;
+    using System.Windows.Input;
 
     using MinimalWPF;
     using MinimalWPF.Core;
@@ -22,14 +23,33 @@
 
             this.CreateAccountCommand = new CommandBase(commandParam => this.OnCreateAccount(commandParam), () => true);
             this.LoginCommand = new CommandBase(commandParam => this.OnLogin(commandParam), () => true);
+            this.InputTextCommand = new CommandBase(commandParam => this.OnInputText(commandParam), () => true);
             this.CancelLoginCommand = new CommandBase(commandParam => this.OnCancelLogin(commandParam), () => true);
 
             this.CurrentCtorArgs = args;
         }
 
+        private void UserControlBase_PreviewKeyDown(object sender, Input.KeyEventArgs e)
+        {
+            bool isCtrlPressed = Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+            bool isAltPressed = Keyboard.Modifiers.HasFlag(ModifierKeys.Alt);
+            Key gedrueckteTaste = (e.Key == Key.System) ? e.SystemKey : e.Key;
+
+            if (gedrueckteTaste == Key.I && isAltPressed)
+            {
+                this.InputTextCommand.Execute();
+                e.Handled = true; // Verhindert, dass die TextBox das Event weiterverarbeitet
+            }
+        }
+
+        private void OnInputText(object commandParam)
+        {
+        }
+
         #region Properties
         public CommandBase CreateAccountCommand { get; private set; }
         public CommandBase LoginCommand { get; private set; }
+        public CommandBase InputTextCommand { get; private set; }
         public CommandBase CancelLoginCommand { get; private set; }
 
         public string LoginTitel
@@ -90,6 +110,9 @@
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            // Erzwingt, dass das UserControl den Fokus bekommt
+            this.Focus();
+
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) == false)
             {
                 this.FullAccountName = System.IO.Path.Combine(this.programDataPath, this.assemblyName, "Accounts.json");
@@ -171,8 +194,6 @@
 
         private async void OnLogin(object commandParam)
         {
-            string loginTyp = commandParam.ToString();
-
             try
             {
                 if (this.CurrentAccount.HasPin == false)
@@ -196,7 +217,17 @@
                     }
                     else
                     {
-                        ApplicationAccount account = this.Accounts.First(a => a.Benutzername == this.Benutzername && a.Password == this.Password);
+                        int countAccountPW = this.Accounts.Count(a => a.Benutzername == this.Benutzername && a.Password == this.Password);
+                        if (countAccountPW > 0)
+                        {
+                            ChangeViewEventArgs args = new();
+                            args.MenuButton = CommandButtons.Home;
+                            args.FromPage = CommandButtons.Login;
+                            if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                            {
+                                await App.EventAgg.PublishAsync(args);
+                            }
+                        }
                     }
                 }
                 else

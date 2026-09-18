@@ -134,7 +134,7 @@
             // Home / End / Cursorbewegung dürfen normal funktionieren.
             // Ctrl+A wird verhindert, damit keine sichtbare Selektion
             // des gesamten Passwortes entsteht.
-            if (key == Key.A && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            if (key == Key.A && key == Key.Enter && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
             {
                 e.Handled = true;
                 return;

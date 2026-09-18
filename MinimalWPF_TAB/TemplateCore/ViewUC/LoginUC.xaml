@@ -12,6 +12,8 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Focusable="True"
+    PreviewKeyDown="UserControlBase_PreviewKeyDown"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -288,7 +290,8 @@
                             Height="25"
                             Command="{Binding Path=LoginCommand}"
                             CommandParameter="PIN"
-                            Content="Anmelden" />
+                            Content="Anmelden"
+                            IsDefault="true" />
 
                         <Button
                             Width="100"
@@ -299,7 +302,6 @@
                             Content="Abbrechen" />
                     </StackPanel>
                 </Grid>
-
 
                 <Border
                     Grid.Row="2"
