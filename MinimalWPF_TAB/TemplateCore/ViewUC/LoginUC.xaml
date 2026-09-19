@@ -279,8 +279,8 @@
                         Margin="5,0,0,0"
                         HorizontalAlignment="Left"
                         DataObject.Pasting="OnPinInputPasting"
-                        PreviewKeyDown="OnPinInputPreviewKeyDown"
                         MaxLength="8"
+                        PreviewKeyDown="OnPinInputPreviewKeyDown"
                         PreviewTextInput="OnPinInputPreviewTextInput">
                         <i:Interaction.Behaviors>
                             <UI:PasswordTextBoxBehavior MaskCharacter="*" Password="{Binding Path=Pin, Mode=TwoWay}" />
@@ -320,13 +320,8 @@
                         <Button
                             Grid.Row="0"
                             Grid.Column="0"
-                            Margin="0,5,0,0"
-                            Content="Neues Konto anlegen" />
-
-                        <Button
-                            Grid.Row="0"
-                            Grid.Column="1"
                             Margin="10,5,0,0"
+                            Command="{Binding Path=ClearAccountCommand}"
                             Content="Konto löschen" />
                     </Grid>
                 </Border>

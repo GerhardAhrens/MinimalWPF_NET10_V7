@@ -9,9 +9,15 @@
         private const int NONCESIZE = 12;
         private const int TAGSIZE = 16;
         private const int KEYSIZE = 32;
+        private static readonly string TOKEN = "EE8041F5-3A80-400F-BFD8-F8C9593509A9";
 
-        public static byte[] Encrypt(string plainText, string password)
+        public static byte[] Encrypt(string plainText, string password = null)
         {
+            if (string.IsNullOrEmpty(password))
+            {
+                password = TOKEN;
+            }
+
             byte[] salt = RandomNumberGenerator.GetBytes(SALTSIZE);
             byte[] nonce = RandomNumberGenerator.GetBytes(NONCESIZE);
 
@@ -42,8 +48,13 @@
             return result;
         }
 
-        public static string Decrypt(byte[] encryptedData, string password)
+        public static string Decrypt(byte[] encryptedData, string password = null)
         {
+            if (string.IsNullOrEmpty(password))
+            {
+                password = TOKEN;
+            }
+
             byte[] salt = encryptedData[..SALTSIZE];
             byte[] nonce = encryptedData[SALTSIZE..(SALTSIZE + NONCESIZE)];
             byte[] tag = encryptedData[^TAGSIZE..];

@@ -2,12 +2,15 @@
 {
     using System.Data;
     using System.Reflection;
+    using System.Text;
     using System.Text.RegularExpressions;
     using System.Windows.Controls;
     using System.Windows.Input;
 
     using MinimalWPF;
     using MinimalWPF.Core;
+
+    using static System.Net.Mime.MediaTypeNames;
 
     /// <summary>
     /// Interaktionslogik für LoginUC.xaml
@@ -23,6 +26,7 @@
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
 
             this.CreateAccountCommand = new CommandBase(commandParam => this.OnCreateAccount(commandParam), () => true);
+            this.ClearAccountCommand = new CommandBase(commandParam => this.OnClearAccount(commandParam), () => true);
             this.LoginCommand = new CommandBase(commandParam => this.OnLogin(commandParam), () => true);
             this.InputTextCommand = new CommandBase(commandParam => this.OnInputText(commandParam), () => true);
             this.CancelLoginCommand = new CommandBase(commandParam => this.OnCancelLogin(commandParam), () => true);
@@ -45,10 +49,19 @@
 
         private void OnInputText(object commandParam)
         {
+            if (this.CurrentAccount.HasPin == true)
+            {
+                this.PinInput.Focus();
+            }
+            else
+            {
+                this.BenutzernameInput.Focus();
+            }
         }
 
         #region Properties
         public CommandBase CreateAccountCommand { get; private set; }
+        public CommandBase ClearAccountCommand { get; private set; }
         public CommandBase LoginCommand { get; private set; }
         public CommandBase InputTextCommand { get; private set; }
         public CommandBase CancelLoginCommand { get; private set; }
@@ -162,6 +175,19 @@
             }
         }
 
+        private void OnClearAccount(object commandParam)
+        {
+            this.FullAccountName = System.IO.Path.Combine(this.programDataPath, this.assemblyName, "Accounts.json");
+            if (System.IO.File.Exists(this.FullAccountName) == true)
+            {
+                MessageBoxResult questionDelete = this.Message.Question("Login", "Möchten Sie wirklich das aktuelle Konto löschen?");
+                if (questionDelete == MessageBoxResult.Yes)
+                {
+                    System.IO.File.Delete(this.FullAccountName);
+                }
+            }
+        }
+
         private async void OnCreateAccount(object commandParam)
         {
             try
@@ -170,10 +196,10 @@
                 {
                     ApplicationAccount account = new ApplicationAccount();
                     account.Displayname = this.Displayname;
-                    account.Benutzername = this.Benutzername;
-                    account.Password = this.Password;
+                    account.Benutzername = CryptoHelper.Decrypt(Encoding.UTF8.GetBytes(this.Benutzername));
+                    account.Password = CryptoHelper.Decrypt(Encoding.UTF8.GetBytes(this.Password));
                     account.HasPin = !string.IsNullOrEmpty(this.Pin);
-                    account.Pin = this.Pin;
+                    account.Pin = CryptoHelper.Decrypt(Encoding.UTF8.GetBytes(this.Pin));
                     this.Accounts.Add(account);
                     var jsonStorage = new JsonListSerializer<ApplicationAccount>();
                     jsonStorage.Version = 1;
@@ -181,6 +207,7 @@
 
                     if (account.HasPin == true)
                     {
+                        this.GridLoginPin.Visibility = Visibility.Visible;
                     }
                     else
                     {
