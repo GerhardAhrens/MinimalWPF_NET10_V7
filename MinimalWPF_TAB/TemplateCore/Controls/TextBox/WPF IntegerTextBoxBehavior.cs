@@ -99,9 +99,7 @@ namespace System.Windows.Controls
         {
             var textBox = AssociatedObject;
 
-            string proposedText = GetTextAfterReplacement(
-                textBox,
-                e.Text);
+            string proposedText = GetTextAfterReplacement(textBox, e.Text);
 
             e.Handled = !IsValidInput(proposedText);
         }
@@ -112,12 +110,17 @@ namespace System.Windows.Controls
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (AssociatedObject.MaxLength > 0 && AssociatedObject.Text.Length > AssociatedObject.MaxLength)
+            {
+                e.Handled = true;
+                return;
+            }
+
             var textBox = AssociatedObject;
 
             // Minus explizit behandeln, da "-" nicht über PreviewTextInput
             // auf allen Tastaturlayouts zuverlässig behandelt wird.
-            if (e.Key == Key.OemMinus ||
-                e.Key == Key.Subtract)
+            if (e.Key == Key.OemMinus || e.Key == Key.Subtract)
             {
                 if (!AllowNegative)
                 {
@@ -143,8 +146,7 @@ namespace System.Windows.Controls
                 return;
             }
 
-            string pastedText =
-                e.SourceDataObject.GetData(DataFormats.Text) as string;
+            string pastedText = e.SourceDataObject.GetData(DataFormats.Text) as string;
 
             if (pastedText == null)
             {
@@ -154,8 +156,7 @@ namespace System.Windows.Controls
 
             var textBox = AssociatedObject;
 
-            string proposedText =
-                GetTextAfterReplacement(textBox, pastedText);
+            string proposedText = GetTextAfterReplacement(textBox, pastedText);
 
             if (!IsValidInput(proposedText))
             {
@@ -172,30 +173,34 @@ namespace System.Windows.Controls
             // Leere Eingabe muss möglich sein.
             // Dadurch bleiben Löschen und Rücktaste vollständig nutzbar.
             if (string.IsNullOrEmpty(text))
+            {
                 return true;
+            }
 
             // Zwischenzustand bei negativer Eingabe:
             // "-" darf zunächst stehen, damit "-123" getippt werden kann.
             if (AllowNegative && text == "-")
+            {
                 return true;
+            }
 
             // Negative Zahlen nicht erlaubt
             if (!AllowNegative && text.Contains("-"))
+            {
                 return false;
+            }
 
             // Nur ASCII-Ziffern erlauben
             foreach (char c in text)
             {
                 if (c < '0' || c > '9')
+                {
                     return false;
+                }
             }
 
             // Integer-Bereich prüfen
-            if (!int.TryParse(
-                    text,
-                    NumberStyles.Integer,
-                    CultureInfo.InvariantCulture,
-                    out int value))
+            if (!int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int value))
             {
                 return false;
             }
@@ -206,11 +211,15 @@ namespace System.Windows.Controls
 
             // Minimum
             if (Minimum.HasValue && value < Minimum.Value)
+            {
                 return false;
+            }
 
             // Maximum
             if (Maximum.HasValue && value > Maximum.Value)
+            {
                 return false;
+            }
 
             return true;
         }
@@ -223,9 +232,7 @@ namespace System.Windows.Controls
         /// Ermittelt den Text, der entstehen würde, wenn die aktuelle
         /// Selektion durch replacement ersetzt wird.
         /// </summary>
-        private static string GetTextAfterReplacement(
-            TextBox textBox,
-            string replacement)
+        private static string GetTextAfterReplacement(TextBox textBox, string replacement)
         {
             string text = textBox.Text ?? string.Empty;
 
@@ -233,35 +240,35 @@ namespace System.Windows.Controls
             int selectionLength = textBox.SelectionLength;
 
             if (selectionStart < 0)
+            {
                 selectionStart = 0;
+            }
 
             if (selectionStart > text.Length)
+            {
                 selectionStart = text.Length;
+            }
 
             if (selectionLength < 0)
+            {
                 selectionLength = 0;
+            }
 
             if (selectionStart + selectionLength > text.Length)
             {
                 selectionLength = text.Length - selectionStart;
             }
 
-            return text.Remove(selectionStart, selectionLength)
-                       .Insert(selectionStart, replacement ?? string.Empty);
+            return text.Remove(selectionStart, selectionLength).Insert(selectionStart, replacement ?? string.Empty);
         }
 
-        private static void OnRangePropertyChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnRangePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var behavior = (IntegerTextBoxBehavior)d;
 
-            if (behavior.Minimum.HasValue &&
-                behavior.Maximum.HasValue &&
-                behavior.Minimum.Value > behavior.Maximum.Value)
+            if (behavior.Minimum.HasValue && behavior.Maximum.HasValue && behavior.Minimum.Value > behavior.Maximum.Value)
             {
-                throw new ArgumentException(
-                    "Minimum darf nicht größer als Maximum sein.");
+                throw new ArgumentException("Minimum darf nicht größer als Maximum sein.");
             }
         }
 

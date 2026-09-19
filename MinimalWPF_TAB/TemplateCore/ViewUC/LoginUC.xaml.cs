@@ -2,6 +2,7 @@
 {
     using System.Data;
     using System.Reflection;
+    using System.Text.RegularExpressions;
     using System.Windows.Controls;
     using System.Windows.Input;
 
@@ -140,11 +141,13 @@
                             this.LoginStep = LoginState.LoginPin;
                             this.GridLoginPin.Visibility = Visibility.Visible;
                             this.Displayname = this.CurrentAccount.Displayname;
+                            this.PinInput.Focus();
                         }
                         else
                         {
                             this.LoginStep = LoginState.LoginUsername;
                             this.GridLoginPassword.Visibility = Visibility.Visible;
+                            this.BenutzernameInput.Focus();
                         }
                     }
                     else if (this.Accounts.Count > 1)
@@ -283,6 +286,40 @@
                         await App.EventAgg.PublishAsync(args);
                     }
                 }
+            }
+        }
+
+        private void OnPinInputPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Erlaubt nur Ziffern (0-9)
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void OnPinInputPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // Die Leertaste wird von WPF oft als Text gewertet. 
+            // Wenn du KEINE Leerzeichen in der Zahl erlauben willst, blockiere sie hier:
+            if (e.Key == Key.Space)
+            {
+                e.Handled = true; // Blockiert die Leertaste
+            }
+        }
+
+        private void OnPinInputPasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(DataFormats.Text))
+            {
+                string text = (string)e.DataObject.GetData(DataFormats.Text);
+                Regex regex = new Regex("[^0-9]+");
+                if (regex.IsMatch(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
             }
         }
 
