@@ -43,7 +43,7 @@
                             Margin="-3"
                             BorderBrush="{StaticResource WindowButton.FocusRing}"
                             BorderThickness="2"
-                            CornerRadius="7"
+                            CornerRadius="5"
                             Visibility="Collapsed" />
 
                         <!--  Main Button  -->
@@ -52,7 +52,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="4">
+                            CornerRadius="3">
 
                             <Grid>
 
@@ -89,22 +89,17 @@
                                         Height="{TemplateBinding ImageSize}"
                                         Margin="0,0,8,0"
                                         VerticalAlignment="Center"
-                                        Source="{TemplateBinding Image}"
                                         Stretch="Uniform">
+                                        <Image.Source>
+                                            <Binding Path="Image" RelativeSource="{RelativeSource TemplatedParent}" />
+                                        </Image.Source>
                                         <Image.Visibility>
                                             <MultiBinding Converter="{StaticResource ImageVisibilityConverter}">
-
-                                                <!--  Image  -->
                                                 <Binding Path="Image" RelativeSource="{RelativeSource TemplatedParent}" />
-
-                                                <!--  ImagePlacement  -->
                                                 <Binding Path="ImagePlacement" RelativeSource="{RelativeSource TemplatedParent}" />
-
-                                                <!--  Required placement  -->
                                                 <MultiBinding.ConverterParameter>
                                                     <x:Static Member="UI:WindowButtonImagePlacement.Left" />
                                                 </MultiBinding.ConverterParameter>
-
                                             </MultiBinding>
                                         </Image.Visibility>
                                     </Image>

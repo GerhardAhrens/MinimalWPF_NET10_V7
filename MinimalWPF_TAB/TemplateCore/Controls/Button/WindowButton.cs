@@ -53,7 +53,7 @@
                 nameof(ImageSize),
                 typeof(double),
                 typeof(WindowButton),
-                new FrameworkPropertyMetadata(16.0));
+                new FrameworkPropertyMetadata(32.0));
 
         public double ImageSize
         {

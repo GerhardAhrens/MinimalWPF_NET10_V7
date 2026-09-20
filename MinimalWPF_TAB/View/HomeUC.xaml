@@ -125,7 +125,11 @@
             <UI:WindowButton
                 Command="{Binding Path=LogoffCommand}"
                 CommandParameter="{x:Static core:CommandButtons.Login}"
-                Content="Abmelden" />
+                Content="Abmelden"
+                Image="{StaticResource ResourceKey=IconDeleteEntry}"
+                ImagePlacement="Left"
+                ImageSize="32"
+                IsDefault="True" />
 
             <Button
                 Command="{Binding Path=MenuArtikellisteCommand}"
