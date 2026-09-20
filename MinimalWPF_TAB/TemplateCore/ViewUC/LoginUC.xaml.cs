@@ -48,13 +48,21 @@
 
         private void OnInputText(object commandParam)
         {
+            this.secretKey = CryptoHelper.ReadKeyFromFile();
+            CryptoHelper protector = new CryptoHelper(this.secretKey);
+
             if (this.CurrentAccount.HasPin == true)
             {
                 this.PinInput.Focus();
+                this.Pin = protector.Decrypt(CurrentAccount.Pin);
+                this.LoginCommand.Execute();
             }
             else
             {
                 this.BenutzernameInput.Focus();
+                this.Benutzername = protector.Decrypt(CurrentAccount.Benutzername);
+                this.Password = protector.Decrypt(CurrentAccount.Password);
+                this.LoginCommand.Execute();
             }
         }
 
@@ -191,6 +199,12 @@
         {
             try
             {
+                if(this.Password.Equals(this.PasswordRepeat) == false)
+                {
+                    this.Message.Warning("Login", "Die eingegebenen Passwörter stimmen nicht überein.");
+                    return;
+                }
+
                 if (this.Accounts.Count == 0)
                 {
                     this.secretKey = CryptoHelper.ReadKeyFromFile();
@@ -248,7 +262,7 @@
                         return;
                     }
 
-                    int countAccount = this.Accounts.Count(a => a.Benutzername == this.Benutzername && a.Password == this.Password && a.CreatedBy == Environment.UserName);
+                    int countAccount = this.Accounts.Count(a => protector.Decrypt(a.Benutzername) == this.Benutzername && protector.Decrypt(a.Password) == this.Password && a.CreatedBy == Environment.UserName);
                     if (countAccount == 0)
                     {
                         this.MaxTryLogin--;
