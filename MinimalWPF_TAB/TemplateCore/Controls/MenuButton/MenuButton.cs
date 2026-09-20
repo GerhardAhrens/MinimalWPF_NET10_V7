@@ -49,7 +49,7 @@
 
         #region DependencyProperties
         public static readonly DependencyProperty CornerRadiusProperty =
-            DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(MenuButton),  new PropertyMetadata(new CornerRadius(3)));
+            DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(MenuButton),  new PropertyMetadata(new CornerRadius(5)));
 
         public CornerRadius CornerRadius
         {
@@ -150,7 +150,6 @@
         private void UpdateVisual()
         {
             this._panel.Children.Clear();
-
             this._image.Source = this.Image;
             this._image.Width = this.ImageWidth;
             this._image.Height = this.ImageHeight;

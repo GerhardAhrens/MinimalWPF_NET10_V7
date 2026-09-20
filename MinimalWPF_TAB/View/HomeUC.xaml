@@ -16,6 +16,16 @@
 
     <UserControl.Resources>
         <PathGeometry x:Key="IconClose" Figures="M754.782 212.596 512 455.368 269.218 212.596c-13.081-13.081-34.29-13.081-47.369 0-13.081 13.081-13.081 34.288 0 47.367l242.782 242.771L221.849 745.507c-13.081 13.081-13.081 34.288 0 47.367 13.081 13.081 34.29 13.081 47.369 0L512 550.103l242.782 242.771c13.081 13.081 34.289 13.081 47.37 0 13.081-13.081 13.081-34.288 0-47.367L559.37 502.735l242.782-242.771c13.081-13.081 13.081-34.288 0-47.367C789.07 199.517 767.862 199.517 754.782 212.596z" />
+
+        <DrawingImage x:Key="TestIcon">
+            <DrawingImage.Drawing>
+                <GeometryDrawing Brush="Red">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0,16,16" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingImage.Drawing>
+        </DrawingImage>
     </UserControl.Resources>
 
     <Grid
@@ -126,10 +136,9 @@
                 Command="{Binding Path=LogoffCommand}"
                 CommandParameter="{x:Static core:CommandButtons.Login}"
                 Content="Abmelden"
-                Image="{StaticResource ResourceKey=IconDeleteEntry}"
-                ImagePlacement="Left"
-                ImageSize="32"
-                IsDefault="True" />
+                Image="{StaticResource ResourceKey=TestIcon}"
+                IsDefault="True"
+                IsEnabled="True" />
 
             <Button
                 Command="{Binding Path=MenuArtikellisteCommand}"

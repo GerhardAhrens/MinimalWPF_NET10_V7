@@ -10,35 +10,21 @@
     <Style TargetType="{x:Type UI:MenuBar}">
 
         <Setter Property="Background" Value="#FFF8F8F8" />
-
         <Setter Property="BorderBrush" Value="#FFC8C8C8" />
-
         <Setter Property="BorderThickness" Value="1" />
-
         <Setter Property="Padding" Value="4" />
-
         <Setter Property="CornerRadius" Value="4" />
-
         <Setter Property="ItemsPanel">
-
             <Setter.Value>
-
                 <ItemsPanelTemplate>
-
                     <UI:MenuBarPanel />
-
                 </ItemsPanelTemplate>
-
             </Setter.Value>
-
         </Setter>
 
         <Setter Property="Template">
-
             <Setter.Value>
-
                 <ControlTemplate TargetType="{x:Type UI:MenuBar}">
-
                     <Border
                         x:Name="OuterBorder"
                         Padding="{TemplateBinding Padding}"
@@ -50,50 +36,34 @@
                         <DockPanel LastChildFill="True">
 
                             <!--  Header  -->
-
                             <Border
                                 x:Name="HeaderBorder"
                                 Margin="4,0,4,4"
                                 DockPanel.Dock="Top">
 
                                 <ContentPresenter VerticalAlignment="Center" ContentSource="Header" />
-
                             </Border>
 
                             <!--  Items  -->
-
                             <ItemsPresenter />
-
                         </DockPanel>
-
                     </Border>
 
                     <ControlTemplate.Triggers>
 
                         <!--  Rahmen ausblenden  -->
-
                         <Trigger Property="ShowBorder" Value="False">
-
                             <Setter TargetName="OuterBorder" Property="BorderThickness" Value="0" />
-
                         </Trigger>
 
                         <!--  Header ausblenden  -->
-
                         <Trigger Property="ShowHeader" Value="False">
-
                             <Setter TargetName="HeaderBorder" Property="Visibility" Value="Collapsed" />
-
                         </Trigger>
-
                     </ControlTemplate.Triggers>
-
                 </ControlTemplate>
-
             </Setter.Value>
-
         </Setter>
-
     </Style>
 
     <!--  =========================================================  -->
