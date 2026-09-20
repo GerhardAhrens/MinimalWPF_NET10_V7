@@ -2,15 +2,12 @@
 {
     using System.Data;
     using System.Reflection;
-    using System.Text;
     using System.Text.RegularExpressions;
     using System.Windows.Controls;
     using System.Windows.Input;
 
     using MinimalWPF;
     using MinimalWPF.Core;
-
-    using static System.Net.Mime.MediaTypeNames;
 
     /// <summary>
     /// Interaktionslogik für LoginUC.xaml
@@ -19,10 +16,12 @@
     {
         private readonly string programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
         private readonly string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+        private byte[] secretKey;
 
         public LoginUC(ChangeViewEventArgs args)
         {
             this.InitializeComponent();
+            this.secretKey = CryptoHelper.ReadKeyFromFile();
             WeakEventManager<UserControl, RoutedEventArgs>.AddHandler(this, "Loaded", this.OnLoaded);
 
             this.CreateAccountCommand = new CommandBase(commandParam => this.OnCreateAccount(commandParam), () => true);
@@ -194,12 +193,16 @@
             {
                 if (this.Accounts.Count == 0)
                 {
+                    this.secretKey = CryptoHelper.ReadKeyFromFile();
+                    CryptoHelper protector = new CryptoHelper(this.secretKey);
+
+                    this.GridNeuesKonto.Visibility = Visibility.Collapsed;
                     ApplicationAccount account = new ApplicationAccount();
                     account.Displayname = this.Displayname;
-                    account.Benutzername = CryptoHelper.Decrypt(Encoding.UTF8.GetBytes(this.Benutzername));
-                    account.Password = CryptoHelper.Decrypt(Encoding.UTF8.GetBytes(this.Password));
-                    account.HasPin = !string.IsNullOrEmpty(this.Pin);
-                    account.Pin = CryptoHelper.Decrypt(Encoding.UTF8.GetBytes(this.Pin));
+                    account.Benutzername = protector.Encrypt(this.Benutzername);
+                    account.Password = protector.Encrypt(this.Password);
+                    account.HasPin = string.IsNullOrEmpty(this.Pin) == false;
+                    account.Pin = protector.Encrypt(this.Pin);
                     this.Accounts.Add(account);
                     var jsonStorage = new JsonListSerializer<ApplicationAccount>();
                     jsonStorage.Version = 1;
@@ -213,6 +216,14 @@
                     {
                         this.GridLoginPassword.Visibility = Visibility.Visible;
                     }
+
+                    this.Accounts = jsonStorage.Load(this.FullAccountName);
+                    this.AccountSource = this.Accounts.Where(w => w.HasPin == true).ToList();
+                    this.CurrentAccount = account;
+                    this.Displayname = this.CurrentAccount.Displayname;
+                    this.Benutzername = string.Empty;
+                    this.Password = string.Empty;
+                    this.Pin = string.Empty;
                 }
             }
             catch (Exception ex)
@@ -226,6 +237,9 @@
         {
             try
             {
+                this.secretKey = CryptoHelper.ReadKeyFromFile();
+                CryptoHelper protector = new CryptoHelper(this.secretKey);
+
                 if (this.CurrentAccount.HasPin == false)
                 {
                     if (string.IsNullOrEmpty(this.Benutzername) == true || string.IsNullOrEmpty(this.Password) == true)
@@ -247,7 +261,7 @@
                     }
                     else
                     {
-                        int countAccountPW = this.Accounts.Count(a => a.Benutzername == this.Benutzername && a.Password == this.Password);
+                        int countAccountPW = this.Accounts.Count(a => protector.Decrypt(a.Benutzername) == this.Benutzername && protector.Decrypt(a.Password) == this.Password);
                         if (countAccountPW > 0)
                         {
                             ChangeViewEventArgs args = new();
@@ -268,7 +282,7 @@
                         return;
                     }
 
-                    int countAccount = this.Accounts.Count(a => a.Pin == this.Pin && a.CreatedBy == Environment.UserName);
+                    int countAccount = this.Accounts.Count(a => protector.Decrypt(a.Pin) == this.Pin && a.CreatedBy == Environment.UserName);
                     if (countAccount > 0)
                     {
                         ChangeViewEventArgs args = new();

@@ -151,7 +151,8 @@
                             Width="100"
                             Height="25"
                             Command="{Binding Path=CreateAccountCommand}"
-                            Content="Konto erstellen" />
+                            Content="Konto erstellen"
+                            IsDefault="True" />
 
                         <Button
                             Width="100"
@@ -260,6 +261,7 @@
                         DisplayMemberPath="Displayname"
                         IsReadOnly="True"
                         ItemsSource="{Binding Path=AccountSource}"
+                        SelectedIndex="0"
                         SelectedItem="{Binding Path=CurrentAccount, UpdateSourceTrigger=PropertyChanged}"
                         SelectedValuePath="AccountId" />
 

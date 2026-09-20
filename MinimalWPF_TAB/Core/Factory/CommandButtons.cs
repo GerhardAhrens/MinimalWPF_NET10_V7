@@ -32,5 +32,7 @@
         SettingsPopup = 21,
         [Description("Anmeldung")]
         Login = 22,
+        [Description("Abmeldung")]
+        Logoff = 23
     }
 }

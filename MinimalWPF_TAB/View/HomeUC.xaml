@@ -43,9 +43,10 @@
                     Grid.Row="0"
                     Background="#FAFAFB"
                     CornerRadius="5">
-                    <base:InformationUC PopupTitel="{Binding Path=PopupTitel}"
+                    <base:InformationUC
                         InstallFolder="{Binding Path=InstallFolder, UpdateSourceTrigger=PropertyChanged}"
                         IsParentOpen="{Binding Path=IsOpen, UpdateSourceTrigger=PropertyChanged, ElementName=InformationPopup}"
+                        PopupTitel="{Binding Path=PopupTitel}"
                         SettingsFolder="{Binding Path=SettingsFolder, UpdateSourceTrigger=PropertyChanged}" />
                 </Border>
 
@@ -120,6 +121,11 @@
                 Image="{StaticResource ResourceKey=IconApplicationEnd}"
                 Text="Beenden"
                 ToolTipText="Programm beenden" />
+
+            <Button
+                Command="{Binding Path=LogoffCommand}"
+                CommandParameter="{x:Static core:CommandButtons.Login}"
+                Content="Abmelden" />
 
             <Button
                 Command="{Binding Path=MenuArtikellisteCommand}"

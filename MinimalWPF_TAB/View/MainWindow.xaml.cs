@@ -184,7 +184,7 @@
                         this.WorkContent = null;
                         this.WorkContent = (UserControl)Factory.Get<UserControlBase, CommandButtons>((CommandButtons)commandParam.MenuButton, commandParam);
                     }
-                    else if (button.In(CommandButtons.Login))
+                    else if (button.In(CommandButtons.Login, CommandButtons.Logoff))
                     {
 
                         if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
