@@ -122,7 +122,7 @@
                 Text="Beenden"
                 ToolTipText="Programm beenden" />
 
-            <Button
+            <UI:WindowButton
                 Command="{Binding Path=LogoffCommand}"
                 CommandParameter="{x:Static core:CommandButtons.Login}"
                 Content="Abmelden" />
