@@ -52,13 +52,14 @@
             </DockPanel>
         </GroupBox>
 
-        <Grid Margin="5,0,0,0"
+        <Grid
             x:Name="gridControlDemo"
             Grid.Row="1"
             Grid.Column="0"
+            Margin="5,0,0,0"
             Background="Transparent"
             ColumnDefinitions="120,*"
-            RowDefinitions="25,50,Auto,Auto,25,25,Auto,*">
+            RowDefinitions="25,50,Auto,Auto,Auto,Auto,*">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
@@ -87,10 +88,11 @@
                 SelectedValue="{Binding Path=SelectedImage}"
                 SymbolColor="Green" />
 
-            <StackPanel Margin="0,5,0,0"
+            <StackPanel
                 Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
+                Margin="0,5,0,0"
                 Orientation="Horizontal">
 
                 <TextBlock
@@ -143,6 +145,13 @@
                     ThumbSize="18" />
 
             </StackPanel>
+
+            <UI:Window11TextBox
+                Grid.Row="4"
+                Grid.ColumnSpan="2"
+                Height="28"
+                Text=""
+                PlaceholderText="Platzhaltertext" />
 
         </Grid>
 
