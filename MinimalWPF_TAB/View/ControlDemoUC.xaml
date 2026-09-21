@@ -59,7 +59,7 @@
             Margin="5,0,0,0"
             Background="Transparent"
             ColumnDefinitions="120,*,100"
-            RowDefinitions="25,50,Auto,Auto,10,Auto,Auto,*">
+            RowDefinitions="25,50,Auto,Auto,10,Auto,Auto,Auto,Auto,*">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
@@ -183,6 +183,20 @@
                 MinimumSearchLength="2"
                 SelectedItem="{Binding Path=SelectedDemoDate, UpdateSourceTrigger=PropertyChanged}"
                 SelectedValuePath="Id" />
+
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="WindowCheckBox" />
+
+            <UI:WindowCheckBox
+                Grid.Row="7"
+                Grid.Column="1"
+                Margin="0,5,0,0"
+                Content="CheckBox"
+                IsChecked="{x:Null}"
+                IsThreeState="True" />
 
         </Grid>
 
