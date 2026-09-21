@@ -169,7 +169,8 @@
                 Grid.Row="6"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="WindowComboBox" />
+                Text="WindowComboBox Default"
+                TextWrapping="Wrap" />
 
             <UI:WindowComboBox
                 Grid.Row="6"
@@ -178,9 +179,10 @@
                 DisplayMemberPath="ValueText"
                 IsEditable="True"
                 IsSubstringSearchEnabled="False"
-                IsTextSearchEnabled="False"
+                IsTextSearchEnabled="True"
                 ItemsSource="{Binding Path=DemoDateSource}"
                 MinimumSearchLength="2"
+                SearchText="ValueText"
                 SelectedItem="{Binding Path=SelectedDemoDate, UpdateSourceTrigger=PropertyChanged}"
                 SelectedValuePath="Id" />
 
@@ -188,10 +190,30 @@
                 Grid.Row="7"
                 Grid.Column="0"
                 VerticalAlignment="Center"
+                Text="WindowComboBox Teilstring"
+                TextWrapping="Wrap" />
+
+            <UI:WindowComboBox
+                Grid.Row="7"
+                Grid.Column="1"
+                Margin="0,5,0,0"
+                DisplayMemberPath="ValueText"
+                IsEditable="True"
+                IsSubstringSearchEnabled="True"
+                ItemsSource="{Binding Path=DemoDateSource}"
+                MinimumSearchLength="2"
+                SearchText="ValueText"
+                SelectedItem="{Binding Path=SelectedDemoDateSub, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValuePath="Id" />
+
+            <TextBlock
+                Grid.Row="8"
+                Grid.Column="0"
+                VerticalAlignment="Center"
                 Text="WindowCheckBox" />
 
             <UI:WindowCheckBox
-                Grid.Row="7"
+                Grid.Row="8"
                 Grid.Column="1"
                 Margin="0,5,0,0"
                 Content="CheckBox"

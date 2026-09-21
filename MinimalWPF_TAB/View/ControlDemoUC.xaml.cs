@@ -109,6 +109,12 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
+        public DemoDataCB SelectedDemoDateSub
+        {
+            get => base.GetValue<DemoDataCB>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
 
