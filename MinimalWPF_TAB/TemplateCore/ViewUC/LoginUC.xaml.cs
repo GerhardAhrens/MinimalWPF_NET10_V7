@@ -310,12 +310,15 @@
                     else
                     {
                         this.MaxTryLogin--;
-                        this.Message.Warning("Login", $"Die eingegebene Pin ist falsch. Sie haben noch {this.MaxTryLogin} Versuche.");
                         this.Pin = string.Empty;
                         if (this.MaxTryLogin <= 0)
                         {
                             this.Message.Warning("Login", $"Sie haben die maximale Anzahl an Login-Versuchen erreicht. Das Programm wird beendet.");
                             App.ApplicationExit(true);
+                        }
+                        else
+                        {
+                            this.Message.Warning("Login", $"Die eingegebene Pin ist falsch. Sie haben noch {this.MaxTryLogin} Versuche.");
                         }
                     }
                 }

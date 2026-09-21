@@ -278,7 +278,7 @@
             }
             else
             {
-                Environment.Exit(0);
+                Process.GetCurrentProcess().Kill(true);
             }
         }
     }
