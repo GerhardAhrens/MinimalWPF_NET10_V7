@@ -166,4 +166,395 @@
 
     <!--#endregion Farbige Icon Symbole auf Basis von DrawingImage-->
 
+    <!--#region Login DrawingImage-->
+
+    <DrawingImage x:Key="LogonIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+
+                <!--  =========================  -->
+                <!--  Benutzer  -->
+                <!--  =========================  -->
+
+                <!--  Kopf  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry
+                            Center="9,9"
+                            RadiusX="3"
+                            RadiusY="3" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Körper  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <Geometry>
+                            M4,18
+                            C4,14.5 6,12 9,12
+                            C12,12 14,14.5 14,18
+                            Z
+                        </Geometry>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  =========================  -->
+                <!--  Logon-Pfeil  -->
+                <!--  =========================  -->
+
+                <GeometryDrawing Brush="#FF1F5AA6">
+                    <GeometryDrawing.Geometry>
+                        <Geometry>
+
+                            <!--  Pfeilkörper  -->
+                            M12,16
+                            L20,16
+                            L20,13
+                            L25,18
+                            L20,23
+                            L20,20
+                            L12,20
+                            Z
+                        </Geometry>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  =========================  -->
+                <!--  Ziel / Tür  -->
+                <!--  =========================  -->
+
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FF707070" Thickness="1" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="20,4,6,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Türspalt  -->
+                <GeometryDrawing Brush="#FFE0E0E0">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="20,4,2,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Türklinke  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry
+                            Center="24,24"
+                            RadiusX="0.8"
+                            RadiusY="0.8" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="LogoffIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+
+                <!--  =========================  -->
+                <!--  Benutzer  -->
+                <!--  =========================  -->
+
+                <!--  Kopf  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry
+                            Center="9,8"
+                            RadiusX="3"
+                            RadiusY="3" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Körper  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <Geometry>
+                            M4,18
+                            C4,14.5 6,12 9,12
+                            C12,12 14,14.5 14,18
+                            Z
+                        </Geometry>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  =========================  -->
+                <!--  Ziel / Tür  -->
+                <!--  =========================  -->
+
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FF707070" Thickness="1" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="20,4,6,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Türspalt  -->
+                <GeometryDrawing Brush="#FFE0E0E0">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="20,4,2,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Türklinke  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry
+                            Center="24,14"
+                            RadiusX="0.8"
+                            RadiusY="0.8" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  =========================  -->
+                <!--  Logoff-Pfeil  -->
+                <!--  =========================  -->
+
+                <GeometryDrawing Brush="#FF1F5AA6">
+                    <GeometryDrawing.Geometry>
+                        <Geometry>
+
+                            <!--  Pfeilkörper: vom System nach außen  -->
+                            M14,16
+                            L6,16
+                            L6,13
+                            L1,18
+                            L6,23
+                            L6,20
+                            L14,20
+                            Z
+                        </Geometry>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="CancelLogonIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+
+                <!--  =========================  -->
+                <!--  Benutzer  -->
+                <!--  =========================  -->
+
+                <!--  Kopf  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry
+                            Center="9,8"
+                            RadiusX="3"
+                            RadiusY="3" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Körper  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <Geometry>
+                            M4,18
+                            C4,14.5 6,12 9,12
+                            C12,12 14,14.5 14,18
+                            Z
+                        </Geometry>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+
+                <!--  =========================  -->
+                <!--  Ziel / Tür  -->
+                <!--  =========================  -->
+
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FF707070" Thickness="1" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="20,4,6,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Türspalt  -->
+                <GeometryDrawing Brush="#FFE0E0E0">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="20,4,2,20" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Türklinke  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry
+                            Center="24,14"
+                            RadiusX="0.8"
+                            RadiusY="0.8" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+
+                <!--  =========================  -->
+                <!--  Logon-Pfeil  -->
+                <!--  =========================  -->
+
+                <GeometryDrawing Brush="#FF1F5AA6">
+                    <GeometryDrawing.Geometry>
+                        <Geometry>
+                            M12,16
+                            L19,16
+                            L19,13
+                            L24,18
+                            L19,23
+                            L19,20
+                            L12,20
+                            Z
+                        </Geometry>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+
+                <!--  =========================  -->
+                <!--  Abbruch-X  -->
+                <!--  =========================  -->
+
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen
+                            Brush="#FFD32F2F"
+                            EndLineCap="Round"
+                            LineJoin="Round"
+                            StartLineCap="Round"
+                            Thickness="2.2" />
+                    </GeometryDrawing.Pen>
+
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+
+                            <!--  X 1  -->
+                            <LineGeometry StartPoint="17,6" EndPoint="24,13" />
+
+                            <!--  X 2  -->
+                            <LineGeometry StartPoint="24,6" EndPoint="17,13" />
+
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="DeleteLoginAccountIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+
+                <!--  =========================  -->
+                <!--  Benutzer  -->
+                <!--  =========================  -->
+
+                <!--  Kopf  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry
+                            Center="9,8"
+                            RadiusX="3"
+                            RadiusY="3" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Körper  -->
+                <GeometryDrawing Brush="#FF707070">
+                    <GeometryDrawing.Geometry>
+                        <Geometry>
+                            M4,18
+                            C4,14.5 6,12 9,12
+                            C12,12 14,14.5 14,18
+                            Z
+                        </Geometry>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+
+                <!--  =========================  -->
+                <!--  Konto / Login  -->
+                <!--  =========================  -->
+
+                <GeometryDrawing Brush="#FF1F5AA6">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FF1F5AA6" Thickness="1" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="4,20,10,3" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+
+                <!--  =========================  -->
+                <!--  Papierkorb  -->
+                <!--  =========================  -->
+
+                <!--  Papierkorb-Korpus  -->
+                <GeometryDrawing Brush="#FFD32F2F">
+                    <GeometryDrawing.Geometry>
+                        <Geometry>
+                            M17,11
+                            L25,11
+                            L24,23
+                            L18,23
+                            Z
+                        </Geometry>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Papierkorb-Innenfläche  -->
+                <GeometryDrawing Brush="#FFE57373">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="19,13,5,8" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Papierkorb-Deckel  -->
+                <GeometryDrawing Brush="#FFD32F2F">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="16,9,10,2" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                
+                <!--  Griff  -->
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FFD32F2F" Thickness="1.5" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <LineGeometry StartPoint="20,8" EndPoint="23,8" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <!--  Trennlinien im Papierkorb  -->
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FFFFFFFF" Thickness="0.8" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+
+                            <LineGeometry StartPoint="20.5,14" EndPoint="20.5,20" />
+
+                            <LineGeometry StartPoint="22.5,14" EndPoint="22.5,20" />
+
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <!--#endregion Login DrawingImage-->
 </ResourceDictionary>

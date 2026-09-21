@@ -319,6 +319,7 @@
                         else
                         {
                             this.Message.Warning("Login", $"Die eingegebene Pin ist falsch. Sie haben noch {this.MaxTryLogin} Versuche.");
+                            this.PinInput.Focus();
                         }
                     }
                 }

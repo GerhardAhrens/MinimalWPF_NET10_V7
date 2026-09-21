@@ -136,7 +136,7 @@
                 Command="{Binding Path=LogoffCommand}"
                 CommandParameter="{x:Static core:CommandButtons.Login}"
                 Content="Abmelden"
-                Image="{StaticResource ResourceKey=TestIcon}"
+                Image="{StaticResource ResourceKey=LogoffIcon}"
                 IsDefault="True"
                 IsEnabled="True" />
 

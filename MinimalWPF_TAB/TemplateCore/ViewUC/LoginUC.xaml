@@ -298,6 +298,8 @@
                             Command="{Binding Path=LoginCommand}"
                             CommandParameter="PIN"
                             Content="Anmelden"
+                            Image="{StaticResource ResourceKey=LogonIcon}"
+                            ImageSize="24"
                             IsDefault="true" />
 
                         <UI:WindowButton
@@ -305,7 +307,9 @@
                             Margin="50,0,0,0"
                             Command="{Binding Path=CancelLoginCommand}"
                             CommandParameter="{x:Static core:CommandButtons.AppQuit}"
-                            Content="Abbrechen" />
+                            Content="Abbrechen"
+                            Image="{StaticResource ResourceKey=CancelLogonIcon}"
+                            ImageSize="24" />
                     </StackPanel>
                 </Grid>
 
@@ -316,13 +320,14 @@
                     BorderBrush="DarkGray"
                     BorderThickness="0,2,0,0"
                     Visibility="Visible">
-                    <Grid ColumnDefinitions="140,120,*" RowDefinitions="*">
+                    <Grid ColumnDefinitions="160,120,*" RowDefinitions="*">
                         <UI:WindowButton
                             Grid.Row="0"
                             Grid.Column="0"
-                            Height="35"
                             Command="{Binding Path=ClearAccountCommand}"
-                            Content="Konto löschen" />
+                            Content="Konto löschen"
+                            Image="{StaticResource DeleteLoginAccountIcon}"
+                            ImageSize="24" />
                     </Grid>
                 </Border>
 
