@@ -59,7 +59,7 @@
             this.ConfigurationStatusInfoBar();
 
             ChangeViewEventArgs args = new();
-            args.MenuButton = CommandButtons.Login;
+            args.MenuButton = CommandButtons.Home;
             args.FromPage = CommandButtons.Home;
             this.ChangeControl(args);
         }

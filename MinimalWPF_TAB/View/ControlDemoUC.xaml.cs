@@ -35,6 +35,20 @@ namespace MinimalWPF.View
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
 
+            this.DemoDateSource = new List<DemoDataCB>
+            {
+                new DemoDataCB("Test 1"),
+                new DemoDataCB("Test 2"),
+                new DemoDataCB("Test 3"),
+                new DemoDataCB("Test 4"),
+                new DemoDataCB("Test 5"),
+                new DemoDataCB("Donald Duck"),
+                new DemoDataCB("Dagobert Duck"),
+                new DemoDataCB("Gustav Gans"),
+            };
+
+            this.SelectedDemoDate = this.DemoDateSource.FirstOrDefault();
+
             this.DataContext = this;
         }
 
@@ -76,6 +90,25 @@ namespace MinimalWPF.View
             get => base.GetValue<string>();
             set => base.SetValue(value);
         }
+
+        public string Win11TextBox
+        {
+            get => base.GetValue<string>();
+            set => base.SetValue(value);
+        }
+
+        public List<DemoDataCB> DemoDateSource
+        {
+            get => base.GetValue<List<DemoDataCB>>();
+            set => base.SetValue(value);
+        }
+
+        public DemoDataCB SelectedDemoDate
+        {
+            get => base.GetValue<DemoDataCB>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
 
@@ -138,7 +171,23 @@ namespace MinimalWPF.View
             Message.Hinweis("Test TextBoxMask", $"Ergebnis: {this.PhonNumberRaw}");
         }
 
+        private void OnTestWin11TextBox(object sender, RoutedEventArgs e)
+        {
+            Message.Hinweis("Test Win11TextBox", $"Ergebnis: {this.Win11TextBox}");
+        }
         #endregion Command Events
 
+    }
+
+    public class DemoDataCB 
+    {
+        public DemoDataCB(string valueText)
+        {
+            this.Id = Guid.CreateVersion7();
+            this.ValueText = valueText;
+        }
+
+        public Guid Id { get; private set; }
+        public string ValueText { get; private set; }
     }
 }

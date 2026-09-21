@@ -240,7 +240,7 @@
                     Grid.Column="0"
                     ColumnDefinitions="100,120,*"
                     RowDefinitions="100,40,30,10,20,40"
-                    Visibility="Visible">
+                    Visibility="Collapsed">
                     <Grid.LayoutTransform>
                         <ScaleTransform ScaleX="{StaticResource ResourceKey=ScaleXY}" ScaleY="{StaticResource ResourceKey=ScaleXY}" />
                     </Grid.LayoutTransform>

@@ -56,36 +56,25 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-
                         <Trigger Property="IsMouseOver" Value="True">
-
                             <Setter TargetName="ButtonBorder" Property="Background" Value="#14000000" />
-
                             <Setter Property="Foreground" Value="#1A1A1A" />
-
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="True">
-
                             <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.7" />
-
                         </Trigger>
-
                     </ControlTemplate.Triggers>
-
                 </ControlTemplate>
-
             </Setter.Value>
-
         </Setter>
-
     </Style>
 
 
     <!--  =============================================================  -->
     <!--  Window11TextBox  -->
     <!--  =============================================================  -->
-    <Style TargetType="{x:Type UI:Window11TextBox}">
+    <Style TargetType="{x:Type UI:WindowTextBox}">
 
         <Setter Property="Background" Value="{DynamicResource Window11TextBox.Background}" />
         <Setter Property="Foreground" Value="{DynamicResource Window11TextBox.Foreground}" />
@@ -93,7 +82,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="Padding" Value="5,1,8,1" />
+        <Setter Property="Padding" Value="4,1,8,1" />
         <Setter Property="MinHeight" Value="28" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="PlaceholderForeground" Value="{DynamicResource Window11TextBox.PlaceholderForeground}" />
@@ -101,10 +90,8 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type UI:Window11TextBox}">
-
+                <ControlTemplate TargetType="{x:Type UI:WindowTextBox}">
                     <Grid>
-
                         <Border
                             x:Name="OuterBorder"
                             Background="{TemplateBinding Background}"
@@ -114,7 +101,6 @@
                             SnapsToDevicePixels="True">
 
                             <Grid>
-
                                 <!--  Text  -->
                                 <ScrollViewer
                                     x:Name="PART_ContentHost"
@@ -126,6 +112,7 @@
                                 <TextBlock
                                     x:Name="PART_Placeholder"
                                     Margin="{TemplateBinding Padding}"
+                                    Padding="4,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     FontFamily="{TemplateBinding FontFamily}"
@@ -138,11 +125,8 @@
                                     Text="{TemplateBinding PlaceholderText}"
                                     TextTrimming="CharacterEllipsis"
                                     Visibility="{Binding PlaceholderVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-
                             </Grid>
-
                         </Border>
-
 
                         <!--  Clear Button  -->
                         <Button
@@ -159,51 +143,36 @@
 
                         <!--  Hover  -->
                         <Trigger Property="IsMouseOver" Value="True">
-
                             <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource Window11TextBox.Border.Hover}" />
-
                         </Trigger>
 
 
                         <!--  Focus  -->
                         <Trigger Property="IsKeyboardFocused" Value="True">
-
                             <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource Window11TextBox.Border.Focus}" />
-
                             <Setter TargetName="OuterBorder" Property="BorderThickness" Value="2" />
-
                         </Trigger>
 
 
                         <!--  Disabled  -->
                         <Trigger Property="IsEnabled" Value="False">
-
                             <Setter TargetName="OuterBorder" Property="Background" Value="{DynamicResource Window11TextBox.Background.Disabled}" />
-
                             <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource Window11TextBox.Border.Disabled}" />
-
                             <Setter Property="Foreground" Value="{DynamicResource Window11TextBox.Foreground.Disabled}" />
-
                         </Trigger>
 
 
                         <!--  ReadOnly  -->
                         <Trigger Property="IsReadOnly" Value="True">
-
                             <Setter TargetName="OuterBorder" Property="Background" Value="{DynamicResource Window11TextBox.Background.ReadOnly}" />
-
                         </Trigger>
 
 
                         <!--  Validation  -->
                         <Trigger Property="Validation.HasError" Value="True">
-
                             <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource Window11TextBox.Border.Error}" />
-
                         </Trigger>
-
                     </ControlTemplate.Triggers>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

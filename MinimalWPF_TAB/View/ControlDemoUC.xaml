@@ -58,8 +58,8 @@
             Grid.Column="0"
             Margin="5,0,0,0"
             Background="Transparent"
-            ColumnDefinitions="120,*"
-            RowDefinitions="25,50,Auto,Auto,Auto,Auto,*">
+            ColumnDefinitions="120,*,100"
+            RowDefinitions="25,50,Auto,Auto,10,Auto,Auto,*">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
@@ -146,12 +146,43 @@
 
             </StackPanel>
 
-            <UI:Window11TextBox
-                Grid.Row="4"
-                Grid.ColumnSpan="2"
-                Height="28"
-                Text=""
-                PlaceholderText="Platzhaltertext" />
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="WindowTextBox" />
+
+            <UI:WindowTextBox
+                Grid.Row="5"
+                Grid.Column="1"
+                PlaceholderText="Platzhaltertext"
+                Text="{Binding Path=Win11TextBox, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button
+                Grid.Row="5"
+                Grid.Column="2"
+                Margin="10,0,0,0"
+                Click="OnTestWin11TextBox"
+                Content="Test Inhalt" />
+
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="WindowComboBox" />
+
+            <UI:WindowComboBox
+                Grid.Row="6"
+                Grid.Column="1"
+                Margin="0,5,0,0"
+                DisplayMemberPath="ValueText"
+                IsEditable="True"
+                IsSubstringSearchEnabled="False"
+                IsTextSearchEnabled="False"
+                ItemsSource="{Binding Path=DemoDateSource}"
+                MinimumSearchLength="2"
+                SelectedItem="{Binding Path=SelectedDemoDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValuePath="Id" />
 
         </Grid>
 

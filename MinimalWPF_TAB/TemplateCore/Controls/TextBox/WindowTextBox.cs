@@ -1,30 +1,25 @@
 ﻿namespace System.Windows.Controls
 {
-    using System.Globalization;
-    using System.Windows.Data;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     [TemplatePart(Name = "PART_ContentHost", Type = typeof(ScrollViewer))]
     [TemplatePart(Name = "PART_ClearButton", Type = typeof(Button))]
-    public class Window11TextBox : TextBox
+    public class WindowTextBox : TextBox
     {
         private Button _clearButton;
 
-        static Window11TextBox()
+        static WindowTextBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(Window11TextBox),
-                new FrameworkPropertyMetadata(typeof(Window11TextBox)));
+                typeof(WindowTextBox),
+                new FrameworkPropertyMetadata(typeof(WindowTextBox)));
         }
 
         #region PlaceholderText
 
         internal static readonly DependencyProperty PlaceholderVisibilityProperty =
-            DependencyProperty.Register(
-        nameof(PlaceholderVisibility),
-        typeof(Visibility),
-        typeof(Window11TextBox),
-        new FrameworkPropertyMetadata(Visibility.Visible));
+            DependencyProperty.Register(nameof(PlaceholderVisibility), typeof(Visibility), typeof(WindowTextBox), new FrameworkPropertyMetadata(Visibility.Visible));
 
         internal Visibility PlaceholderVisibility
         {
@@ -36,7 +31,7 @@
             DependencyProperty.Register(
                 nameof(PlaceholderText),
                 typeof(string),
-                typeof(Window11TextBox),
+                typeof(WindowTextBox),
                 new FrameworkPropertyMetadata(
                     string.Empty,
                     FrameworkPropertyMetadataOptions.AffectsRender,
@@ -48,11 +43,9 @@
             set => SetValue(PlaceholderTextProperty, value);
         }
 
-        private static void OnPlaceholderTextChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnPlaceholderTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is Window11TextBox textBox)
+            if (d is WindowTextBox textBox)
             {
                 textBox.UpdatePlaceholder();
             }
@@ -70,10 +63,8 @@
             DependencyProperty.Register(
                 nameof(PlaceholderForeground),
                 typeof(Brush),
-                typeof(Window11TextBox),
-                new FrameworkPropertyMetadata(
-                    null,
-                    FrameworkPropertyMetadataOptions.AffectsRender));
+                typeof(WindowTextBox),
+                new FrameworkPropertyMetadata(Brushes.LightGray, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public Brush PlaceholderForeground
         {
@@ -89,7 +80,7 @@
             DependencyProperty.Register(
                 nameof(CornerRadius),
                 typeof(CornerRadius),
-                typeof(Window11TextBox),
+                typeof(WindowTextBox),
                 new FrameworkPropertyMetadata(
                     new CornerRadius(5)));
 
@@ -107,7 +98,7 @@
             DependencyProperty.Register(
                 nameof(ShowClearButton),
                 typeof(bool),
-                typeof(Window11TextBox),
+                typeof(WindowTextBox),
                 new FrameworkPropertyMetadata(true));
 
         public bool ShowClearButton
@@ -124,7 +115,7 @@
             DependencyProperty.Register(
                 nameof(ClearButtonVisibility),
                 typeof(Visibility),
-                typeof(Window11TextBox),
+                typeof(WindowTextBox),
                 new FrameworkPropertyMetadata(Visibility.Visible));
 
         public Visibility ClearButtonVisibility
@@ -141,7 +132,7 @@
             DependencyProperty.Register(
                 nameof(SelectAllOnFocus),
                 typeof(bool),
-                typeof(Window11TextBox),
+                typeof(WindowTextBox),
                 new FrameworkPropertyMetadata(false));
 
         public bool SelectAllOnFocus
@@ -159,7 +150,7 @@
                 nameof(ClearButtonClicked),
                 RoutingStrategy.Bubble,
                 typeof(RoutedEventHandler),
-                typeof(Window11TextBox));
+                typeof(WindowTextBox));
 
         public event RoutedEventHandler ClearButtonClicked
         {
@@ -171,7 +162,7 @@
 
         #region Constructor
 
-        public Window11TextBox()
+        public WindowTextBox()
         {
             Loaded += Window11TextBox_Loaded;
         }
