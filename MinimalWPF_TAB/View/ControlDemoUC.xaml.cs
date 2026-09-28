@@ -15,6 +15,7 @@
 
 namespace MinimalWPF.View
 {
+    using System.Collections.ObjectModel;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -34,6 +35,7 @@ namespace MinimalWPF.View
             this.CurrentCtorArgs = args;
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
+            this.SplitButtonCommand = new CommandBase(commandParam => this.OnSplitButton(commandParam), () => true);
 
             this.DemoDateSource = new List<DemoDataCB>
             {
@@ -49,11 +51,21 @@ namespace MinimalWPF.View
 
             this.SelectedDemoDate = this.DemoDateSource.FirstOrDefault();
 
+            this.SplitButtonMenue();
+
             this.DataContext = this;
+        }
+
+        public ObservableCollection<SplitButtonItem> NewItems { get; } = new();
+
+        private void OnSplitButton(object commandParam)
+        {
+            this.Message.Hinweis("SplitButton", $"Button: {commandParam.ToString()}");
         }
 
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
+        public CommandBase SplitButtonCommand { get; private set; }
 
         public Dictionary<int, string> ImageSource
         {
@@ -183,6 +195,15 @@ namespace MinimalWPF.View
         }
         #endregion Command Events
 
+        private void SplitButtonMenue()
+        {
+            /*
+             * <local:SplitButton Header="Neu" Command="{Binding NewCommand}" ItemsSource="{Binding NewItems}" />
+             */
+
+            NewItems.Add(new SplitButtonItem {Content = "Text", Icon = "T", Command = this.SplitButtonCommand, CommandParameter = "ItemButton-1" });
+            NewItems.Add(new SplitButtonItem {Content = "Bild", Icon = "🖼", Command = SplitButtonCommand, CommandParameter = "ItemButton-2" });
+        }
     }
 
     public class DemoDataCB 

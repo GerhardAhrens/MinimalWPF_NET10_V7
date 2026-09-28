@@ -59,7 +59,7 @@
             Margin="5,0,0,0"
             Background="Transparent"
             ColumnDefinitions="120,*,100"
-            RowDefinitions="25,50,Auto,Auto,10,Auto,Auto,Auto,Auto,*">
+            RowDefinitions="25,50,Auto,Auto,10,Auto,Auto,Auto,Auto,Auto,*">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
@@ -220,6 +220,45 @@
                 IsChecked="{x:Null}"
                 IsThreeState="True" />
 
+            <TextBlock
+                Grid.Row="9"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="SplitButton" />
+
+            <UI:SplitButton
+                Grid.Row="9"
+                Grid.Column="1"
+                Width="150"
+                HorizontalAlignment="Left"
+                Command="{Binding Path=SplitButtonCommand}"
+                CommandParameter="RootButton"
+                Header="Neu">
+
+                <UI:SplitButtonItem
+                    Command="{Binding Path=SplitButtonCommand}"
+                    CommandParameter="ItemButton-1"
+                    Content="Text"
+                    Description="Textfeld einfügen"
+                    Icon="T" />
+
+                <UI:SplitButtonItem
+                    Command="{Binding Path=SplitButtonCommand}"
+                    CommandParameter="ItemButton-2"
+                    Content="Bild"
+                    Description="Bild einfügen"
+                    Icon="🖼" />
+
+                <UI:SplitButtonSeparator />
+
+                <UI:SplitButtonItem
+                    Command="{Binding Path=SplitButtonCommand}"
+                    CommandParameter="ItemButton-3"
+                    Content="Form"
+                    Description="Form einfügen"
+                    Icon="□" />
+
+            </UI:SplitButton>
         </Grid>
 
         <!--#endregion Hauptmenübar-->
