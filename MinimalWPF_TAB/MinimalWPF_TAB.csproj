@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="TemplateCore\ArgumentGuard\" />
+    <Folder Include="TemplateCore\Controls\Listbox\Themes\" />
     <Folder Include="TemplateCore\Extension\System.Security\" />
   </ItemGroup>
 
