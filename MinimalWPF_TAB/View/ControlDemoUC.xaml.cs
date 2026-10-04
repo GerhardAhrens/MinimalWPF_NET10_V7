@@ -127,6 +127,12 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
+        public DateTime? SelectedDate
+        {
+            get => base.GetValue<DateTime?>();
+            set => base.SetValue(value);
+        }
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
 

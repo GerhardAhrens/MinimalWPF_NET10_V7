@@ -20,6 +20,7 @@
                 <ResourceDictionary Source="TemplateCore\Controls\ComboBox\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\CheckBox\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\TextBox\Themes\Generic.xaml" />
+                <ResourceDictionary Source="TemplateCore\Controls\TextBoxDate\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\MenuBar\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\TabControl\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\TreeView\Themes\Generic.xaml" />
