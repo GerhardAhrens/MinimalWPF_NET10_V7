@@ -27,7 +27,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="8"
+                        CornerRadius="6"
                         SnapsToDevicePixels="True">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -52,7 +52,7 @@
                                         Background="{TemplateBinding Background}"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="6">
+                                        CornerRadius="4">
                                         <DockPanel LastChildFill="True">
                                             <TextBlock
                                                 Margin="10,0,6,0"
@@ -61,15 +61,15 @@
                                                 FontSize="14"
                                                 Foreground="{StaticResource AdvancedListbox.SubtleText}"
                                                 Text="&#xE721;" />
-                                            
+
                                             <TextBox
-                                                Padding="4,8"
+                                                Padding="2,8"
+                                                AutomationProperties.Name="{Binding SearchWatermark, RelativeSource={RelativeSource TemplatedParent}}"
                                                 Background="Transparent"
                                                 BorderThickness="0"
                                                 FontSize="13"
-                                                Foreground="{TemplateBinding Foreground}"
-                                                Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                                ToolTip="{TemplateBinding SearchPlaceholder}" />
+                                                Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                ToolTip="{Binding SearchWatermark, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </DockPanel>
                                     </Border>
                                 </StackPanel>

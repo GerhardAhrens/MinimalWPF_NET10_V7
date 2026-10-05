@@ -51,7 +51,7 @@
                 Margin="-2"
                 BorderBrush="#FFD13438"
                 BorderThickness="1.5"
-                CornerRadius="7"
+                CornerRadius="4"
                 IsHitTestVisible="False" />
         </Grid>
     </ControlTemplate>
@@ -256,7 +256,7 @@
                                 Background="{StaticResource WindowComboBoxPopupBackgroundBrush}"
                                 BorderBrush="{StaticResource WindowComboBoxPopupBorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="6"
+                                CornerRadius="4"
                                 Opacity="0">
 
                                 <Border.RenderTransform>
