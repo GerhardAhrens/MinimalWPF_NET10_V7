@@ -28,6 +28,8 @@ namespace System.Windows.Controls
         {
             Loaded += (_, _) => AttachView();
             Unloaded += (_, _) => DetachView();
+            AddHandler(MouseDoubleClickEvent, new MouseButtonEventHandler(OnMouseDoubleClick), true);
+
         }
 
         public static readonly DependencyProperty SearchTextProperty =
@@ -38,6 +40,15 @@ namespace System.Windows.Controls
         {
             get => (string)GetValue(SearchTextProperty);
             set => SetValue(SearchTextProperty, value);
+        }
+
+        public static readonly DependencyProperty SearchWatermarkProperty =
+            DependencyProperty.Register(nameof(SearchWatermark), typeof(string), typeof(AdvancedListbox), new PropertyMetadata("Suchen…"));
+
+        public string SearchWatermark
+        {
+            get => (string)GetValue(SearchWatermarkProperty);
+            set => SetValue(SearchWatermarkProperty, value);
         }
 
         public static readonly DependencyProperty DisplayMemberPathForSearchProperty =
@@ -71,6 +82,42 @@ namespace System.Windows.Controls
             get => GetValue(SelectionChangedCommandParameterProperty);
             set => SetValue(SelectionChangedCommandParameterProperty, value);
         }
+
+        public static readonly DependencyProperty DoubleClickCommandProperty =
+            DependencyProperty.Register(nameof(DoubleClickCommand), typeof(ICommand), typeof(AdvancedListbox));
+
+        /// <summary>
+        /// Command executed when an item is double-clicked.
+        /// The clicked item is used as the default command parameter.
+        /// </summary>
+        public ICommand DoubleClickCommand
+        {
+            get => (ICommand)GetValue(DoubleClickCommandProperty);
+            set => SetValue(DoubleClickCommandProperty, value);
+        }
+
+        public static readonly DependencyProperty DoubleClickCommandParameterProperty =
+            DependencyProperty.Register(nameof(DoubleClickCommandParameter), typeof(object), typeof(AdvancedListbox));
+
+        /// <summary>
+        /// Optional explicit parameter for DoubleClickCommand.
+        /// If null, the double-clicked item is passed.
+        /// </summary>
+        public object DoubleClickCommandParameter
+        {
+            get => GetValue(DoubleClickCommandParameterProperty);
+            set => SetValue(DoubleClickCommandParameterProperty, value);
+        }
+
+        public static readonly DependencyProperty FooterVisibilityProperty =
+            DependencyProperty.Register(nameof(FooterVisibility), typeof(Visibility), typeof(AdvancedListbox), new PropertyMetadata(Visibility.Visible));
+
+        public Visibility FooterVisibility
+        {
+            get => (Visibility)GetValue(FooterVisibilityProperty);
+            set => SetValue(FooterVisibilityProperty, value);
+        }
+
 
         public static readonly DependencyProperty ActionButtonVisibilityProperty =
             DependencyProperty.Register(nameof(ActionButtonVisibility), typeof(Visibility), typeof(AdvancedListbox),
@@ -176,6 +223,29 @@ namespace System.Windows.Controls
                 command.Execute(parameter);
         }
 
+        private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DoubleClickCommand is not { } command)
+                return;
+
+            var item = FindItemFromOriginalSource(e.OriginalSource as DependencyObject);
+            if (item is null)
+                return;
+
+            // A double click on the action button must not also trigger the row command.
+            if (IsInsideActionButton(e.OriginalSource as DependencyObject))
+                return;
+
+            var parameter = DoubleClickCommandParameter ?? item;
+
+            if (command.CanExecute(parameter))
+            {
+                command.Execute(parameter);
+                e.Handled = true;
+            }
+        }
+
+
         /// <summary>Scrolls an item into view. The item must be present in the filtered view.</summary>
         new public void ScrollIntoView(object item)
         {
@@ -189,6 +259,33 @@ namespace System.Windows.Controls
                     UpdateLayout();
                 }
             }, DispatcherPriority.Loaded);
+        }
+
+        private static bool IsInsideActionButton(DependencyObject source)
+        {
+            while (source is not null)
+            {
+                if (source is Button button &&
+                    button.ReadLocalValue(StyleProperty) != DependencyProperty.UnsetValue)
+                    return button.Name == "PART_ActionButton";
+
+                source = VisualTreeHelper.GetParent(source);
+            }
+
+            return false;
+        }
+
+        private static object FindItemFromOriginalSource(DependencyObject source)
+        {
+            while (source is not null)
+            {
+                if (source is ListBoxItem item)
+                    return item.Content;
+
+                source = VisualTreeHelper.GetParent(source);
+            }
+
+            return null;
         }
 
         private static void OnSearchTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

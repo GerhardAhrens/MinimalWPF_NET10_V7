@@ -8,9 +8,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MinimalWPF.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
+    d:DesignHeight="600"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DrawingImage x:Key="EditDrawingImage">
+            <DrawingImage.Drawing>
+                <GeometryDrawing Brush="#FF0078D4" Geometry="M3,13 L3,17 L7,17 L17,7 L13,3 Z" />
+            </DrawingImage.Drawing>
+        </DrawingImage>
+    </UserControl.Resources>
 
     <Grid
         x:Name="gridMain"
@@ -59,7 +67,7 @@
             Margin="5,0,0,0"
             Background="Transparent"
             ColumnDefinitions="120,*,100"
-            RowDefinitions="25,50,Auto,Auto,10,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+            RowDefinitions="25,50,Auto,Auto,10,Auto,Auto,Auto,Auto,Auto,Auto,200,*">
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
@@ -283,8 +291,17 @@
             <UI:AdvancedListbox
                 Grid.Row="11"
                 Grid.Column="1"
+                ActionButtonCommand="{Binding Path=ActionLBCommand}"
+                ActionButtonImage="{StaticResource EditDrawingImage}"
+                ActionButtonVisibility="Visible"
                 DisplayMemberPath="ValueText"
-                ItemsSource="{Binding Path=DemoDateSource}" />
+                DisplayMemberPathForSearch="ValueText"
+                DoubleClickCommand="{Binding Path=DoubleClickLBCommand}"
+                FooterVisibility="Collapsed"
+                HeaderText="Gruppen"
+                ItemsSource="{Binding Path=DemoDateSource}"
+                SelectionChangedCommand="{Binding Path=SelectLBCommand}"
+                SelectionMode="Single" />
 
         </Grid>
 

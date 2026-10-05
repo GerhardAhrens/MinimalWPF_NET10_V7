@@ -61,6 +61,7 @@
                                                 FontSize="14"
                                                 Foreground="{StaticResource AdvancedListbox.SubtleText}"
                                                 Text="&#xE721;" />
+                                            
                                             <TextBox
                                                 Padding="4,8"
                                                 Background="Transparent"
@@ -88,7 +89,8 @@
                                 Grid.Row="2"
                                 Padding="12,8"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="0,1,0,0">
+                                BorderThickness="0,1,0,0"
+                                Visibility="{TemplateBinding FooterVisibility}">
                                 <DockPanel>
                                     <TextBlock
                                         DockPanel.Dock="Left"
