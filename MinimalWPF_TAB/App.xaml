@@ -28,6 +28,7 @@
                 <ResourceDictionary Source="TemplateCore\Controls\ProgressOverlay\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\SwitchBox\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\WindowLine\Themes\Generic.xaml" />
+                <ResourceDictionary Source="TemplateCore\Controls\WindowLineHeader\Themes\Generic.xaml" />
 
                 <!--  Externe Styles aus Bibliotheken  -->
             </ResourceDictionary.MergedDictionaries>

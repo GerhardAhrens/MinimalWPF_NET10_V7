@@ -140,6 +140,25 @@
                     HeaderAlignment="Center"
                     LineColor="Gray"
                     Thickness="2" />
+
+                <UI:WindowLineHeader
+                    Margin="0,10,0,0"
+                    HeaderAlignment="Center"
+                    LineColor="Gray"
+                    Thickness="2">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Text="Information" />
+
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="5,0,0,0"
+                            Source="{StaticResource ResourceKey=EditDrawingImage}" />
+                    </StackPanel>
+                </UI:WindowLineHeader>
             </StackPanel>
         </Grid>
 
