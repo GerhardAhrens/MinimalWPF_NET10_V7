@@ -38,6 +38,7 @@ namespace MinimalWPF.View
             this.MenuArtikellisteCommand = new CommandBase(commandParam => this.OnMenuArtikelliste(commandParam), () => true);
             this.MenuKategorienCommand = new CommandBase(commandParam => this.OnMenuKategorien(commandParam), () => true);
             this.MenuControlDemoCommand = new CommandBase(commandParam => this.OnMenuControlDemo(commandParam), () => true);
+            this.MenuControlDemo2Command = new CommandBase(commandParam => this.OnMenuControlDemo2(commandParam), () => true);
             this.LogoffCommand = new CommandBase(commandParam => this.OnLogoff(commandParam), () => true);
             this.InformationCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
             this.SettingsCommand = new CommandBase(commandParam => this.OnPopup(commandParam));
@@ -75,6 +76,7 @@ namespace MinimalWPF.View
         public CommandBase MenuArtikellisteCommand { get; private set; }
         public CommandBase MenuKategorienCommand { get; private set; }
         public CommandBase MenuControlDemoCommand { get; private set; }
+        public CommandBase MenuControlDemo2Command { get; private set; }
         public CommandBase LogoffCommand { get; private set; }
         public CommandBase InformationCommand { get; private set; }
         public CommandBase SettingsCommand { get; private set; }
@@ -181,6 +183,24 @@ namespace MinimalWPF.View
             if (commandParam != null && commandParam is CommandButtons button)
             {
                 if (button == CommandButtons.ControlDemo)
+                {
+                    ChangeViewEventArgs args = new();
+                    args.FromPage = CommandButtons.Home;
+                    args.MenuButton = button;
+
+                    if (App.EventAgg.IsSubscription<ChangeViewEventArgs>() == true)
+                    {
+                        await App.EventAgg.PublishAsync(args);
+                    }
+                }
+            }
+        }
+
+        private async void OnMenuControlDemo2(object commandParam)
+        {
+            if (commandParam != null && commandParam is CommandButtons button)
+            {
+                if (button == CommandButtons.ControlDemo2)
                 {
                     ChangeViewEventArgs args = new();
                     args.FromPage = CommandButtons.Home;

@@ -153,7 +153,12 @@
             <Button
                 Command="{Binding Path=MenuControlDemoCommand}"
                 CommandParameter="{x:Static core:CommandButtons.ControlDemo}"
-                Content="Control Demo" />
+                Content="Input Control Demo" />
+
+            <Button
+                Command="{Binding Path=MenuControlDemo2Command}"
+                CommandParameter="{x:Static core:CommandButtons.ControlDemo2}"
+                Content="Select Control Demo" />
 
             <UI:MenuButton
                 UI:MenuBar.Dock="Right"

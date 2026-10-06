@@ -174,7 +174,7 @@
                     {
                         this.OnQuit();
                     }
-                    else if (button.In(CommandButtons.Home, CommandButtons.Artikelliste, CommandButtons.Kategorien,CommandButtons.ControlDemo))
+                    else if (button.In(CommandButtons.Home, CommandButtons.Artikelliste, CommandButtons.Kategorien,CommandButtons.ControlDemo, CommandButtons.ControlDemo2))
                     {
                         if (App.EventAgg.IsSubscription<WindowsTitelEvent>() == true)
                         {
@@ -229,6 +229,7 @@
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Artikelliste, (param) => new ArtikellisteUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Kategorien, (param) => new KategorieTreeUC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.ControlDemo, (param) => new ControlDemoUC((ChangeViewEventArgs)param!));
+            Factory.RegisterTransient<CommandButtons>(CommandButtons.ControlDemo2, (param) => new ControlDemo2UC((ChangeViewEventArgs)param!));
             Factory.RegisterTransient<CommandButtons>(CommandButtons.Login, (param) => new LoginUC((ChangeViewEventArgs)param!));
         }
     }

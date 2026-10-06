@@ -27,6 +27,8 @@
         [Description("Control Demo")]
         ControlDemo = 12,
         [Description("Informationen")]
+        ControlDemo2 = 13,
+        [Description("Informationen")]
         InformationPopup = 20,
         [Description("Einstellungen")]
         SettingsPopup = 21,

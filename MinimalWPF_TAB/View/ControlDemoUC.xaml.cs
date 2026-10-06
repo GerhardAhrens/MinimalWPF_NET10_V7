@@ -36,9 +36,6 @@ namespace MinimalWPF.View
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
             this.SplitButtonCommand = new CommandBase(commandParam => this.OnSplitButton(commandParam), () => true);
-            this.SelectLBCommand = new CommandBase(commandParam => this.OnSelectLB(commandParam), () => true);
-            this.ActionLBCommand = new CommandBase(commandParam => this.OnActionLB(commandParam), () => true);
-            this.DoubleClickLBCommand = new CommandBase(commandParam => this.OnDoubleClickLB(commandParam), () => true);
 
             this.DemoDateSource = new List<DemoDataCB>
             {
@@ -57,28 +54,6 @@ namespace MinimalWPF.View
             this.SplitButtonMenue();
 
             this.DataContext = this;
-        }
-
-        private void OnDoubleClickLB(object commandParam)
-        {
-            DemoDataCB demoDataCB = commandParam as DemoDataCB;
-            this.Message.Hinweis("AdvancedListbox", $"Item Double-Click: {demoDataCB.ValueText.ToString()}");
-        }
-
-        private void OnActionLB(object commandParam)
-        {
-            DemoDataCB demoDataCB = commandParam as DemoDataCB;
-            this.Message.Hinweis("AdvancedListbox", $"Item Action-Button: {demoDataCB.ValueText.ToString()}");
-        }
-
-        private void OnSelectLB(object commandParam)
-        {
-            SelectionChangedInfo demoDataCB = commandParam as SelectionChangedInfo;
-            if (demoDataCB.SelectedItem != null && demoDataCB.SelectedItems.Any() == true )
-            {
-                this.Message.Hinweis("AdvancedListbox", $"Item Selection Changed: {((MinimalWPF.View.DemoDataCB)demoDataCB.SelectedItems[0]).ValueText}");
-            }
-
         }
 
         public ObservableCollection<SplitButtonItem> NewItems { get; } = new();
