@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="TemplateCore\Controls\Button\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\SplitButton\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\ComboBox\Themes\Generic.xaml" />
+                <ResourceDictionary Source="TemplateCore\Controls\ComboBoxColor\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\CheckBox\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\Listbox\Themes\Generic.xaml" />
                 <ResourceDictionary Source="TemplateCore\Controls\TextBox\Themes\Generic.xaml" />

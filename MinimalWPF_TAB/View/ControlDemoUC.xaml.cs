@@ -18,6 +18,7 @@ namespace MinimalWPF.View
     using System.Collections.ObjectModel;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Media;
 
     using MinimalWPF.Core;
 
@@ -36,6 +37,7 @@ namespace MinimalWPF.View
 
             this.GoBackCommand = new CommandBase(commandParam => this.OnGoBack(commandParam), () => true);
             this.SplitButtonCommand = new CommandBase(commandParam => this.OnSplitButton(commandParam), () => true);
+            this.ColorChangedCommand = new CommandBase(commandParam => this.OnColorChanged(commandParam), () => true);
 
             this.DemoDateSource = new List<DemoDataCB>
             {
@@ -52,6 +54,7 @@ namespace MinimalWPF.View
             this.SelectedDemoDate = this.DemoDateSource.FirstOrDefault();
 
             this.SplitButtonMenue();
+            this.SelectedBrush = new SolidColorBrush(Colors.Red);
 
             this.DataContext = this;
         }
@@ -66,9 +69,7 @@ namespace MinimalWPF.View
         #region Properties
         public CommandBase GoBackCommand { get; private set; }
         public CommandBase SplitButtonCommand { get; private set; }
-        public CommandBase SelectLBCommand { get; private set; }
-        public CommandBase ActionLBCommand { get; private set; }
-        public CommandBase DoubleClickLBCommand { get; private set; }
+        public CommandBase ColorChangedCommand { get; private set; }
 
         public Dictionary<int, string> ImageSource
         {
@@ -133,6 +134,12 @@ namespace MinimalWPF.View
         public DateTime? SelectedDate
         {
             get => base.GetValue<DateTime?>();
+            set => base.SetValue(value);
+        }
+
+        public Brush SelectedBrush
+        {
+            get => base.GetValue<Brush>();
             set => base.SetValue(value);
         }
 
@@ -202,6 +209,11 @@ namespace MinimalWPF.View
         {
             Message.Hinweis("Test Win11TextBox", $"Ergebnis: {this.Win11TextBox}");
         }
+
+        private void OnColorChanged(object commandParam)
+        {
+        }
+
         #endregion Command Events
 
         private void SplitButtonMenue()

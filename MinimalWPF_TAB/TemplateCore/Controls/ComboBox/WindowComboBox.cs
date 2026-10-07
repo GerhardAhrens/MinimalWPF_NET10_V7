@@ -139,9 +139,7 @@
 
         #region ItemsSource
 
-        protected override void OnItemsSourceChanged(
-            IEnumerable oldValue,
-            IEnumerable newValue)
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
             if (_filterView != null)
             {
@@ -162,9 +160,7 @@
 
         #region TextChanged
 
-        private void EditableTextBox_TextChanged(
-            object sender,
-            TextChangedEventArgs e)
+        private void EditableTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_isUpdatingText)
                 return;
@@ -251,9 +247,7 @@
             IsDropDownOpen = true;
         }
 
-        private bool FilterItem(
-            object item,
-            string searchText)
+        private bool FilterItem(object item, string searchText)
         {
             if (item == null)
                 return false;
@@ -263,10 +257,7 @@
             if (string.IsNullOrEmpty(value))
                 return false;
 
-            return value.IndexOf(
-                       searchText,
-                       StringComparison.CurrentCultureIgnoreCase)
-                   >= 0;
+            return value.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0;
         }
 
         private string GetSearchText(object item)
@@ -410,13 +401,10 @@
 
             if (item != null)
             {
-                SetCurrentValue(
-                    SelectedItemProperty,
-                    item);
+                SetCurrentValue(SelectedItemProperty, item);
             }
 
-            EndSubstringSearch(
-                restoreSelection: false);
+            EndSubstringSearch(restoreSelection: false);
         }
 
         private void CancelSubstringSearch()
@@ -441,12 +429,9 @@
 
             ClearFilter();
 
-            if (restoreSelection &&
-                _selectedItemBeforeSearch != null)
+            if (restoreSelection && _selectedItemBeforeSearch != null)
             {
-                SetCurrentValue(
-                    SelectedItemProperty,
-                    _selectedItemBeforeSearch);
+                SetCurrentValue(SelectedItemProperty, _selectedItemBeforeSearch);
             }
 
             _selectedItemBeforeSearch = null;
@@ -474,8 +459,7 @@
                 _isUpdatingText = true;
 
                 _editableTextBox.Text = text;
-                _editableTextBox.CaretIndex =
-                    _editableTextBox.Text.Length;
+                _editableTextBox.CaretIndex = _editableTextBox.Text.Length;
             }
             finally
             {
@@ -487,16 +471,13 @@
 
         #region Search Properties
 
-        private static void OnSearchPropertyChanged(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnSearchPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var comboBox = (WindowComboBox)d;
 
             if (!(bool)e.NewValue)
             {
-                comboBox.EndSubstringSearch(
-                    restoreSelection: false);
+                comboBox.EndSubstringSearch(restoreSelection: false);
             }
         }
 
