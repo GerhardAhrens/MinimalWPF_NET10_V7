@@ -171,10 +171,9 @@
 
                                 <UI:AdvancedImageColumn
                                     Header="Symbol"
-                                    ImageBinding="{Binding Path=[Symbol]}"
-                                    ImageHeight="24"
-                                    ImageHorizontalAlignment="Center"
-                                    ImageWidth="24" />
+                                    ImageBinding="{Binding Path=[Symbol], Converter={StaticResource DrawingImageConverter}}"
+                                    ImageHeight="16"
+                                    ImageWidth="16" />
 
                                 <UI:AdvancedGridViewColumn
                                     Width="60"

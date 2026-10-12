@@ -28,6 +28,8 @@ namespace MinimalWPF.View
 
     using MinimalWPF_TAB.DemoData;
 
+    using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
     /// <summary>
     /// Interaktionslogik für Artikelliste.xaml
     /// </summary>

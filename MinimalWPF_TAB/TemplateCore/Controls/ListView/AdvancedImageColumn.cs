@@ -10,58 +10,39 @@
 
     public class AdvancedImageColumn : GridViewColumn
     {
-        public static readonly DependencyProperty ImageBindingProperty =
-            DependencyProperty.Register(
-                nameof(ImageBinding),
-                typeof(BindingBase),
-                typeof(AdvancedImageColumn),
-                new PropertyMetadata(null, OnImageBindingChanged));
+        private BindingBase _imageBinding;
 
         public BindingBase ImageBinding
         {
-            get => (BindingBase)GetValue(ImageBindingProperty);
-            set => SetValue(ImageBindingProperty, value);
+            get => this._imageBinding;
+            set
+            {
+                this._imageBinding = value;
+                this.CreateDefaultCellTemplate();
+            }
         }
 
         public double ImageWidth { get; set; } = 20;
         public double ImageHeight { get; set; } = 20;
 
-        public HorizontalAlignment ImageHorizontalAlignment { get; set; }
-            = HorizontalAlignment.Center;
+        public HorizontalAlignment ImageHorizontalAlignment { get; set; } = HorizontalAlignment.Center;
 
-        public VerticalAlignment ImageVerticalAlignment { get; set; }
-            = VerticalAlignment.Center;
-
-        private static void OnImageBindingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is AdvancedImageColumn column)
-            {
-                column.CreateDefaultCellTemplate();
-            }
-        }
+        public VerticalAlignment ImageVerticalAlignment { get; set; } = VerticalAlignment.Center;
 
         private void CreateDefaultCellTemplate()
         {
-            if (ImageBinding == null)
+            if (this._imageBinding == null)
+            {
                 return;
+            }
 
             var factory = new FrameworkElementFactory(typeof(Image));
 
-            factory.SetValue(FrameworkElement.WidthProperty, ImageWidth);
-            factory.SetValue(FrameworkElement.HeightProperty, ImageHeight);
-            factory.SetValue(
-                FrameworkElement.HorizontalAlignmentProperty,
-                ImageHorizontalAlignment);
-            factory.SetValue(
-                FrameworkElement.VerticalAlignmentProperty,
-                ImageVerticalAlignment);
-
-            var imageBinding = new Binding("Symbol")
-            {
-                Converter = new DrawingImageConverter()
-            };
-
-            factory.SetBinding(Image.SourceProperty, imageBinding);
+            factory.SetValue(FrameworkElement.WidthProperty, this.ImageWidth);
+            factory.SetValue(FrameworkElement.HeightProperty, this.ImageHeight);
+            factory.SetValue(FrameworkElement.HorizontalAlignmentProperty, this.ImageHorizontalAlignment);
+            factory.SetValue(FrameworkElement.VerticalAlignmentProperty, this.ImageVerticalAlignment);
+            factory.SetBinding(Image.SourceProperty, this._imageBinding);
 
             CellTemplate = new DataTemplate
             {
@@ -75,7 +56,16 @@
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not string xaml || string.IsNullOrWhiteSpace(xaml))
-                return null;
+            {
+                if (value is DrawingImage di)
+                {
+                    return (DrawingImage)di;
+                }
+                else
+                {
+                    return null;
+                }
+            }
 
             try
             {
