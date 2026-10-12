@@ -86,6 +86,8 @@ namespace MinimalWPF.View
             set => base.SetValue(value);
         }
 
+        public DrawingImage Symbol => this.TryFindResource("MySymbol") as DrawingImage;
+
         private ChangeViewEventArgs CurrentCtorArgs { get; set; }
         private MessageBase Message { get; } = new MessageBase();
         private bool IsModified { get; set; } = false;

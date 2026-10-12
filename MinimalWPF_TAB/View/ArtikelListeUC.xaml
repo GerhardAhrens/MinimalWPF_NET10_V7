@@ -23,6 +23,14 @@
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Padding" Value="0,0,6,0" />
         </Style>
+
+        <DrawingImage x:Key="MySymbol">
+            <DrawingImage.Drawing>
+                <GeometryDrawing Brush="DodgerBlue" Geometry="M 0,0 L 16,0 16,16 0,16 Z" />
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+        <UI:DrawingImageConverter x:Key="DrawingImageConverter" />
     </UserControl.Resources>
 
     <Grid
@@ -160,6 +168,14 @@
                         ShowRowNumbers="True">
                         <ListView.View>
                             <GridView>
+
+                                <UI:AdvancedImageColumn
+                                    Header="Symbol"
+                                    ImageBinding="{Binding Path=[Symbol]}"
+                                    ImageHeight="24"
+                                    ImageHorizontalAlignment="Center"
+                                    ImageWidth="24" />
+
                                 <UI:AdvancedGridViewColumn
                                     Width="60"
                                     DisplayMemberBinding="{Binding Path=[A]}"
