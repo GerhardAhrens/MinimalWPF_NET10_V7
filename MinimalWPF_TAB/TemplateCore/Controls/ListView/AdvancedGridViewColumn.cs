@@ -210,6 +210,8 @@
         }
         #endregion FilterPlaceholder
 
+        public bool IsFilterVisible { get; set; } = true;
+
         internal string BindingPath
         {
             get;

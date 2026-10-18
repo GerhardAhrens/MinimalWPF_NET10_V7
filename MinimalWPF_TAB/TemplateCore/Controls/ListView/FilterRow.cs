@@ -25,22 +25,21 @@
 
         private void Build()
         {
-            this.Children.Clear();
-            this.ColumnDefinitions.Clear();
+            Children.Clear();
+            ColumnDefinitions.Clear();
 
-            if (this.ListView == null)
+            if (ListView == null)
             {
                 return;
             }
 
-            if (this.ListView.View is not GridView gridView)
-            {
+            if (ListView.View is not GridView gridView)
                 return;
-            }
 
             int columnIndex = 0;
 
-            if (this.ListView.ShowRowNumbers)
+            // Platz für die Zeilennummern
+            if (ListView.ShowRowNumbers)
             {
                 ColumnDefinitions.Add(
                     new ColumnDefinition
@@ -53,36 +52,50 @@
                     Background = System.Windows.Media.Brushes.Transparent
                 };
 
-                SetColumn(spacer, 0);
-
+                SetColumn(spacer, columnIndex);
                 Children.Add(spacer);
 
-                columnIndex = 1;
+                columnIndex++;
             }
 
-            foreach (AdvancedGridViewColumn column in gridView.Columns.OfType<AdvancedGridViewColumn>())
+            // Für jede Datenspalte bleibt eine FilterRow-Spalte erhalten.
+            foreach (GridViewColumn gridColumn in gridView.Columns)
             {
-                if (column.ShowFilter == false)
-                {
-                    continue;
-                }
-
+                // Breite an die jeweilige Datenspalte binden.
                 ColumnDefinition columnDefinition = new();
 
-                BindingOperations.SetBinding(columnDefinition, ColumnDefinition.WidthProperty,
-                    new Binding(nameof(GridViewColumn.Width))
+                BindingOperations.SetBinding(
+                    columnDefinition,
+                    ColumnDefinition.WidthProperty,
+                    new Binding(nameof(GridViewColumn.ActualWidth))
                     {
-                        Source = column,
+                        Source = gridColumn,
                         Converter = new DoubleToGridLengthConverter()
                     });
 
-                this.ColumnDefinitions.Add(columnDefinition);
+                ColumnDefinitions.Add(columnDefinition);
 
-                TextBox tb = CreateFilterBox(column);
+                // Nur AdvancedGridViewColumn kann ShowFilter bereitstellen.
+                if (gridColumn is AdvancedGridViewColumn column &&
+                    column.ShowFilter)
+                {
+                    TextBox tb = CreateFilterBox(column);
 
-                SetColumn(tb, columnIndex);
+                    SetColumn(tb, columnIndex);
+                    Children.Add(tb);
+                }
+                else
+                {
+                    // Unsichtbarer Platzhalter: Breite bleibt erhalten.
+                    Border spacer = new()
+                    {
+                        Background = System.Windows.Media.Brushes.Transparent,
+                        IsHitTestVisible = false
+                    };
 
-                this.Children.Add(tb);
+                    SetColumn(spacer, columnIndex);
+                    Children.Add(spacer);
+                }
 
                 columnIndex++;
             }

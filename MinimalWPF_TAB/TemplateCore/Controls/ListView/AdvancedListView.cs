@@ -242,6 +242,45 @@
 
         #endregion StatusRow
 
+        #region Zeilenhöhe für alle Columns
+        public static readonly DependencyProperty RowHeightProperty =
+            DependencyProperty.Register(nameof(RowHeight), typeof(double), typeof(AdvancedListView), new PropertyMetadata(double.NaN, OnRowHeightChanged));
+
+        public double RowHeight
+        {
+            get => (double)GetValue(RowHeightProperty);
+            set => SetValue(RowHeightProperty, value);
+        }
+
+        private static void OnRowHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is not AdvancedListView listView)
+                return;
+
+            listView.UpdateRowHeight();
+        }
+
+        private void UpdateRowHeight()
+        {
+            double height = RowHeight;
+
+            if (!double.IsNaN(height) && (!double.IsFinite(height) || height <= 0))
+            {
+                throw new ArgumentOutOfRangeException(nameof(RowHeight), "Die Zeilenhöhe muss größer als 0 sein oder NaN betragen.");
+            }
+
+            ItemContainerStyle ??= new Style(typeof(ListViewItem));
+
+            ItemContainerStyle.Setters.Remove(ItemContainerStyle.Setters.OfType<Setter>() .FirstOrDefault(s => s.Property == FrameworkElement.HeightProperty));
+
+            if (!double.IsNaN(height))
+            {
+                ItemContainerStyle.Setters.Add(new Setter(FrameworkElement.HeightProperty, height));
+            }
+
+        }
+        #endregion Zeilenhöhe für alle Columns festlegen
+
         private void AdvancedListView_Loaded(object sender, RoutedEventArgs e)
         {
             try

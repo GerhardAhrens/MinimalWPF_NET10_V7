@@ -7,8 +7,10 @@
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is double d)
+            if (value is double d && double.IsFinite(d) && d >= 0)
+            {
                 return new GridLength(d);
+            }
 
             return GridLength.Auto;
         }
