@@ -198,6 +198,17 @@
                                     StringFormat="{}{0:N2} €"
                                     TextAlignment="Right" />
 
+                                <UI:AdvancedProgressColumn
+                                    Width="180"
+                                    Header="Fortschritt"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    PercentageForeground="White"
+                                    ProgressBarBackground="LightGray"
+                                    ProgressBarForeground="DodgerBlue"
+                                    ShowProgressBar="True"
+                                    Value="65" />
+                                
                                 <UI:AdvancedGridViewColumn
                                     Width="200"
                                     DisplayMemberBinding="{Binding Path=[Warengruppe]}"
