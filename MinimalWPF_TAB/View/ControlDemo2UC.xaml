@@ -68,7 +68,7 @@
             Margin="5,0,0,0"
             Background="Transparent"
             ColumnDefinitions="120,*,100"
-            RowDefinitions="200,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+            RowDefinitions="150,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
 
             <TextBlock
                 Grid.Row="0"
@@ -159,6 +159,29 @@
                             Source="{StaticResource ResourceKey=EditDrawingImage}" />
                     </StackPanel>
                 </UI:WindowLineHeader>
+            </StackPanel>
+
+            <StackPanel
+                Grid.Row="5"
+                Grid.Column="1"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center">
+
+                <UI:FloatingTextBox
+                    Title="Benutzername"
+                    Margin="0,0,0,10"
+                    Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
+
+                <UI:FloatingTextBox
+                    Title="E-Mail-Adresse"
+                    Background="White"
+                    BorderBrush="#FFB8B8B8"
+                    CornerRadius="4"
+                    Foreground="#FF202020"
+                    Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                    TitleForeground="#FF0067C0" />
+
             </StackPanel>
         </Grid>
 
