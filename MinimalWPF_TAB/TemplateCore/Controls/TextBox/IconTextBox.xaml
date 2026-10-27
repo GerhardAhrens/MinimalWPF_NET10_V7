@@ -1,0 +1,177 @@
+﻿<UserControl
+    x:Class="System.Windows.Controls.IconTextBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:System.Windows.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    MinWidth="200"
+    MinHeight="30"
+    SnapsToDevicePixels="True"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+
+        <!--  TextBox ohne eigenen Rahmen  -->
+        <Style x:Key="InnerTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <ScrollViewer
+                            x:Name="PART_ContentHost"
+                            Background="Transparent"
+                            Focusable="False"
+                            HorizontalScrollBarVisibility="Hidden"
+                            VerticalScrollBarVisibility="Hidden" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </UserControl.Resources>
+
+    <Border
+        x:Name="Container"
+        MinHeight="30"
+        Padding="12,0"
+        Background="White"
+        BorderThickness="1"
+        CornerRadius="4"
+        SnapsToDevicePixels="True">
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="BorderBrush" Value="#D1D1D1" />
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="BorderBrush" Value="#8A8A8A" />
+                    </Trigger>
+
+                    <DataTrigger Binding="{Binding IsKeyboardFocusWithin, ElementName=Root}" Value="True">
+                        <Setter Property="BorderBrush" Value="#0067C0" />
+                        <Setter Property="BorderThickness" Value="2" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+
+        <Grid ColumnDefinitions="24,12,1,12,*">
+
+            <!--  Icon oder Standardsymbol T  -->
+            <Grid
+                Grid.Column="0"
+                Width="20"
+                Height="20"
+                VerticalAlignment="Center">
+
+                <Image
+                    x:Name="IconImage"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Source="{Binding Icon, ElementName=Root}"
+                    Stretch="Uniform">
+
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Visibility" Value="Visible" />
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Icon, ElementName=Root}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+
+                </Image>
+
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="17"
+                    FontWeight="SemiBold"
+                    Foreground="#606060"
+                    Text="T">
+
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Icon, ElementName=Root}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+            <!--  Abstand vor dem Trennstrich  -->
+            <Border Grid.Column="1" />
+
+            <!--  Vertikaler Trennstrich  -->
+            <Border
+                x:Name="Separator"
+                Grid.Column="2"
+                Width="1"
+                Margin="0,2"
+                VerticalAlignment="Stretch"
+                Background="Gray" />
+
+            <!--  Abstand zwischen Trennstrich und Text  -->
+            <Border Grid.Column="3" />
+
+            <!--  TextBox und Wasserzeichen  -->
+            <Grid Grid.Column="4" VerticalAlignment="Stretch">
+
+                <TextBox
+                    x:Name="PART_TextBox"
+                    Padding="0"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    CaretBrush="{Binding Foreground, RelativeSource={RelativeSource Self}}"
+                    Style="{StaticResource InnerTextBoxStyle}"
+                    Text="{Binding Text, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <!--  Wasserzeichen  -->
+                <TextBlock
+                    x:Name="WatermarkText"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Foreground="{Binding WatermarkForeground, ElementName=Root}"
+                    IsHitTestVisible="False"
+                    Text="{Binding Watermark, ElementName=Root}"
+                    TextTrimming="CharacterEllipsis">
+
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=PART_TextBox}" Value="">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding Text, ElementName=PART_TextBox}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </Grid>
+
+    </Border>
+</UserControl>
