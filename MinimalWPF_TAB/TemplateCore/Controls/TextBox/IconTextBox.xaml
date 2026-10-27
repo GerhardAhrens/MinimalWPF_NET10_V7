@@ -69,8 +69,8 @@
             <!--  Icon oder Standardsymbol T  -->
             <Grid
                 Grid.Column="0"
-                Width="20"
-                Height="20"
+                Width="22"
+                Height="22"
                 VerticalAlignment="Center">
 
                 <Image
@@ -97,9 +97,9 @@
                 <TextBlock
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontSize="17"
+                    FontSize="20"
                     FontWeight="SemiBold"
-                    Foreground="#606060"
+                    Foreground="Gray"
                     Text="T">
 
                     <TextBlock.Style>

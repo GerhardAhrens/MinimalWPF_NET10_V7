@@ -319,6 +319,15 @@
                 Margin="0,5,0,0"
                 HorizontalAlignment="Left"
                 Icon="{StaticResource ResourceKey=UserIcon}" />
+
+            <StackPanel
+                Grid.Row="12"
+                Grid.Column="2"
+                Orientation="Horizontal">
+                <UI:SymbolImage Icon="{StaticResource UserIcon}" />
+                <UI:SymbolImage />
+                <UI:SymbolImage Icon="{x:Null}" />
+            </StackPanel>
         </Grid>
 
         <!--#endregion Hauptmenübar-->
