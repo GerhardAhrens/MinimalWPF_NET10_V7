@@ -51,7 +51,8 @@ namespace MinimalWPF.View
                 new DemoDataCB("Gustav Gans"),
             };
 
-            this.SelectedDemoDate = this.DemoDateSource.FirstOrDefault();
+            this.SelectedDemoDate = this.DemoDateSource.LastOrDefault();
+            this.SelectedDemoDateSub = this.DemoDateSource.LastOrDefault();
 
             this.SplitButtonMenue();
             this.SelectedBrush = new SolidColorBrush(Colors.Red);
